@@ -1,0 +1,6 @@
+[
+    {
+        "lang": "Ruby",
+        "rules": "./rules/Ruby/rails_rails.json"
+    }
+]

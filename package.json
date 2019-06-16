@@ -1,0 +1,48 @@
+{
+  "name": "devreplay",
+  "displayName": "devreplay",
+  "description": "Replay your source code development",
+  "bin": {
+    "devreplay": "./bin/devreplay"
+  },
+  "version": "0.0.1",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.helloWorld"
+  ],
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "scripts": {
+    "create": "npm run build && npm run test",
+    "compile":"tsc -p src",
+    "test": "node lib/index.js",
+    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
+  },
+  "dependencies": {
+    "vscode-textmate": "^4.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.2",
+    "tslint": "^5.17.0",
+    "@types/node": "^12.0.8"
+  },
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ikuyadeu/devreplay.git"
+  },
+  "keywords": [
+    "cli",
+    "linter"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ikuyadeu/devreplay/issues"
+  },
+  "homepage": "https://github.com/ikuyadeu/devreplay#readme",
+  "author": "Yuki Ueda"
+}
