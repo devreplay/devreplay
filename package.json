@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "displayName": "devreplay",
   "description": "Replay your source code development",
   "bin": {
@@ -16,7 +16,7 @@
   "typings": "./lib/index.d.ts",
   "scripts": {
     "create": "npm run build && npm run test",
-    "compile":"tsc -p src",
+    "compile": "tsc -p src",
     "test": "node lib/index.js",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
   },
@@ -24,9 +24,9 @@
     "vscode-textmate": "^4.1.1"
   },
   "devDependencies": {
-    "typescript": "^3.5.2",
+    "@types/node": "^12.0.8",
     "tslint": "^5.17.0",
-    "@types/node": "^12.0.8"
+    "typescript": "^3.5.2"
   },
   "engines": {
     "node": ">=10.15.0"
