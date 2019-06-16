@@ -1,4 +1,5 @@
-import { readFile } from "fs";
+import { readFile, realpathSync } from "fs";
+import path = require("path");
 import * as vsctm from "vscode-textmate";
 import { IToken } from "./token";
 
@@ -7,16 +8,17 @@ interface IGrammarPath {
 }
 
 const grammarPaths: IGrammarPath = {
-    "source.cpp": "./syntaxes/cpp.tmLanguage.json",
-    "source.java": "./syntaxes/java.tmLanguage.json",
-    "source.js": "./syntaxes/JavaScript.tmLanguage.json",
-    "source.python": "./syntaxes/MagicPython.tmLanguage.json",
-    "source.ts": "./syntaxes/TypeScript.tmLanguage.json",
+    "source.cpp": "cpp.tmLanguage.json",
+    "source.java": "java.tmLanguage.json",
+    "source.js": "JavaScript.tmLanguage.json",
+    "source.python": "MagicPython.tmLanguage.json",
+    "source.ts": "TypeScript.tmLanguage.json",
 };
 
 const registry = new vsctm.Registry({
     async loadGrammar(scopeName: string) {
-        const location = grammarPaths[scopeName];
+        const syntaxes = path.join(path.dirname(realpathSync(__filename)), "../syntaxes/");
+        const location = syntaxes + grammarPaths[scopeName];
         return new Promise((resolve, reject) => {
             if (!location) { return; }
             readFile(location, "utf8", (err, data) => {
