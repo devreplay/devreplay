@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "displayName": "devreplay",
   "description": "Replay your source code development",
   "bin": {
