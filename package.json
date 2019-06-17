@@ -1,17 +1,10 @@
 {
   "name": "devreplay",
-  "version": "0.0.8",
-  "displayName": "devreplay",
+  "version": "0.0.11",
   "description": "Replay your source code development",
   "bin": {
     "devreplay": "./bin/devreplay"
   },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:extension.helloWorld"
-  ],
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "scripts": {
@@ -31,7 +24,7 @@
     "tsutils": "^3.14.0"
   },
   "peerDependencies": {
-    "typescript": "typescript@>= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev"
+    "typescript": ">=3.5.0 || >=3.5.0-dev || >=3.6.0-dev"
   },
   "devDependencies": {
     "@types/node": "^12.0.8",
@@ -52,7 +45,7 @@
     "cli",
     "linter"
   ],
-  "license": "Apache-2.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ikuyadeu/devreplay/issues"
   },
