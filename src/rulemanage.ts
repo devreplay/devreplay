@@ -24,6 +24,7 @@ export function getTriggarableCode(tokens: string[], patterns: IPattern[]) {
             return pattern;
         }
     }
+    return;
 }
 
 function makeBefore(changes: string[]) {
