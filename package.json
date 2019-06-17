@@ -18,7 +18,7 @@
     "clean": "rimraf lib",
     "create": "npm run build && npm run test",
     "compile": "tsc -p src",
-    "test": "node ./bin/dev-replay src/devreplayCli.ts",
+    "test": "node ./bin/devreplay src/devreplayCli.ts",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile test"
   },

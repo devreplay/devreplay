@@ -1,2 +1,3 @@
-export {lintFromFile } from "./lint";
-export { ILintOut } from "./lintout";
+import { lintFromFile } from "./lint";
+import { ILintOut } from "./lintout";
+export { lintFromFile, ILintOut};

@@ -1,13 +1,19 @@
 {
-    "compilerOptions": {
+  "compilerOptions": {
       "module": "commonjs",
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedParameters": true,
+      "noUnusedLocals": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "strictPropertyInitialization": true,
+      "importHelpers": true,
+      "declaration": true,
+      "sourceMap": false,
       "target": "es5",
       "lib": ["es6"],
-      "sourceMap": true,
-      "declaration": true,
-      "outDir": "../lib",
-      "strict": true,
-      "importHelpers": true,
-      "types": ["node"],
-    }
+      "outDir": "../lib"
   }
+}
