@@ -24,16 +24,18 @@
   },
   "dependencies": {
     "@babel/code-frame": "^7.0.0",
-    "builtin-modules": "^1.1.1",
+    "builtin-modules": "^3.1.0",
     "vscode-textmate": "^4.1.1",
+    "commander": "^2.12.1",
     "tslib": "^1.10.0",
     "tsutils": "^3.14.0"
   },
   "peerDependencies": {
-    "typescript": "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev"
+    "typescript": "typescript@>= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev"
   },
   "devDependencies": {
     "@types/node": "^12.0.8",
+    "@types/rimraf": "^2.0.2",
     "tslint": "^5.17.0",
     "typescript": "^3.5.2",
     "npm-run-all":"^4.1.5",
