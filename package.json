@@ -15,13 +15,19 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "scripts": {
+    "clean": "rimraf lib",
     "create": "npm run build && npm run test",
     "compile": "tsc -p src",
-    "test": "node lib/index.js",
-    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
+    "test": "node ./bin/dev-replay src/devreplayCli.ts",
+    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
+    "verify": "npm-run-all clean compile test"
   },
   "dependencies": {
-    "vscode-textmate": "^4.1.1"
+    "@babel/code-frame": "^7.0.0",
+    "builtin-modules": "^1.1.1",
+    "vscode-textmate": "^4.1.1",
+    "tslib": "^1.10.0",
+    "tsutils": "^3.14.0"
   },
   "devDependencies": {
     "@types/node": "^12.0.8",

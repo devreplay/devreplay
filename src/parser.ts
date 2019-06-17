@@ -1,5 +1,5 @@
-import { readFile, realpathSync } from "fs";
-import path = require("path");
+import { readFile } from "fs";
+// import path = require("path");
 import * as vsctm from "vscode-textmate";
 import { IToken } from "./token";
 
@@ -17,8 +17,7 @@ const grammarPaths: IGrammarPath = {
 
 const registry = new vsctm.Registry({
     async loadGrammar(scopeName: string) {
-        const syntaxes = path.join(path.dirname(realpathSync(__filename)), "../syntaxes/");
-        const location = syntaxes + grammarPaths[scopeName];
+        const location = __dirname + "/../syntaxes/" + grammarPaths[scopeName];
         return new Promise((resolve, reject) => {
             if (!location) { return; }
             readFile(location, "utf8", (err, data) => {
