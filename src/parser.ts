@@ -1,6 +1,7 @@
-import { readFile } from "fs";
+// import { readFile } from "fs";
 // import path = require("path");
 import * as vsctm from "vscode-textmate";
+import { tryReadFile } from "./file";
 import { IToken } from "./token";
 
 interface IGrammarPath {
@@ -18,12 +19,12 @@ const grammarPaths: IGrammarPath = {
 const registry = new vsctm.Registry({
     async loadGrammar(scopeName: string) {
         const location = __dirname + "/../syntaxes/" + grammarPaths[scopeName];
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (!location) { return; }
-            readFile(location, "utf8", (err, data) => {
-                if (err) { reject(err); }
-                resolve(vsctm.parseRawGrammar(data, location));
-                return vsctm.parseRawGrammar(data, location);
+            tryReadFile(location).then((data) => {
+                if (data) {
+                    resolve(vsctm.parseRawGrammar(data, location));
+                }
             });
         });
     },

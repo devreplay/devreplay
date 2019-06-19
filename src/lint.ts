@@ -8,8 +8,17 @@ import { sources } from "./source";
 export async function lintFromFile(fileName: string) {
     const lintResults: ILintOut [] = [];
     const fileContents = await tryReadFile(fileName);
+    // const fileSource = getSource(fileName);
+    if (fileContents) {
+        return await lint(fileName, fileContents);
+    }
+    return lintResults;
+}
+
+export async function lint(fileName: string, fileContents: string) {
     const fileSource = getSource(fileName);
-    if (fileContents && fileSource) {
+    const lintResults: ILintOut [] = [];
+    if (fileSource) {
         const lineTokens = await makeTokens(fileContents, fileSource);
         let lineIndex = 0;
         for (const tokens of lineTokens) {
