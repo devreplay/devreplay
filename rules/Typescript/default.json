@@ -1,15 +1,8 @@
 [
  {
-  "count": 2,
-  "code": [
-   "=    validates :",
-   "* path --> name path: --> name:"
-  ]
- },
- {
     "count": 2,
     "code": [
-     "* === --> =="
+     "* == --> ==="
     ]
  }
 ]

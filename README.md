@@ -15,9 +15,13 @@ If you have suggestions for how another-code-reviewer could be improved, or want
 
 ## Supported Language
 
-* Ruby
+* TypeScript
 
-## Sponsor
+## Thanks
+
+This package is made based on
+* [vscode-python](https://github.com/Microsoft/vscode-python/blob/master/src/client/language/tokenizer.ts)
+* [vscode-textmate](https://github.com/microsoft/vscode-textmate)
 
 We would like to thank the Support Center for Advanced Telecommunications (SCAT) Technology Research, Foundation.
 This system was supported by JSPS KAKENHI Grant Numbers JP18H03222, JP17H00731, JP15H02683, and JP18KT0013.
