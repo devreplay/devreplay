@@ -1,9 +1,8 @@
-import { INITIAL } from "vscode-textmate";
 import { tryReadFile } from "./file";
 import { ILintOut } from "./lintout";
-import { devideByToken } from "./parser";
 import { getTriggarableCode, readPatternFile } from "./rulemanage";
 import { sources } from "./source";
+import { Tokenizer } from "./tokenizer/tokenizer";
 
 export async function lintFromFile(fileName: string) {
     const lintResults: ILintOut [] = [];
@@ -15,14 +14,15 @@ export async function lintFromFile(fileName: string) {
     return lintResults;
 }
 
-export async function lint(fileName: string, fileContents: string) {
+export async function lint(fileName: string, fileContents: string, ruleFileName?: string) {
     const fileSource = getSource(fileName);
     const lintResults: ILintOut [] = [];
     if (fileSource) {
-        const lineTokens = await makeTokens(fileContents, fileSource);
+        const lineTokens = await makeTokens(fileContents);
         let lineIndex = 0;
+        // console.log(lineTokens)
         for (const tokens of lineTokens) {
-            const patterns = await readPatternFile(fileSource);
+            const patterns = await readPatternFile(ruleFileName, fileSource);
             const pattern = getTriggarableCode(tokens, patterns);
             if (pattern) {
                 lintResults.push({fileName, line: lineIndex, pattern});
@@ -33,17 +33,18 @@ export async function lint(fileName: string, fileContents: string) {
     return lintResults;
 }
 
-async function makeTokens(fileContents: string, source: string) {
+async function makeTokens(fileContents: string) {
     const tokens: string[][] = [[]];
-    let ruleStack = INITIAL;
     for (const line of fileContents.split("\n")) {
         const lineTokenValue: string[] = [];
-        const tokeninfo = await devideByToken(line, source, ruleStack);
-        for (const token of tokeninfo.tokens) {
-            lineTokenValue.push(token.value);
+        const t = new Tokenizer();
+        const lineTokens = t.tokenize(line);
+        for (let i = 0; i < lineTokens.count; i += 1) {
+            const currentToken = lineTokens.getItemAt(i);
+            const token = line.slice(currentToken.start, currentToken.start + currentToken.length);
+            lineTokenValue.push(token);
         }
         tokens.push(lineTokenValue);
-        ruleStack = tokeninfo.ruleStack;
     }
     return tokens;
 }

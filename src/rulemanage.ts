@@ -10,8 +10,8 @@ const patternPaths: IPatternPath = {
     "source.ts": "Typescript/default.json",
 };
 
-export async function readPatternFile(source: string) {
-    const location = __dirname + "/../rules/" + patternPaths[source];
+export async function readPatternFile(ruleFileName: string|undefined, source: string) {
+    const location = ruleFileName ? ruleFileName :  __dirname + "/../rules/" + patternPaths[source];
     const patternContent = await readFileSync(location).toString();
     const patternJson = JSON.parse(patternContent) as IPattern[];
     return patternJson;
