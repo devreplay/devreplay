@@ -1,0 +1,12 @@
+[
+   {
+      "code": [
+         "* asserEquals --> assertEqual"
+      ]
+   },
+   {
+      "code": [
+         "* xrange --> range"
+      ]
+   }
+]

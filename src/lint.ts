@@ -4,12 +4,12 @@ import { getTriggarableCode, readPatternFile } from "./rulemanage";
 import { sources } from "./source";
 import { Tokenizer } from "./tokenizer/tokenizer";
 
-export async function lintFromFile(fileName: string) {
+export async function lintFromFile(fileName: string, ruleFileName?: string) {
     const lintResults: ILintOut [] = [];
     const fileContents = await tryReadFile(fileName);
     // const fileSource = getSource(fileName);
     if (fileContents) {
-        return await lint(fileName, fileContents);
+        return await lint(fileName, fileContents, ruleFileName);
     }
     return lintResults;
 }
@@ -22,7 +22,7 @@ export async function lint(fileName: string, fileContents: string, ruleFileName?
         let lineIndex = 0;
         // console.log(lineTokens)
         for (const tokens of lineTokens) {
-            const patterns = await readPatternFile(ruleFileName, fileSource);
+            const patterns = await readPatternFile(fileSource, ruleFileName);
             const pattern = getTriggarableCode(tokens, patterns);
             if (pattern) {
                 lintResults.push({fileName, line: lineIndex, pattern});
@@ -30,6 +30,10 @@ export async function lint(fileName: string, fileContents: string, ruleFileName?
             lineIndex++;
         }
     }
+    return lintResults;
+}
+
+export async function fixFromLint(lintResults: ILintOut) {
     return lintResults;
 }
 
@@ -53,9 +57,9 @@ async function makeTokens(fileContents: string) {
  * Identify kind of source file
  */
 function getSource(fileName: string) {
-    for (const source of sources) {
-        if (source.extensions.some((x) => fileName.endsWith(x))) {
-            return source.id;
+    for (const source in sources) {
+        if (sources[source].extensions.some((x) => fileName.endsWith(x))) {
+            return source;
         }
     }
     return;

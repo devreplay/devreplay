@@ -1,20 +1,17 @@
-import { readFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import { IPattern } from "./patterns";
-// import { convertSource, getTriggarableCode } from "./rulecheck";
+import { sources } from "./source";
 
-interface IPatternPath {
-    [key: string]: string;
-}
-
-const patternPaths: IPatternPath = {
-    typescript: "Typescript/default.json",
-};
-
-export async function readPatternFile(ruleFileName: string|undefined, langId: string) {
-    const location = ruleFileName ? ruleFileName :  __dirname + "/../rules/" + patternPaths[langId];
-    const patternContent = await readFileSync(location).toString();
-    const patternJson = JSON.parse(patternContent) as IPattern[];
-    return patternJson;
+export async function readPatternFile(langId: string, ruleFileName?: string) {
+    if (ruleFileName &&  existsSync(ruleFileName)) {
+        const patternContent = await readFileSync(ruleFileName).toString();
+        const patternJson = JSON.parse(patternContent) as IPattern[];
+        return patternJson;
+    } else {
+        const patternContent = await readFileSync(__dirname + "/../rules/" + sources[langId].path).toString();
+        const patternJson = JSON.parse(patternContent) as IPattern[];
+        return patternJson;
+    }
 }
 
 export function getTriggarableCode(tokens: string[], patterns: IPattern[]) {
