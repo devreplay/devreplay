@@ -1,6 +1,6 @@
 # Dev replay
 
-Replay your source code development
+Dev replay is static analysis tool based on your own proguramming style.
 
 ### Quick Start
 

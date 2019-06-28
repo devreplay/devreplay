@@ -7,11 +7,11 @@ interface IPatternPath {
 }
 
 const patternPaths: IPatternPath = {
-    "source.ts": "Typescript/default.json",
+    typescript: "Typescript/default.json",
 };
 
-export async function readPatternFile(ruleFileName: string|undefined, source: string) {
-    const location = ruleFileName ? ruleFileName :  __dirname + "/../rules/" + patternPaths[source];
+export async function readPatternFile(ruleFileName: string|undefined, langId: string) {
+    const location = ruleFileName ? ruleFileName :  __dirname + "/../rules/" + patternPaths[langId];
     const patternContent = await readFileSync(location).toString();
     const patternJson = JSON.parse(patternContent) as IPattern[];
     return patternJson;

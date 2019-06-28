@@ -55,7 +55,7 @@ async function makeTokens(fileContents: string) {
 function getSource(fileName: string) {
     for (const source of sources) {
         if (source.extensions.some((x) => fileName.endsWith(x))) {
-            return source.source;
+            return source.id;
         }
     }
     return;
