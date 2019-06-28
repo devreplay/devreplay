@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "description": "Replay your source code development",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -12,7 +12,7 @@
     "create": "npm run build && npm run test",
     "compile": "tsc -p src",
     "publish:local": "sh ./scripts/npmPublish.sh",
-    "test": "node ./bin/devreplay src/devreplayCli.ts",
+    "test": "node ./bin/devreplay src/devreplayCli.ts rules/Typescript/devreplay.json",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile test"
   },

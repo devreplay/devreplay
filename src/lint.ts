@@ -7,7 +7,6 @@ import { Tokenizer } from "./tokenizer/tokenizer";
 export async function lintFromFile(fileName: string, ruleFileName?: string) {
     const lintResults: ILintOut [] = [];
     const fileContents = await tryReadFile(fileName);
-    // const fileSource = getSource(fileName);
     if (fileContents) {
         return await lint(fileName, fileContents, ruleFileName);
     }
@@ -20,7 +19,6 @@ export async function lint(fileName: string, fileContents: string, ruleFileName?
     if (fileSource) {
         const lineTokens = await makeTokens(fileContents);
         let lineIndex = 0;
-        // console.log(lineTokens)
         for (const tokens of lineTokens) {
             const patterns = await readPatternFile(fileSource, ruleFileName);
             const pattern = getTriggarableCode(tokens, patterns);

@@ -2,7 +2,40 @@
 
 Dev replay is static analysis tool based on your own proguramming style.
 
-### Quick Start
+## How to use
+
+1. Make your rule file `devreplay.json`
+
+```json
+[
+ {
+    "code": [
+     "* == --> ==="
+    ]
+ }
+]
+```
+
+2. Install and run devreplay
+
+```sh
+sudo npm install devreplay
+devreplay checkedFile.ts
+```
+
+Also, I published the vscode extensions. Please try it.
+
+
+## Supported Language
+
+* CPP
+* Java
+* JavsScript
+* Python
+* Ruby
+* TypeScript
+
+### Contribution
 
 ```sh
 git clone https://github.com/ikuyadeu/devreplay.git
@@ -13,13 +46,10 @@ yarn test
 
 If you have suggestions for how another-code-reviewer could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
 
-## Supported Language
-
-* TypeScript
-
 ## Thanks
 
 This package is made based on
+* [tslint](https://palantir.github.io/tslint/)
 * [vscode-python](https://github.com/Microsoft/vscode-python/blob/master/src/client/language/tokenizer.ts)
 * [vscode-textmate](https://github.com/microsoft/vscode-textmate)
 

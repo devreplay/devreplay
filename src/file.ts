@@ -12,6 +12,7 @@ export async function tryReadFile(filename: string) {
             // MPEG transport streams use the '.ts' file extension. They use 0x47 as the frame
             // separator, repeating every 188 bytes. It is unlikely to find that pattern in
             // TypeScript source, so tslint ignores files with the specific pattern.
+            // tslint:disable-next-line: no-console
             console.log(`${filename}: ignoring MPEG transport stream\n`);
             return undefined;
         }
