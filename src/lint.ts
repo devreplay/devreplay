@@ -24,7 +24,7 @@ export async function lintAndFix(fileName: string, ruleFileName?: string) {
     }
     const lintResult = lintResults[0];
     const devideContents = fileContents.split("\n");
-    devideContents[lintResult.line - 1] = await fixFromLint(lintResult, fileContents);
+    devideContents[lintResult.line - 1] = await fixByLint(lintResult, fileContents);
 
     return devideContents.join("\n");
 }
@@ -47,19 +47,24 @@ export async function lint(fileName: string, fileContents: string, ruleFileName?
     return lintResults;
 }
 
-export async function fixFromLint(lintResult: ILintOut, fileContents: string) {
+export async function fixByLint(lintResult: ILintOut, fileContents: string) {
     const contents = await makeTokens(fileContents);
     if (contents.length < lintResult.line) {
         return "";
     }
     const line = contents[lintResult.line];
+
+    return fixLineByPattern(line, lintResult.pattern.code);
+}
+
+export function fixLineByPattern(line: string[], code: string[]) {
     const newTokens: string[] = [];
     let startPosition = 0;
 
     for (let tokenIndex = 0; tokenIndex < line.length; tokenIndex++) {
         const token = line[tokenIndex];
         let isFound = false;
-        for (const change of lintResult.pattern.code.slice(startPosition)) {
+        for (const change of code.slice(startPosition)) {
             const symbol = change[0];
             const changeTokens = change.slice(2).split(" ");
             const codeLen = changeTokens.length;

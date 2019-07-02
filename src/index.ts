@@ -1,3 +1,3 @@
-import { fixFromLint, lint, lintAndFix, lintFromFile } from "./lint";
+import { fixByLint, fixLineByPattern, lint, lintAndFix, lintFromFile } from "./lint";
 import { ILintOut } from "./lintout";
-export { lintFromFile, ILintOut, lint, lintAndFix, fixFromLint };
+export { fixByLint, fixLineByPattern, lint, lintAndFix, lintFromFile, ILintOut};
