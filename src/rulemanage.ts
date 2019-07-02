@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "fs";
-import { IPattern } from "./patterns";
+import { IPattern, makeBefore } from "./patterns";
 import { sources } from "./source";
 
 export async function readPatternFile(langId: string, ruleFileName?: string) {
@@ -20,20 +20,6 @@ export function getTriggarableCode(tokens: string[], patterns: IPattern[]) {
         }
     }
     return;
-}
-
-function makeBefore(changes: string[]) {
-    const beforeChanges: string[] = [];
-    for (const change of changes) {
-        if (change.startsWith("*")) {
-            const before = change.slice(2).split("-->")[0].slice(undefined, -1).split(" ");
-            beforeChanges.push(...before);
-        } else if (!change.startsWith("+")) {
-            const before = change.slice(2).split(" ");
-            beforeChanges.push(...before);
-        }
-    }
-    return beforeChanges;
 }
 
 function isTriggarable(trigger: string[], tokens: string[]) {
