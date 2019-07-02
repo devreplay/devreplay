@@ -24,7 +24,6 @@ export async function lintAndFix(fileName: string, ruleFileName?: string) {
     }
     const lintResult = lintResults[0];
     const devideContents = fileContents.split("\n");
-    console.log(devideContents);
     devideContents[lintResult.line] = await fixFromLint(lintResult, fileContents);
 
     return devideContents.join("\n");
