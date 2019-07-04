@@ -300,7 +300,15 @@ export class Tokenizer implements ITokenizer {
         switch (this.cs.currentChar) {
             case Char.Plus:
             case Char.Ampersand:
+                if (nextChar === Char.Ampersand) {
+                    length = 2;
+                    break;
+                }
             case Char.Bar:
+                if (nextChar === Char.Bar) {
+                    length = 2;
+                    break;
+                }
             case Char.Caret:
             case Char.Equal:
             case Char.ExclamationMark:
