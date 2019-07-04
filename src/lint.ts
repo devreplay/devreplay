@@ -129,6 +129,19 @@ export function fixLineByPattern(line: ITokenPair[], code: string[]) {
         }
     }
 
+    if (startIndex <= code.length) {
+        for (const change of code.slice(startIndex)) {
+            if (change.slice(0, 1) !== "+") {
+                break;
+            }
+            const changeTokens = change.slice(2).split(" ");
+            const addedToken = makeTokenPosition(changeTokens, startPosition);
+            newTokens.push(...addedToken);
+            startPosition = addedToken.slice(-1)[0].end + 1;
+            startIndex++;
+        }
+    }
+
     return newTokens;
 }
 
