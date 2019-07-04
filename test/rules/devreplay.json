@@ -1,11 +1,11 @@
 [
     {
         "code": [
-            "+ aaa",
-            "* args --> argbb",
-            "= .",
-            "+ aaa. ",
-            "* == --> ==="
+            "- console .",
+            "* log --> info",
+            "* \"Hello World!\" --> \"Hello!\"",
+            "= )",
+            "+ ;"
         ]
-     }
+    }
 ]
