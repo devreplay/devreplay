@@ -1,11 +1,28 @@
+/* tslint:disable no-console object-literal-sort-keys */
 import { tryReadFile } from "./file";
 import { ILintOut } from "./lintout";
 import { getTriggarableCode, readPatternFile } from "./rulemanage";
-/* tslint:disable no-console object-literal-sort-keys */
-
-import { sources } from "./source";
-import { ITokenPair } from "./token";
+import { getSource } from "./source";
+import { IToken2String, ITokenPair } from "./token";
 import { Tokenizer } from "./tokenizer/tokenizer";
+
+export async function lint(fileName: string, fileContents: string, ruleFileName?: string) {
+    const fileSource = getSource(fileName);
+    const lintResults: ILintOut [] = [];
+    if (fileSource) {
+        const lineTokens = await makeTokens(fileContents);
+        let lineIndex = 0;
+        for (const tokens of lineTokens) {
+            const patterns = await readPatternFile(fileSource, ruleFileName);
+            const pattern = getTriggarableCode(tokens, patterns);
+            if (pattern && pattern.code) {
+                lintResults.push({fileName, line: lineIndex, pattern});
+            }
+            lineIndex++;
+        }
+    }
+    return lintResults;
+}
 
 export async function lintFromFile(fileName: string, ruleFileName?: string) {
     const fileContents = await tryReadFile(fileName);
@@ -27,37 +44,14 @@ export async function lintAndFix(fileName: string, ruleFileName?: string) {
     }
     const lintResult = lintResults[0];
     const devideContents = fileContents.split("\n");
-    devideContents[lintResult.line - 1] = IToken2String(await fixByLint(lintResult, fileContents));
-
-    return devideContents.join("\n");
-}
-
-export async function lint(fileName: string, fileContents: string, ruleFileName?: string) {
-    const fileSource = getSource(fileName);
-    const lintResults: ILintOut [] = [];
-    if (fileSource) {
-        const lineTokens = await makeTokens(fileContents);
-        let lineIndex = 0;
-        for (const tokens of lineTokens) {
-            const patterns = await readPatternFile(fileSource, ruleFileName);
-            const pattern = getTriggarableCode(tokens, patterns);
-            if (pattern && pattern.code) {
-                lintResults.push({fileName, line: lineIndex, pattern});
-            }
-            lineIndex++;
-        }
-    }
-    return lintResults;
-}
-
-export async function fixByLint(lintResult: ILintOut, fileContents: string) {
     const contents = await makeTokensWithLength(fileContents);
     if (contents.length < lintResult.line) {
-        return [];
+        return "";
     }
     const line = contents[lintResult.line];
+    devideContents[lintResult.line - 1] = IToken2String(fixLineByPattern(line, lintResult.pattern.code));
 
-    return fixLineByPattern(line, lintResult.pattern.code);
+    return devideContents.join("\n");
 }
 
 export function fixLineByPattern(line: ITokenPair[], code: string[]) {
@@ -173,37 +167,26 @@ function makeTokenPosition(tokens: string[], start: number) {
     return newToken;
 }
 
-function IToken2String(tokens: ITokenPair[]) {
-    let output = "";
-    for (const token of tokens) {
-        while (output.length < token.start) {
-            output += " ";
-        }
-        output += token.value;
-    }
-    return output;
-}
-
 function isSameArray(array1: ITokenPair[], array2: string[]) {
     return array1.length === array2.length &&
     array1.every((value, index) => value.value === array2[index]);
 }
 
 async function makeTokens(fileContents: string) {
-        const tokens: string[][] = [[]];
-        for (const line of fileContents.split("\n")) {
-            const lineTokenValue: string[] = [];
-            const t = new Tokenizer();
-            const lineTokens = t.tokenize(line);
-            for (let i = 0; i < lineTokens.count; i += 1) {
-                const currentToken = lineTokens.getItemAt(i);
-                const token = line.slice(currentToken.start, currentToken.start + currentToken.length);
-                lineTokenValue.push(token);
-            }
-            tokens.push(lineTokenValue);
+    const tokens: string[][] = [[]];
+    for (const line of fileContents.split("\n")) {
+        const lineTokenValue: string[] = [];
+        const t = new Tokenizer();
+        const lineTokens = t.tokenize(line);
+        for (let i = 0; i < lineTokens.count; i += 1) {
+            const currentToken = lineTokens.getItemAt(i);
+            const token = line.slice(currentToken.start, currentToken.start + currentToken.length);
+            lineTokenValue.push(token);
         }
-        return tokens;
+        tokens.push(lineTokenValue);
     }
+    return tokens;
+}
 
 async function makeTokensWithLength(fileContents: string) {
     const tokens: ITokenPair[][] = [[]];
@@ -222,16 +205,4 @@ async function makeTokensWithLength(fileContents: string) {
         tokens.push(lineTokenValue);
     }
     return tokens;
-}
-
-/**
- * Identify kind of source file
- */
-function getSource(fileName: string) {
-    for (const source in sources) {
-        if (sources[source].extensions.some((x) => fileName.endsWith(x))) {
-            return source;
-        }
-    }
-    return;
 }

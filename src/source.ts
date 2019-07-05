@@ -5,7 +5,7 @@ interface ISource {
     };
 }
 
-export const sources: ISource = {
+const sources: ISource = {
     cpp: {
         extensions: [".cpp", ".cc", ".cxx", ".hpp", ".hh", ".hxx", ".h", ".ino", ".inl", ".ipp"],
         path: "CPP/devreplay.json",
@@ -31,3 +31,12 @@ export const sources: ISource = {
         path: "Typescript/devreplay.json",
     },
 };
+
+export function getSource(fileName: string) {
+    for (const source in sources) {
+        if (sources[source].extensions.some((x) => fileName.endsWith(x))) {
+            return source;
+        }
+    }
+    return;
+}
