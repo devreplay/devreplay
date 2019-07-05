@@ -1,29 +1,56 @@
-# Dev replay
+# Devreplay
 
-Dev replay is static analysis tool based on your own proguramming style.
+Devreplay is static analysis tool based on your own proguramming style.
 
 ## How to use
 
-1. Make your rule file `devreplay.json`
-
-```json
-[
- {
-    "code": [
-     "* == --> ==="
-    ]
- }
-]
-```
-
-2. Install and run devreplay
+1. Install on local
 
 ```sh
 sudo npm install devreplay
-devreplay checkedFile.ts
 ```
 
-Also, I published the vscode extensions. Please try it.
+2. Create your own programming style(`devreplay.json`) on the root like bellow
+```json
+[
+    {
+       "code": [
+            "- console .",
+            "* log --> info",
+            "* \"Hello\" --> \"Hello World!\"",
+            "= )",
+            "+ ;"
+       ]
+    }
+]
+```
+This mean if your code has `console.log`, it should be `info`
+Please careful when you use `-` symbol or `*` symbol, you should add space by tokens (e.g. `- console.` should be `- console .`).
+
+And create your code(`hello.ts`) like this.
+```ts
+console.log("Hello")
+```
+
+3. 
+Run to get warning
+```sh
+devreplay hello.ts devreplay.json
+hello.ts:1: console.log"Hello") should be info"HelloWorld!");
+```
+or get correct code
+```sh
+devreplay --fix hello.ts devreplay.json > hello2.ts
+```
+you can get `hello2.ts`, like bellow
+
+```ts
+info("Hello World!");
+```
+
+**Recommend**: 
+* If you want to use it on editor, please try [vscode extensions](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
+* If you want to get programing style automatically, please try [review_pattern_gen](https://github.com/Ikuyadeu/review_pattern_gen/tree/master)
 
 
 ## Supported Language
@@ -42,6 +69,7 @@ git clone https://github.com/ikuyadeu/devreplay.git
 yarn
 yarn compile
 yarn test
+yarn test:fix
 ```
 
 If you have suggestions for how another-code-reviewer could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
