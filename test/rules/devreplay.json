@@ -1,11 +1,11 @@
 [
     {
-        "code": [
+       "code": [
             "- console .",
             "* log --> info",
-            "* \"Hello World!\" --> \"Hello!\"",
+            "* \"Hello\" --> \"Hello World!\"",
             "= )",
             "+ ;"
-        ]
+       ]
     }
 ]

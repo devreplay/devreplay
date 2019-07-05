@@ -5,7 +5,7 @@ interface ISource {
     };
 }
 
-const sources: ISource = {
+export const sources: ISource = {
     cpp: {
         extensions: [".cpp", ".cc", ".cxx", ".hpp", ".hh", ".hxx", ".h", ".ino", ".inl", ".ipp"],
         path: "CPP/devreplay.json",
