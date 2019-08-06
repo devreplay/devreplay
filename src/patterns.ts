@@ -1,6 +1,8 @@
 export interface IPattern {
-    count?: number;
-    code: string[];
+    number?: number;
+    author?: number;
+    condition: string[];
+    consequent: string[];
 }
 
 export function code2String(code: string[]) {

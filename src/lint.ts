@@ -1,27 +1,17 @@
 /* tslint:disable no-console object-literal-sort-keys */
 import { tryReadFile } from "./file";
-import { ILintOut } from "./lintout";
-import { getTriggarableCode, readPatternFile } from "./rulemanage";
+import { IPattern } from "./patterns";
+import { readPatternFile } from "./rulemanage";
 import { getSource } from "./source";
-import { IToken2String, ITokenPair } from "./token";
-import { Tokenizer } from "./tokenizer/tokenizer";
 
 export async function lint(fileName: string, fileContents: string, ruleFileName?: string) {
     const fileSource = getSource(fileName);
-    const lintResults: ILintOut [] = [];
     if (fileSource) {
-        const lineTokens = await makeTokens(fileContents);
-        let lineIndex = 0;
-        for (const tokens of lineTokens) {
-            const patterns = await readPatternFile(fileSource, ruleFileName);
-            const pattern = getTriggarableCode(tokens, patterns);
-            if (pattern && pattern.code) {
-                lintResults.push({fileName, line: lineIndex, pattern});
-            }
-            lineIndex++;
-        }
+        const patterns = await readPatternFile(fileSource, ruleFileName);
+        const pattern = getTriggarableCode(fileContents, patterns, fileName);
+        return pattern;
     }
-    return lintResults;
+    return [];
 }
 
 export async function lintFromFile(fileName: string, ruleFileName?: string) {
@@ -34,175 +24,89 @@ export async function lintFromFile(fileName: string, ruleFileName?: string) {
 
 export async function lintAndFix(fileName: string, ruleFileName?: string) {
     const fileContents = await tryReadFile(fileName);
-    if (!fileContents) {
+    if (fileContents) {
+        const result = await lint(fileName, fileContents, ruleFileName);
+        if (result !== undefined && result.length !== 0) {
+            return await fixByLint(fileContents, result[0]);
+        }
+    }
+    return "";
+}
+
+export async function fixByLint(fileContents: string, pattern: ILintOut) {
+    if (pattern.pattern.consequent === undefined || pattern.pattern.condition === undefined) {
         return "";
     }
-
-    const lintResults = await lint(fileName, fileContents, ruleFileName);
-    if (lintResults.length === 0) {
+    const consequent = pattern.pattern.consequent.join("\n").replace(/\$(\d+)/gm,
+                                                                    (x) => ("$" + (parseInt(x[1], 10) + 1).toString()));
+    const reCondition = conditon2regex(pattern.pattern.condition);
+    const matchedStr = reCondition.exec(fileContents);
+    if (matchedStr == null) {
         return fileContents;
+    } else {
+        return fileContents.replace(reCondition, consequent);
     }
-    const lintResult = lintResults[0];
-    const devideContents = fileContents.split("\n");
-    const contents = await makeTokensWithLength(fileContents);
-    if (contents.length < lintResult.line) {
-        return "";
-    }
-    const line = contents[lintResult.line];
-    devideContents[lintResult.line - 1] = IToken2String(fixLineByPattern(line, lintResult.pattern.code));
-
-    return devideContents.join("\n");
 }
 
-export function fixLineByPattern(line: ITokenPair[], code: string[]) {
-    const newTokens: ITokenPair[] = [];
-    let startIndex = 0;
-    let startPosition = line[0].start;
+function conditon2regex(condition: string[]) {
+    const dollar = /\$(\d+)/gm;
+    let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
+    joinedCondition = joinedCondition.replace(dollar, (x) => ("$" + (parseInt(x[1], 10) + 1).toString()));
+    joinedCondition = joinedCondition.replace(/[<>*()?.]/g, "\\$&");
 
-    for (let tokenIndex = 0; tokenIndex < line.length; tokenIndex++) {
-        const token = line[tokenIndex].value;
-        let isFound = false;
-        const nextSpace = tokenIndex !== 0 ? line[tokenIndex].start - line[tokenIndex - 1].end : 0;
-
-        if (startIndex >= code.length) {
-            const currentTokens = makeTokenPosition([token], startPosition + nextSpace);
-            startPosition = currentTokens.slice(-1)[0].end;
-            newTokens.push(...currentTokens);
-            continue;
-        }
-        const change = code[startIndex];
-        const changeTokens = change.slice(2).split(" ");
-        const codeLen = changeTokens.length;
-        switch (change.slice(0, 1)) {
-            case "+":
-                const addedToken = makeTokenPosition(changeTokens, startPosition + nextSpace);
-                newTokens.push(...addedToken);
-                startPosition = addedToken.slice(-1)[0].end + 1;
-                startIndex++;
-                break;
-            case "-":
-                if (isSameArray(line.slice(tokenIndex, tokenIndex + codeLen), changeTokens)) {
-                    tokenIndex += codeLen - 1;
-                    isFound = true;
-                }
-                break;
-            case "=":
-                if (isSameArray(line.slice(tokenIndex, tokenIndex + codeLen), changeTokens)) {
-                    const updatedToken = updateTokenPosition(line.slice(tokenIndex, tokenIndex + codeLen),
-                                                             startPosition + nextSpace);
-                    newTokens.push(...updatedToken);
-                    startPosition = updatedToken.slice(-1)[0].end;
-                    tokenIndex += codeLen - 1;
-                    isFound = true;
-                }
-                break;
-            case "*":
-                const devidedChange = change.slice(2).split("-->");
-                if (devidedChange.length < 2) {
-                    break;
-                }
-                const beforeTokens = devidedChange[0].slice(undefined, -1).split(" ");
-                const afterTokens = devidedChange[1].slice(1).split(" ");
-                if (isSameArray(line.slice(tokenIndex, tokenIndex + beforeTokens.length), beforeTokens)) {
-                    const replaceToken = makeTokenPosition(afterTokens, startPosition + nextSpace);
-                    newTokens.push(...replaceToken);
-                    startPosition = replaceToken.slice(-1)[0].end;
-                    tokenIndex += beforeTokens.length - 1;
-                    isFound = true;
-                }
-                break;
-            default:
-                break;
-        }
-        if (isFound) {
-            startIndex++;
+    const tokenIndex: string[] = [];
+    joinedCondition = joinedCondition.replace(dollar, (x) => {
+        if (tokenIndex.includes(x[1])) {
+            return `(\\k<token${x[1]}>)`;
         } else {
-            const currentTokens = makeTokenPosition([token], startPosition + nextSpace);
-            startPosition = currentTokens.slice(-1)[0].end;
-            newTokens.push(...currentTokens);
+            tokenIndex.push(x[1]);
+            return `(?<token${x[1]}>\\w+)`;
+        }
+    });
+    return new RegExp(joinedCondition, "gm");
+}
+
+function makeSnippetRegex(condition: string[], contents: string) {
+    const reCondition = conditon2regex(condition);
+    return reCondition.exec(contents);
+}
+
+function getTriggarableCode(contents: string, patterns: IPattern[], fileName: string) {
+    const matched: ILintOut[] = [];
+    for (const pattern of patterns) {
+
+        if (!verifyPattern(pattern)) { continue; }
+        const result = makeSnippetRegex(pattern.condition, contents);
+        if (result != null) {
+            matched.push({pattern, snippet: result[0], position: makePatternPosition(fileName, result)});
         }
     }
-
-    if (startIndex <= code.length) {
-        for (const change of code.slice(startIndex)) {
-            if (change.slice(0, 1) !== "+") {
-                break;
-            }
-            const changeTokens = change.slice(2).split(" ");
-            const addedToken = makeTokenPosition(changeTokens, startPosition);
-            newTokens.push(...addedToken);
-            startPosition = addedToken.slice(-1)[0].end + 1;
-            startIndex++;
-        }
-    }
-
-    return newTokens;
+    return matched;
 }
 
-function updateTokenPosition(tokens: ITokenPair[], start: number) {
-    const newToken: ITokenPair[] = [];
-    let currentPosition = start;
-    let previousEnd = tokens[0].start;
-    for (const token of tokens) {
-        newToken.push({
-            value: token.value,
-            start: currentPosition + (token.start - previousEnd),
-            end: currentPosition + token.value.length});
-        previousEnd = token.end;
-        currentPosition += token.value.length;
-    }
-    return newToken;
+function verifyPattern(pattern: IPattern) {
+    return Array.isArray(pattern.condition) && Array.isArray(pattern.consequent);
 }
 
-function makeTokenPosition(tokens: string[], start: number) {
-    const newToken: ITokenPair[] = [];
-    let currentPosition = start;
-    for (const token of tokens) {
-        newToken.push({
-            value: token,
-            start: currentPosition,
-            end: currentPosition + token.length});
-        currentPosition += token.length;
-    }
-    return newToken;
+function makePatternPosition(fileName: string, result: RegExpExecArray) {
+    const startChar = result.index;
+    const startSlice = result.input.slice(undefined, startChar);
+    const startLine = startSlice.split(/\r\n|\r|\n/).length;
+    const endLine = startLine + result[0].split(/\r\n|\r|\n/).length - 1;
+    return {fileName, start: startLine, end: endLine};
 }
 
-function isSameArray(array1: ITokenPair[], array2: string[]) {
-    return array1.length === array2.length &&
-    array1.every((value, index) => value.value === array2[index]);
+export interface ILintOut {
+    pattern: IPattern;
+    snippet: string;
+    position: {fileName: string, start: number, end: number};
 }
 
-async function makeTokens(fileContents: string) {
-    const tokens: string[][] = [[]];
-    for (const line of fileContents.split("\n")) {
-        const lineTokenValue: string[] = [];
-        const t = new Tokenizer();
-        const lineTokens = t.tokenize(line);
-        for (let i = 0; i < lineTokens.count; i += 1) {
-            const currentToken = lineTokens.getItemAt(i);
-            const token = line.slice(currentToken.start, currentToken.start + currentToken.length);
-            lineTokenValue.push(token);
-        }
-        tokens.push(lineTokenValue);
-    }
-    return tokens;
+export function formatILintOut(matched: ILintOut) {
+    return `${matched.position.fileName}:${matched.position.start}:
+            ${code2String(matched.pattern.condition, matched.pattern.consequent)}`;
 }
 
-async function makeTokensWithLength(fileContents: string) {
-    const tokens: ITokenPair[][] = [[]];
-    for (const line of fileContents.split("\n")) {
-        const lineTokenValue: ITokenPair[] = [];
-        const t = new Tokenizer();
-        const lineTokens = t.tokenize(line);
-        for (let i = 0; i < lineTokens.count; i += 1) {
-            const currentToken = lineTokens.getItemAt(i);
-            const token = line.slice(currentToken.start, currentToken.end);
-            const newToken: ITokenPair = {value: token,
-                start: currentToken.start,
-                end: currentToken.end};
-            lineTokenValue.push(newToken);
-        }
-        tokens.push(lineTokenValue);
-    }
-    return tokens;
+export function code2String(condition: string[], consequent: string[]) {
+    return `${condition.join("")} should be ${consequent.join("")}`;
 }

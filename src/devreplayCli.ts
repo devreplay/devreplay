@@ -2,8 +2,7 @@
 /* tslint:disable no-console object-literal-sort-keys */
 
 import commander = require("commander");
-import {lintAndFix, lintFromFile } from "./lint";
-import {formatIlintOut} from "./lintout";
+import { formatILintOut, ILintOut, lintAndFix, lintFromFile } from "./lint";
 import { arrayify } from "./utils";
 
 interface IArgv {
@@ -66,13 +65,13 @@ if (files.length >= 2) {
 }
 
 if (argv.fix) {
-    lintAndFix(fileName, ruleFileName).then((results) => {
+    lintAndFix(fileName, ruleFileName).then((results: string) => {
         console.log(results);
     });
 } else {
-    lintFromFile(fileName, ruleFileName).then((results) => {
+    lintFromFile(fileName, ruleFileName).then((results: ILintOut[]) => {
         for (const result of results) {
-            console.log(formatIlintOut(result));
+            console.log(formatILintOut(result));
         }
     });
 }
