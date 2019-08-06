@@ -1,6 +1,8 @@
 # Devreplay
 
 Devreplay is static analysis tool based on your own proguramming style.
+* VS Code version is [here](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
+* GitHub bot version is [here](https://github.com/apps/dev-avatar) (It is old version)
 
 ## How to use
 
@@ -11,6 +13,7 @@ sudo npm install devreplay
 ```
 
 2. Create your own programming style(`devreplay.json`) on the root like bellow
+(**Recommend**) [Review Pattern Generator](https://github.com/Ikuyadeu/review_pattern_gen) can generate your rule file automatically
 ```json
 [
     {
@@ -58,12 +61,27 @@ for a in six.moves.range(array.x):
 
 ## Supported Language
 
+You do not need to care for any language.
+We are preparing default rules for each Language and Frameworks.
+
+### Languages
+
 * CPP
 * Java
 * JavsScript
 * Python
 * Ruby
 * TypeScript
+...
+
+### Frameworks
+
+* Tensorflow
+* Ruby on Rails
+* jQuery
+* Pandas
+* React
+* Unity 3D
 ...
 
 You do not need to care for any language
@@ -93,3 +111,7 @@ This system was supported by JSPS KAKENHI Grant Numbers JP18H03222, JP17H00731, 
 ## License
 
 [MIT](LICENSE) © 2019 Yuki Ueda <ueda.yuki.un7@is.naist.jp> (ikuyadeu.github.io)
+
+
+
+accyracy, カバー率
