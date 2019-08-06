@@ -14,38 +14,41 @@ sudo npm install devreplay
 ```json
 [
     {
-       "code": [
-            "- console .",
-            "* log --> info",
-            "* \"Hello\" --> \"Hello World!\"",
-            "= )",
-            "+ ;"
-       ]
+        "condition": [
+            "for $0 in xrange($1.$2):"
+        ],
+        "consequent": [
+            "import six",
+            "for $0 in six.moves.range($1.$2):"
+        ],
     }
 ]
 ```
-This mean if your code has `console.log`, it should be `info`
-Please careful when you use `-` symbol or `*` symbol, you should add space by tokens (e.g. `- console.` should be `- console .`).
+This mean if your code has `xrange`, it should be `six.moves.range`
 
-And create your code(`hello.ts`) like this.
-```ts
-console.log("Hello")
+And create your code(`hello.py`) like this.
+```python
+for a in xrange(array.x):
+    pass
 ```
 
 3. 
 Run to get warning
 ```sh
-devreplay hello.ts devreplay.json
-hello.ts:1: console.log"Hello") should be info"HelloWorld!");
+devreplay hello.py devreplay.json
+test/files/hello.ts:4:
+for $0 in xrange($1.$2): should be import six       for $0 in six.moves.range($1.$2):
 ```
 or get correct code
 ```sh
-devreplay --fix hello.ts devreplay.json > hello2.ts
+devreplay --fix hello.py devreplay.json > hello2.py
 ```
-you can get `hello2.ts`, like bellow
+you can get `hello2.py`, like bellow
 
-```ts
-info("Hello World!");
+```python
+import six
+for a in six.moves.range(array.x):
+    pass
 ```
 
 **Recommend**: 
@@ -61,6 +64,9 @@ info("Hello World!");
 * Python
 * Ruby
 * TypeScript
+...
+
+You do not need to care for any language
 
 ### Contribution
 

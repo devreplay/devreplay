@@ -4,6 +4,12 @@ import { IPattern } from "./patterns";
 import { readPatternFile } from "./rulemanage";
 import { getSource } from "./source";
 
+export interface ILintOut {
+    pattern: IPattern;
+    snippet: string;
+    position: {fileName: string, start: number, end: number};
+}
+
 export async function lint(fileName: string, fileContents: string, ruleFileName?: string) {
     const fileSource = getSource(fileName);
     if (fileSource) {
@@ -94,12 +100,6 @@ function makePatternPosition(fileName: string, result: RegExpExecArray) {
     const startLine = startSlice.split(/\r\n|\r|\n/).length;
     const endLine = startLine + result[0].split(/\r\n|\r|\n/).length - 1;
     return {fileName, start: startLine, end: endLine};
-}
-
-export interface ILintOut {
-    pattern: IPattern;
-    snippet: string;
-    position: {fileName: string, start: number, end: number};
 }
 
 export function formatILintOut(matched: ILintOut) {
