@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Replay your source code development",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -19,20 +19,19 @@
   },
   "dependencies": {
     "@babel/code-frame": "^7.0.0",
-    "commander": "^2.20.0",
-		"typescript-char":"^0.0.0",
-    "unicode": "^11.0.1",
     "builtin-modules": "^3.1.0",
+    "commander": "^2.20.0",
     "tslib": "^1.10.0",
-    "tsutils": "^3.17.0"
+    "tsutils": "^3.17.0",
+    "unicode": "^11.0.1"
   },
   "devDependencies": {
     "@types/node": "^12.0.8",
     "@types/rimraf": "^2.0.2",
-    "tslint": "^5.19.0",
-    "typescript": "^3.5.2",
     "npm-run-all": "^4.1.5",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   },
   "engines": {
     "node": ">=10.15.0"

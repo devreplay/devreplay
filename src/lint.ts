@@ -43,7 +43,7 @@ export async function fixByLint(fileContents: string, pattern: ILintOut) {
     if (pattern.pattern.consequent === undefined || pattern.pattern.condition === undefined) {
         return "";
     }
-    const consequent = pattern.pattern.consequent.join("\n").replace(/\$(\d+)/gm,
+    const consequent = pattern.pattern.consequent.join("\n").replace(/\${?(\d+)(:[a-zA-Z_]+})?/gm,
                                                                     (x) => ("$" + (parseInt(x[1], 10) + 1).toString()));
     const reCondition = conditon2regex(pattern.pattern.condition);
     const matchedStr = reCondition.exec(fileContents);
@@ -55,7 +55,7 @@ export async function fixByLint(fileContents: string, pattern: ILintOut) {
 }
 
 function conditon2regex(condition: string[]) {
-    const dollar = /\$(\d+)/gm;
+    const dollar = /\${?(\d+)(:[a-zA-Z_]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
     joinedCondition = joinedCondition.replace(dollar, (x) => ("$" + (parseInt(x[1], 10) + 1).toString()));
     joinedCondition = joinedCondition.replace(/[<>*()?.]/g, "\\$&");
@@ -66,7 +66,7 @@ function conditon2regex(condition: string[]) {
             return `(\\k<token${x[1]}>)`;
         } else {
             tokenIndex.push(x[1]);
-            return `(?<token${x[1]}>\\w+)`;
+            return `(?<token${x[1]}>.+)`;
         }
     });
     return new RegExp(joinedCondition, "gm");
