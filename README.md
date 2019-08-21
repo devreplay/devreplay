@@ -18,11 +18,11 @@ sudo npm install devreplay
 [
     {
         "condition": [
-            "for $0 in xrange($1.$2):"
+            "for $0 in xrange(${1:name}.$2):"
         ],
         "consequent": [
             "import six",
-            "for $0 in six.moves.range($1.$2):"
+            "for $0 in six.moves.range(${1:name}.$2):"
         ],
     }
 ]
@@ -61,20 +61,15 @@ for a in six.moves.range(array.x):
 
 ## Supported Language
 
-You do not need to care for any language.
-We are preparing default rules for each Language and Frameworks.
-
-### Languages
-
 * CPP
 * Java
 * JavsScript
+* TypeScript
 * Python
 * Ruby
-* TypeScript
-...
 
-### Frameworks
+## Future work
+For the future, we are preparing default rules for each Language and Frameworks, such as...
 
 * Tensorflow
 * Ruby on Rails
@@ -83,8 +78,6 @@ We are preparing default rules for each Language and Frameworks.
 * React
 * Unity 3D
 ...
-
-You do not need to care for any language
 
 ### Contribution
 
