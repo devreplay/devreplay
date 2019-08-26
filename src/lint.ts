@@ -44,7 +44,7 @@ export async function fixByLint(fileContents: string, pattern: ILintOut) {
         return "";
     }
     const consequent = pattern.pattern.consequent.join("\n").replace(/\${?(\d+)(:[a-zA-Z_]+})?/gm,
-                                                                    (x) => ("$" + (parseInt(x[1], 10) + 1).toString()));
+                                                                    (_, y) => ("$" + (parseInt(y, 10) + 1).toString()));
     const reCondition = conditon2regex(pattern.pattern.condition);
     const matchedStr = reCondition.exec(fileContents);
     if (matchedStr == null) {
@@ -57,7 +57,7 @@ export async function fixByLint(fileContents: string, pattern: ILintOut) {
 function conditon2regex(condition: string[]) {
     const dollar = /\${?(\d+)(:[a-zA-Z_]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
-    joinedCondition = joinedCondition.replace(dollar, (x) => ("$" + (parseInt(x[1], 10) + 1).toString()));
+    joinedCondition = joinedCondition.replace(dollar, (_, y) => ("$" + (parseInt(y, 10) + 1).toString()));
     joinedCondition = joinedCondition.replace(/[<>*()?.]/g, "\\$&");
 
     const tokenIndex: string[] = [];
