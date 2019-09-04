@@ -20,6 +20,15 @@ export async function lint(fileName: string, fileContents: string, ruleFileName?
     return [];
 }
 
+export async function lintWithPattern(fileName: string, fileContents: string, patterns: IPattern[]) {
+    const fileSource = getSource(fileName);
+    if (fileSource) {
+        const pattern = getTriggarableCode(fileContents, patterns, fileName);
+        return pattern;
+    }
+    return [];
+}
+
 export async function lintFromFile(fileName: string, ruleFileName?: string) {
     const fileContents = await tryReadFile(fileName);
     if (fileContents) {
