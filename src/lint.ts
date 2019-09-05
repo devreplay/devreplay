@@ -30,11 +30,12 @@ export async function lintWithPattern(fileName: string, fileContents: string, pa
 }
 
 export async function fixWithPattern(fileName: string, fileContents: string, patterns: IPattern[]) {
-    const result = await lintWithPattern(fileName, fileContents, patterns);
-    if (result !== undefined && result.length !== 0) {
-        return await fixByLint(fileContents, result[0]);
+    const out: Array<[string, ILintOut]> = [];
+    const results = await lintWithPattern(fileName, fileContents, patterns);
+    for (const result of results) {
+        out.push([await fixByLint(fileContents, result), result]);
     }
-    return "";
+    return out;
 }
 
 export async function lintFromFile(fileName: string, ruleFileName?: string) {
