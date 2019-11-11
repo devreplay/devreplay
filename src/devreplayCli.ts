@@ -1,7 +1,5 @@
+import * as commander from "commander";
 
-/* tslint:disable no-console object-literal-sort-keys */
-
-import commander = require("commander");
 import { formatILintOut, ILintOut, lintAndFix, lintFromFile } from "./lint";
 import { arrayify } from "./utils";
 
@@ -40,15 +38,14 @@ for (const option of options) {
 
 // Hack to get unknown option errors to work. https://github.com/visionmedia/commander.js/pull/121
 const parsed = commander.parseOptions(process.argv.slice(2));
-commander.args = parsed.args;
 if (parsed.unknown.length !== 0) {
     (commander.parseArgs as (args: string[], unknown: string[]) => void)([], parsed.unknown);
 }
-const argv = (commander.opts() as any) as IArgv;
+const argv = commander.opts() as IArgv;
 
 if (
     !(
-        argv.init ||
+        argv.init === undefined ||
         commander.args.length > 0
     )
 ) {
@@ -64,12 +61,14 @@ if (files.length >= 2) {
     ruleFileName = files[1];
 }
 
-if (argv.fix) {
-    lintAndFix(fileName, ruleFileName).then((results: string) => {
+if (argv.fix === true) {
+    lintAndFix(fileName, ruleFileName)
+    .then((results: string) => {
         console.log(results);
     });
 } else {
-    lintFromFile(fileName, ruleFileName).then((results: ILintOut[]) => {
+    lintFromFile(fileName, ruleFileName)
+    .then((results: ILintOut[]) => {
         for (const result of results) {
             console.log(formatILintOut(result));
         }
@@ -88,10 +87,13 @@ function optionParam(option: IOption) {
             return ` <${option.name}>`;
         case "boolean":
             return "";
+        default:
+            return "";
     }
 }
 
 function collect(val: string, memo: string[]) {
     memo.push(val);
+
     return memo;
 }

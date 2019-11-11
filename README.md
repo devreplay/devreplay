@@ -1,8 +1,9 @@
 # Devreplay
 
-Devreplay is static analysis tool based on your own proguramming style.
-* VS Code version is [here](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
-* GitHub bot version is [here](https://github.com/apps/dev-avatar) (It is old version)
+Devreplay is static analysis tool based on your own proguramming pattern.
+* Visual Studio Code for DevReplay is [here](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
+* GitHub Application for DevReplay is [here](https://github.com/marketplace/dev-replay)
+* Auto pattern generator is [here](https://github.com/Ikuyadeu/review_pattern_gen)
 
 ## How to use
 
@@ -12,7 +13,7 @@ Devreplay is static analysis tool based on your own proguramming style.
 sudo npm install devreplay
 ```
 
-2. Create your own programming style(`devreplay.json`) on the root like bellow
+2. Create your own programming pattern(`devreplay.json`) on the root like bellow
 (**Recommend**) [Review Pattern Generator](https://github.com/Ikuyadeu/review_pattern_gen) can generate your rule file automatically
 ```json
 [
@@ -24,7 +25,9 @@ sudo npm install devreplay
             "import six",
             "for $0 in six.moves.range(${1:name}.$2):"
         ],
-    }
+        "description": "You shoud use six for python 3",
+        "severity": "E"
+    },
 ]
 ```
 This mean if your code has `xrange`, it should be `six.moves.range`
@@ -35,8 +38,13 @@ for a in xrange(array.x):
     pass
 ```
 
-3. 
-Run to get warning
+`Severity` means how this pattern is important
+* `E`: **E**rror
+* `W`: **W**arning
+* `I`: **I**nformation
+* `H`: **H**int
+
+3. Run to get warning
 ```sh
 devreplay hello.py devreplay.json
 test/files/hello.ts:4:

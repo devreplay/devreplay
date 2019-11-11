@@ -33,10 +33,11 @@ export const sources: ISource = {
 };
 
 export function getSource(fileName: string) {
-    for (const source in sources) {
-        if (sources[source].extensions.some((x) => fileName.endsWith(x))) {
-            return source;
+    for (const key of Object.keys(sources)) {
+        if (sources[key].extensions.some((x) => fileName.endsWith(x))) {
+            return key;
         }
     }
-    return;
+
+    return undefined;
 }
