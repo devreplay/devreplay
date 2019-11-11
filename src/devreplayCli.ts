@@ -1,4 +1,4 @@
-import * as commander from "commander";
+import commander = require("commander");
 
 import { formatILintOut, ILintOut, lintAndFix, lintFromFile } from "./lint";
 import { arrayify } from "./utils";
@@ -38,6 +38,7 @@ for (const option of options) {
 
 // Hack to get unknown option errors to work. https://github.com/visionmedia/commander.js/pull/121
 const parsed = commander.parseOptions(process.argv.slice(2));
+commander.args = parsed.args;
 if (parsed.unknown.length !== 0) {
     (commander.parseArgs as (args: string[], unknown: string[]) => void)([], parsed.unknown);
 }
@@ -67,6 +68,7 @@ if (argv.fix === true) {
         console.log(results);
     });
 } else {
+    console.log(fileName);
     lintFromFile(fileName, ruleFileName)
     .then((results: ILintOut[]) => {
         for (const result of results) {

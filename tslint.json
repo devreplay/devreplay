@@ -10,6 +10,7 @@
         "no-unsafe-any": false,
         "no-console": false,
         "no-floating-promises":false,
-        "no-any": false
+        "no-any": false,
+        "no-require-imports":false
     }
 }
