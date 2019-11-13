@@ -1,4 +1,3 @@
-/* tslint:disable no-console object-literal-sort-keys */
 import { tryReadFile } from "./file";
 import { IPattern } from "./patterns";
 import { readPatternFile } from "./rulemanage";

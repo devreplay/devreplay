@@ -28,7 +28,7 @@ export const sources: ISource = {
     },
     typescript: {
         extensions: [".ts"],
-        path: "Typescript/devreplay.json",
+        path: "JavaScript/devreplay.json",
     },
 };
 
