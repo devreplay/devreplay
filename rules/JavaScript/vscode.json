@@ -41,10 +41,10 @@
     },
     {
         "condition": [
-            "rootPath"
+            "workspace.rootPath"
         ],
         "consequent": [
-            "workspaceFolders"
+            "workspace.workspaceFolders![0].uri.path"
         ]
     },
     {
