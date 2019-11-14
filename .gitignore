@@ -1,5 +1,6 @@
 .DS_Store
 .sass-cache
+.npmrc
 .tscache/
 tempPublish/
 /build/

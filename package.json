@@ -41,6 +41,10 @@
     "type": "git",
     "url": "https://github.com/Ikuyadeu/devreplay.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/ikuyadeu",
+    "name": "@ikuyadeu/devreplay"
+  },
   "keywords": [
     "cli",
     "linter"
