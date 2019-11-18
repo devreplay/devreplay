@@ -20,6 +20,7 @@
             "import React, { PropTypes } from 'react';"
         ],
         "consequent": [
+            "import { React } from 'react';",
             "import { PropTypes } from 'prop-types';"
         ]
     },
