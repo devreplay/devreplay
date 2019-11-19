@@ -142,8 +142,20 @@ export function makeSeverity(severity?: string) {
     if (severity === undefined) {
         return "W";
     }
+    let outSeverity;
+    if (severity.toUpperCase().startsWith("E")) {
+        outSeverity = "E";
+    } else if (severity.toUpperCase().startsWith("W")) {
+        outSeverity = "W";
+    } else if (severity.toUpperCase().startsWith("I")) {
+        outSeverity = "I";
+    } else if (severity.toUpperCase().startsWith("H")) {
+        outSeverity = "H";
+    } else {
+        outSeverity = "W";
+    }
 
-    return severity;
+    return outSeverity;
 }
 
 export function code2String(pattern: IPattern) {
