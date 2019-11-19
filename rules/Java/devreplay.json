@@ -5,7 +5,9 @@
         ],
         "consequent": [
             "org.xml.sax.Attributes"
-        ]
+        ],
+        "description": "org.xml.sax.AttributeList is deprecated",
+        "severity": "E"
     },
     {
         "condition": [

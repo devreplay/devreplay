@@ -5,7 +5,9 @@
        ],
        "consequent": [
            "OutgoingMessage.prototype.flushHeaders"
-       ]
+       ],
+       "description": "Prefer self[:attribute] = value over write_attribute(:attribute, value)",
+       "severity": "I"
    },
    {
       "condition": [

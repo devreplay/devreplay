@@ -13,7 +13,9 @@
         ],
         "consequent": [
             "self[:${1:attribute}] = ${2:value}"
-        ]
+        ],
+        "description": "Prefer self[:attribute] = value over write_attribute(:attribute, value)",
+        "severity": "W"
     },
     {
         "condition": [

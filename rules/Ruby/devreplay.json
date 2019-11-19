@@ -1,11 +1,15 @@
 [
     {
         "condition": [
-            "fail"
+            "",
+            "fail "
         ],
         "consequent": [
-            "raise"
-        ]
+            "",
+            "raise "
+        ],
+        "description": "Prefer raise over fail for exceptions. https://github.com/rubocop-hq/ruby-style-guide#prefer-raise-over-fail",
+        "severity": "W"
     },
     {
         "condition": [

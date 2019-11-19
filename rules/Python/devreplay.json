@@ -5,7 +5,9 @@
       ],
       "consequent": [
           "if ${1:value} % ${2:value}:"
-      ]
+      ],
+      "description": "It can not cover when value is null",
+      "severity": "W"
    },
    {
       "condition": [
