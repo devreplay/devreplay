@@ -11,6 +11,7 @@
         "no-console": false,
         "no-floating-promises":false,
         "no-any": false,
-        "no-require-imports":false
+        "no-require-imports":false,
+        "newline-per-chained-call":false
     }
 }

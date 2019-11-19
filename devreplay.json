@@ -1,128 +1,58 @@
-[  
-    {
-      "number": 959,
-      "sha": "4ec3452d9524726297c0aeb92933a79296345e7e",
-      "author": "yaroslavvb",
-      "participant": "panyx0718",
-      "created_at": "2017-01-26 22:07:26",
-      "merged_at": "2017-01-26 22:22:58",
-      "merged_by": "panyx0718",
-      "file_path": "resnet/resnet_main.py",
+[
+  {
       "condition": [
-        "for $0 in xrange($1.$2):"
+          "show(${1:column}, ${2:preservalFocus})"
       ],
       "consequent": [
-        "import six",
-        "\tfor $0 in six.moves.range($1.$2):"
-      ],
-      "identifiers": {
-        "condition": [
-          "xrange"
-        ],
-        "consequent": [
-          "range",
-          "moves",
-          "six"
-        ]
-      },
-      "adoptable_files": [
-        "research/gan/stargan_estimator/train.py",
-        "research/learning_unsupervised_learning/meta_objective/linear_regression.py",
-        "research/fivo/experimental/bounds.py",
-        "research/syntaxnet/dragnn/python/runtime_support.py",
-        "research/fivo/fivo/models/ghmm_test.py",
-        "research/seq2species/build_model.py",
-        "research/autoaugment/helper_utils.py",
-        "research/fivo/experimental/train.py",
-        "research/learning_unsupervised_learning/utils.py",
-        "research/rebar/rebar.py",
-        "research/learning_unsupervised_learning/summary_utils.py",
-        "research/autoaugment/train_cifar.py",
-        "research/fivo/experimental/summary_utils.py",
-        "research/syntaxnet/dragnn/python/network_units.py",
-        "research/seq2species/test_utils.py",
-        "research/syntaxnet/dragnn/python/spec_builder.py",
-        "research/fivo/fivo/data/datasets.py",
-        "research/cognitive_planning/envs/active_vision_dataset_env.py",
-        "research/fivo/experimental/data.py",
-        "research/cognitive_planning/embedders.py",
-        "research/syntaxnet/dragnn/python/graph_builder_test.py",
-        "research/fivo/experimental/models.py",
-        "research/syntaxnet/dragnn/python/trainer_lib.py",
-        "research/rebar/rebar_train.py",
-        "research/learning_unsupervised_learning/meta_objective/utils.py"
-      ],
-      "#condition_files": 25,
-      "#consequent_files": 155,
-      "consequent/condition": 6.2,
-      "frequency": 0,
-      "repeated_pr_id": []
-    },
-    {
-      "number": 1869,
-      "sha": "545b75f9e221d84f4470df657493dd63c92f6c6a",
-      "author": "tmattio",
-      "participant": "derekjchow",
-      "created_at": "2017-07-06 06:38:12",
-      "merged_at": "2017-07-07 22:40:21",
-      "merged_by": "derekjchow",
-      "file_path": "object_detection/utils/visualization_utils.py",
+          "show(${2:preservalFocus})"
+      ]
+  },
+  {
       "condition": [
-        "import six \n",
-        " \tfor $0, $1 in six.iteritems($2): "
+          "editor.hide()"
       ],
       "consequent": [
-        "for $0, $1 in $2.items():"
+          "workbench.action.closeActiveEditor()"
+      ]
+  },
+  {
+      "condition": [
+          "editor.show(${1:column})"
       ],
-      "identifiers": {
-        "condition": [
-          "iteritems",
-          "six"
-        ],
-        "consequent": [
-          "items"
-        ]
-      },
-      "adoptable_files": [
-        "research/deeplab/core/xception_test.py",
-        "research/object_detection/utils/vrd_evaluation.py",
-        "research/domain_adaptation/domain_separation/dsn_eval.py",
-        "research/deeplab/evaluation/eval_coco_format.py",
-        "research/object_detection/eval_util_test.py",
-        "research/ptn/model_ptn.py",
-        "research/swivel/prep.py",
-        "research/brain_coder/single_task/tune.py",
-        "official/transformer/utils/metrics.py",
-        "official/transformer/utils/tokenizer.py",
-        "research/ptn/model_rotator.py",
-        "research/object_detection/utils/visualization_utils_test.py",
-        "research/maskgan/model_utils/n_gram.py",
-        "research/deeplab/train.py",
-        "tutorials/image/cifar10_estimator/cifar10_main.py",
-        "research/adversarial_text/gen_vocab.py",
-        "research/deeplab/evaluation/test_utils.py",
-        "research/deeplab/evaluation/parsing_covering.py",
-        "research/brain_coder/single_task/results_lib_test.py",
-        "research/learned_optimizer/metaopt.py",
-        "research/tcn/utils/util.py",
-        "research/swivel/glove_to_shards.py",
-        "official/transformer/data_download.py",
-        "research/feelvos/utils/train_utils.py",
-        "research/feelvos/train.py",
-        "research/deeplab/utils/train_utils.py",
-        "research/maskgan/train_mask_gan.py",
-        "official/bert/modeling.py",
-        "official/bert/squad_lib.py",
-        "research/object_detection/utils/object_detection_evaluation_test.py",
-        "tutorials/image/cifar10_estimator/cifar10_utils.py",
-        "research/brain_coder/single_task/pg_agent_test.py",
-        "research/maskgan/generate_samples.py",
-        "research/deeplab/evaluation/panoptic_quality.py"
+      "consequent": [
+          "window.showTextDocument()"
+      ]
+  },
+  {
+      "condition": [
+          "MarkedString"
       ],
-      "#condition_files": 34,
-      "#consequent_files": 178,
-      "consequent/condition": 5.235294117647059,
-      "frequency": 0,
-      "repeated_pr_id": []
-    }
-  ]
+      "consequent": [
+          "MarkdownString"
+      ]
+  },
+  {
+      "condition": [
+          "withScmProgress"
+      ],
+      "consequent": [
+          "withProgress"
+      ]
+  },
+  {
+      "condition": [
+          "workspace.rootPath"
+      ],
+      "consequent": [
+          "workspace.workspaceFolders![0].uri.path"
+      ]
+  },
+  {
+      "condition": [
+          "scm.inputBox"
+      ],
+      "consequent": [
+          "SourceControl.inputBox"
+      ]
+  }
+]
