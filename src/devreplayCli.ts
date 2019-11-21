@@ -1,6 +1,6 @@
 import commander = require("commander");
 
-import { formatILintOut, ILintOut, lintAndFix, lintFromFile } from "./lint";
+import { formatILintOut, lintAndFix, lintFromFile } from "./lint";
 import { arrayify } from "./utils";
 
 interface IArgv {
@@ -63,18 +63,14 @@ if (files.length >= 2) {
 }
 
 if (argv.fix === true) {
-    lintAndFix(fileName, ruleFileName)
-    .then((results: string) => {
-        console.log(results);
-    });
+    const results = lintAndFix(fileName, ruleFileName);
+    console.log(results);
 } else {
     console.log(fileName);
-    lintFromFile(fileName, ruleFileName)
-    .then((results: ILintOut[]) => {
-        for (const result of results) {
-            console.log(formatILintOut(result));
-        }
-    });
+    const results = lintFromFile(fileName, ruleFileName);
+    for (const result of results) {
+        console.log(formatILintOut(result));
+    }
 }
 
 function optionUsageTag({ short, name }: IOption) {

@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from "fs";
 import { IPattern } from "./patterns";
 import { sources } from "./source";
 
-export async function readPatternFile(langId: string, ruleFileName?: string) {
+export function readPatternFile(langId: string, ruleFileName?: string) {
     const location = ruleFileName !== undefined &&  existsSync(ruleFileName) ?
     ruleFileName :
     (existsSync("./devreplay.json")) ?

@@ -9,10 +9,10 @@ export interface ILintOut {
     position: {fileName: string; start: number; end: number};
 }
 
-export async function lint(fileName: string, fileContents: string, ruleFileName?: string) {
+export function lint(fileName: string, fileContents: string, ruleFileName?: string) {
     const fileSource = getSource(fileName);
     if (fileSource !== undefined) {
-        const patterns = await readPatternFile(fileSource, ruleFileName);
+        const patterns = readPatternFile(fileSource, ruleFileName);
         const pattern = getTriggarableCode(fileContents, patterns, fileName);
 
         return pattern;
@@ -21,7 +21,7 @@ export async function lint(fileName: string, fileContents: string, ruleFileName?
     return [];
 }
 
-export async function lintWithPattern(fileName: string, fileContents: string, patterns: IPattern[]) {
+export function lintWithPattern(fileName: string, fileContents: string, patterns: IPattern[]) {
     const fileSource = getSource(fileName);
     if (fileSource !== undefined) {
         const pattern = getTriggarableCode(fileContents, patterns, fileName);
@@ -32,18 +32,18 @@ export async function lintWithPattern(fileName: string, fileContents: string, pa
     return [];
 }
 
-export async function fixWithPattern(fileName: string, fileContents: string, patterns: IPattern[]) {
+export function fixWithPattern(fileName: string, fileContents: string, patterns: IPattern[]) {
     const out: Array<[string, ILintOut]> = [];
-    const results = await lintWithPattern(fileName, fileContents, patterns);
+    const results = lintWithPattern(fileName, fileContents, patterns);
     for (const result of results) {
-        out.push([await fixByLint(fileContents, result), result]);
+        out.push([fixByLint(fileContents, result), result]);
     }
 
     return out;
 }
 
-export async function lintFromFile(fileName: string, ruleFileName?: string) {
-    const fileContents = await tryReadFile(fileName);
+export function lintFromFile(fileName: string, ruleFileName?: string) {
+    const fileContents = tryReadFile(fileName);
     if (fileContents !== undefined) {
         return lint(fileName, fileContents, ruleFileName);
     }
@@ -51,10 +51,10 @@ export async function lintFromFile(fileName: string, ruleFileName?: string) {
     return [];
 }
 
-export async function lintAndFix(fileName: string, ruleFileName?: string) {
-    const fileContents = await tryReadFile(fileName);
+export function lintAndFix(fileName: string, ruleFileName?: string) {
+    const fileContents = tryReadFile(fileName);
     if (fileContents !== undefined) {
-        const result = await lint(fileName, fileContents, ruleFileName);
+        const result = lint(fileName, fileContents, ruleFileName);
         if (result.length !== 0) {
             return fixByLint(fileContents, result[0]);
         }
@@ -63,7 +63,7 @@ export async function lintAndFix(fileName: string, ruleFileName?: string) {
     return "";
 }
 
-export async function fixByLint(fileContents: string, pattern: ILintOut) {
+export function fixByLint(fileContents: string, pattern: ILintOut) {
     if (pattern.pattern.consequent.length === 0 || pattern.pattern.condition.length === 0) {
         return "";
     }

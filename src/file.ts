@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-export async function tryReadFile(filename: string) {
+export function tryReadFile(filename: string) {
     if (!fs.existsSync(filename)) {
         throw new Error(`Unable to open file: ${filename}`);
     }
