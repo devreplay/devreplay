@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Replay your source code development",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/code-frame": "^7.5.5",
     "builtin-modules": "^3.1.0",
-    "commander": "^4.0.1",
+    "commander": "^2.20.0",
     "tslib": "^1.10.0",
     "tsutils": "^3.17.1",
     "unicode": "^12.1.0"
@@ -39,11 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ikuyadeu/devreplay.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/ikuyadeu",
-    "name": "@ikuyadeu/devreplay"
+    "url": "git://github.com/Ikuyadeu/devreplay.git"
   },
   "keywords": [
     "cli",
@@ -54,5 +50,6 @@
     "url": "https://github.com/ikuyadeu/devreplay/issues"
   },
   "homepage": "https://github.com/ikuyadeu/devreplay#readme",
-  "author": "Yuki Ueda"
+  "author": "Yuki Ueda",
+  "private": false
 }

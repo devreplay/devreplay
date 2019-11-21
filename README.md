@@ -112,7 +112,3 @@ This system was supported by JSPS KAKENHI Grant Numbers JP18H03222, JP17H00731, 
 ## License
 
 [MIT](LICENSE) © 2019 Yuki Ueda <ueda.yuki.un7@is.naist.jp> (ikuyadeu.github.io)
-
-
-
-accyracy, カバー率
