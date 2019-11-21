@@ -1,0 +1,13 @@
+[
+    {
+        "id": "java",
+        "path": "Java/devreplay"
+    },
+    {
+        "id": "android",
+        "path": "Java/android",
+        "extends": [
+            "java"
+        ]
+    }
+]
