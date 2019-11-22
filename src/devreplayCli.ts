@@ -1,6 +1,6 @@
 import commander = require("commander");
 
-import { formatILintOut, lintAndFix, lintFromFile } from "./lint";
+import { fixFromFile, formatILintOut, lintFromFile } from "./lint";
 import { arrayify } from "./utils";
 
 interface IArgv {
@@ -63,7 +63,7 @@ if (files.length >= 2) {
 }
 
 if (argv.fix === true) {
-    const results = lintAndFix(fileName, ruleFileName);
+    const results = fixFromFile(fileName, ruleFileName);
     console.log(results);
 } else {
     console.log(fileName);

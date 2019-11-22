@@ -11,35 +11,41 @@ export interface ILintOut {
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string) {
     const fileSource = getSource(fileName);
-    if (fileSource !== undefined) {
-        const patterns = readPatternFile(fileSource, ruleFileName);
-        const pattern = getTriggarableCode(fileContents, patterns, fileName);
+    const patterns = readPatternFile(ruleFileName, fileSource);
+    const adoptablePatterns = lintWithPattern(fileName, fileContents, patterns);
 
-        return pattern;
-    }
-
-    return [];
+    return adoptablePatterns;
 }
 
-export function lintWithPattern(fileName: string, fileContents: string, patterns: IPattern[]) {
-    const fileSource = getSource(fileName);
-    if (fileSource !== undefined) {
-        const pattern = getTriggarableCode(fileContents, patterns, fileName);
+function lintWithPattern(fileName: string, contents: string, patterns: IPattern[]) {
+    const matched: ILintOut[] = [];
+    for (const pattern of patterns) {
 
-        return pattern;
+        if (!verifyPattern(pattern)) { continue; }
+        const result = makeSnippetRegex(pattern.condition, contents);
+        if (result !== null) {
+            matched.push({pattern,
+                          snippet: result[0],
+                          position: makePatternPosition(fileName, result)});
+        }
     }
 
-    return [];
+    return matched;
 }
 
-export function fixWithPattern(fileName: string, fileContents: string, patterns: IPattern[]) {
-    const out: Array<[string, ILintOut]> = [];
-    const results = lintWithPattern(fileName, fileContents, patterns);
-    for (const result of results) {
-        out.push([fixByLint(fileContents, result), result]);
+export function fixWithPattern(fileContents: string, pattern: IPattern) {
+    if (pattern.consequent.length === 0 || pattern.condition.length === 0) {
+        return "";
+    }
+    const consequent = pattern.consequent.join("\n").replace(/\${?(\d+)(:[a-zA-Z_]+})?/gm,
+                                                             (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
+    const reCondition = conditon2regex(pattern.condition);
+    const matchedStr = reCondition.exec(fileContents);
+    if (matchedStr === null) {
+        return fileContents;
     }
 
-    return out;
+    return fileContents.replace(reCondition, consequent);
 }
 
 export function lintFromFile(fileName: string, ruleFileName?: string) {
@@ -51,32 +57,16 @@ export function lintFromFile(fileName: string, ruleFileName?: string) {
     return [];
 }
 
-export function lintAndFix(fileName: string, ruleFileName?: string) {
+export function fixFromFile(fileName: string, ruleFileName?: string) {
     const fileContents = tryReadFile(fileName);
     if (fileContents !== undefined) {
         const result = lint(fileName, fileContents, ruleFileName);
         if (result.length !== 0) {
-            return fixByLint(fileContents, result[0]);
+            return fixWithPattern(fileContents, result[0].pattern);
         }
     }
 
     return "";
-}
-
-export function fixByLint(fileContents: string, pattern: ILintOut) {
-    if (pattern.pattern.consequent.length === 0 || pattern.pattern.condition.length === 0) {
-        return "";
-    }
-    const consequent = pattern.pattern.consequent.join("\n")
-                                                 .replace(/\${?(\d+)(:[a-zA-Z_]+})?/gm,
-                                                          (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    const reCondition = conditon2regex(pattern.pattern.condition);
-    const matchedStr = reCondition.exec(fileContents);
-    if (matchedStr === null) {
-        return fileContents;
-    }
-
-    return fileContents.replace(reCondition, consequent);
 }
 
 function conditon2regex(condition: string[]) {
@@ -102,22 +92,6 @@ function makeSnippetRegex(condition: string[], contents: string) {
     const reCondition = conditon2regex(condition);
 
     return reCondition.exec(contents);
-}
-
-function getTriggarableCode(contents: string, patterns: IPattern[], fileName: string) {
-    const matched: ILintOut[] = [];
-    for (const pattern of patterns) {
-
-        if (!verifyPattern(pattern)) { continue; }
-        const result = makeSnippetRegex(pattern.condition, contents);
-        if (result !== null) {
-            matched.push({pattern,
-                          snippet: result[0],
-                          position: makePatternPosition(fileName, result)});
-        }
-    }
-
-    return matched;
 }
 
 function verifyPattern(pattern: IPattern) {
