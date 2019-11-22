@@ -12,9 +12,8 @@
     "create": "npm run build && npm run test",
     "compile": "tsc -p src",
     "publish:local": "sh ./scripts/npmPublish.sh",
-    "test": "node ./bin/devreplay test/files/hello.ts test/rules/devreplay.json",
-    "test:py": "node ./bin/devreplay test/files/loop.py test/rules/devreplay.json",
-    "test:fix": "node ./bin/devreplay --fix test/files/hello.ts test/rules/devreplay.json",
+    "test": "node ./bin/devreplay test/files/test.py test/rules/devreplay.json",
+    "test:fix": "node ./bin/devreplay --fix test/files/test.py test/rules/devreplay.json",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile test"
   },

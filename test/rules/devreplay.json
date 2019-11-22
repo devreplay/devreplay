@@ -1,61 +1,28 @@
-[  
-    {
-      "number": 959,
-      "sha": "4ec3452d9524726297c0aeb92933a79296345e7e",
-      "author": "yaroslavvb",
-      "participant": "panyx0718",
-      "created_at": "2017-01-26 22:07:26",
-      "merged_at": "2017-01-26 22:22:58",
-      "merged_by": "panyx0718",
-      "file_path": "resnet/resnet_main.py",
-      "condition": [
-        "for ${0:name} in range($1):"
-      ],
-      "consequent": [
+[
+  {
+    "condition": ["hello-$3"],
+    "consequent": ["Hello $3"]
+  },
+  {
+    "condition": [
+        "for ${1:Name} in range($0):"
+    ],
+    "consequent": [
         "import six",
-        "\tfor ${0:name} in six.moves.range($1):"
-      ],
-      "identifiers": {
-        "condition": [
-          "xrange"
-        ],
-        "consequent": [
-          "range",
-          "moves",
-          "six"
-        ]
-      },
-      "adoptable_files": [
-        "research/gan/stargan_estimator/train.py",
-        "research/learning_unsupervised_learning/meta_objective/linear_regression.py",
-        "research/fivo/experimental/bounds.py",
-        "research/syntaxnet/dragnn/python/runtime_support.py",
-        "research/fivo/fivo/models/ghmm_test.py",
-        "research/seq2species/build_model.py",
-        "research/autoaugment/helper_utils.py",
-        "research/fivo/experimental/train.py",
-        "research/learning_unsupervised_learning/utils.py",
-        "research/rebar/rebar.py",
-        "research/learning_unsupervised_learning/summary_utils.py",
-        "research/autoaugment/train_cifar.py",
-        "research/fivo/experimental/summary_utils.py",
-        "research/syntaxnet/dragnn/python/network_units.py",
-        "research/seq2species/test_utils.py",
-        "research/syntaxnet/dragnn/python/spec_builder.py",
-        "research/fivo/fivo/data/datasets.py",
-        "research/cognitive_planning/envs/active_vision_dataset_env.py",
-        "research/fivo/experimental/data.py",
-        "research/cognitive_planning/embedders.py",
-        "research/syntaxnet/dragnn/python/graph_builder_test.py",
-        "research/fivo/experimental/models.py",
-        "research/syntaxnet/dragnn/python/trainer_lib.py",
-        "research/rebar/rebar_train.py",
-        "research/learning_unsupervised_learning/meta_objective/utils.py"
-      ],
-      "#condition_files": 25,
-      "#consequent_files": 155,
-      "consequent/condition": 6.2,
-      "frequency": 0,
-      "repeated_pr_id": []
-    }
-  ]
+        "for ${1:Name} in six.moves.range($0):"
+    ],
+    "description": "Python2互換のためsixを使用してください",
+    "severity": "Warning"
+  },
+
+
+{
+  "condition": [
+      "ans ="
+  ],
+   "consequent": [
+      "answer ="
+  ],
+  "severity": "Information"
+}
+]

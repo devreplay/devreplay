@@ -37,13 +37,29 @@ export function fixWithPattern(fileContents: string, pattern: IPattern) {
     if (pattern.consequent.length === 0 || pattern.condition.length === 0) {
         return "";
     }
-    const consequent = pattern.consequent.join("\n").replace(/\${?(\d+)(:[a-zA-Z_]+})?/gm,
-                                                             (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
+    const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
+    let consequent = pattern.consequent.join("\n").replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
+
+    const tokenIndex: number[] = [];
+    consequent = consequent.replace(dollar, (x) => {
+        const index = parseInt(x[1], 10);
+        if (tokenIndex.includes(index)) {
+            return `$(${tokenIndex.indexOf(index) + 1}`;
+        }
+        tokenIndex.push(index);
+
+        return `$${tokenIndex.indexOf(index) + 1}`;
+    });
+
     const reCondition = conditon2regex(pattern.condition);
     const matchedStr = reCondition.exec(fileContents);
     if (matchedStr === null) {
         return fileContents;
     }
+    console.log(reCondition);
+    console.log("----");
+    console.log(consequent);
+    console.log("----");
 
     return fileContents.replace(reCondition, consequent);
 }
@@ -70,19 +86,20 @@ export function fixFromFile(fileName: string, ruleFileName?: string) {
 }
 
 function conditon2regex(condition: string[]) {
-    const dollar = /\${?(\d+)(:[a-zA-Z_]+})?/gm;
+    const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
     joinedCondition = joinedCondition.replace(/[<>*()?.]/g, "\\$&");
 
-    const tokenIndex: string[] = [];
+    const tokenIndex: number[] = [];
     joinedCondition = joinedCondition.replace(dollar, (x) => {
-        if (tokenIndex.includes(x[1])) {
-            return `(\\k<token${x[1]}>)`;
+        const index = parseInt(x[1], 10);
+        if (tokenIndex.includes(index)) {
+            return `(\\k<token${tokenIndex.indexOf(index) + 1}>)`;
         }
-        tokenIndex.push(x[1]);
+        tokenIndex.push(index);
 
-        return `(?<token${x[1]}>.+)`;
+        return `(?<token${tokenIndex.indexOf(index) + 1}>.+)`;
     });
 
     return new RegExp(joinedCondition, "gm");
@@ -108,8 +125,7 @@ function makePatternPosition(fileName: string, result: RegExpExecArray) {
 }
 
 export function formatILintOut(matched: ILintOut) {
-    return `${makeSeverity(matched.pattern.severity)}:${matched.position.fileName}:${matched.position.start}:
-            ${code2String(matched.pattern)}`;
+    return `${makeSeverity(matched.pattern.severity)}:${matched.position.fileName}:${matched.position.start}:${code2String(matched.pattern)}`;
 }
 
 export function makeSeverity(severity?: string) {
