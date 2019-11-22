@@ -17,7 +17,7 @@ export function lint(fileName: string, fileContents: string, ruleFileName?: stri
     return adoptablePatterns;
 }
 
-function lintWithPattern(fileName: string, contents: string, patterns: IPattern[]) {
+export function lintWithPattern(fileName: string, contents: string, patterns: IPattern[]) {
     const matched: ILintOut[] = [];
     for (const pattern of patterns) {
 
@@ -56,10 +56,6 @@ export function fixWithPattern(fileContents: string, pattern: IPattern) {
     if (matchedStr === null) {
         return fileContents;
     }
-    console.log(reCondition);
-    console.log("----");
-    console.log(consequent);
-    console.log("----");
 
     return fileContents.replace(reCondition, consequent);
 }
