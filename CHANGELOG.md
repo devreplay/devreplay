@@ -1,5 +1,10 @@
 # Change Log
 
+## v0.3.5
+
+* Refactoring
+* Fix `fix` function issue
+
 ## v0.3.2
 
 * Remove async and await
