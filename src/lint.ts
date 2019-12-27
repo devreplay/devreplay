@@ -23,7 +23,7 @@ export function lintWithPattern(fileName: string, contents: string, patterns: IP
 
         if (!verifyPattern(pattern)) { continue; }
         const result = makeSnippetRegex(pattern.condition, contents);
-        if (result !== null) {
+        if (result !== undefined) {
             matched.push({pattern,
                           snippet: result[0],
                           position: makePatternPosition(fileName, result)});
@@ -52,12 +52,16 @@ export function fixWithPattern(fileContents: string, pattern: IPattern) {
     });
 
     const reCondition = conditon2regex(pattern.condition);
-    const matchedStr = reCondition.exec(fileContents);
-    if (matchedStr === null) {
-        return fileContents;
+    if (reCondition !== undefined) {
+        const matchedStr = reCondition.exec(fileContents);
+        if (matchedStr !== null) {
+            return fileContents.replace(reCondition, consequent);
+        }
+
+        return undefined;
     }
 
-    return fileContents.replace(reCondition, consequent);
+    return undefined;
 }
 
 export function lintFromFile(fileName: string, ruleFileName?: string) {
@@ -97,14 +101,25 @@ function conditon2regex(condition: string[]) {
 
         return `(?<token${tokenIndex.indexOf(index) + 1}>.+)`;
     });
-
-    return new RegExp(joinedCondition, "gm");
+    try {
+        return new RegExp(joinedCondition, "gm");
+    } catch (error) {
+        return undefined;
+    }
 }
 
 function makeSnippetRegex(condition: string[], contents: string) {
     const reCondition = conditon2regex(condition);
+    if (reCondition !== undefined) {
+        const matchedStr = reCondition.exec(contents);
+        if (matchedStr !== null) {
+            return matchedStr;
+        }
 
-    return reCondition.exec(contents);
+        return undefined;
+    }
+
+    return undefined;
 }
 
 function verifyPattern(pattern: IPattern) {
