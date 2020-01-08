@@ -38,7 +38,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Ikuyadeu/devreplay.git"
+    "url": "git://github.com/devreplay/devreplay.git"
   },
   "keywords": [
     "cli",
@@ -46,9 +46,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ikuyadeu/devreplay/issues"
+    "url": "https://github.com/devreplay/devreplay/issues"
   },
-  "homepage": "https://github.com/ikuyadeu/devreplay#readme",
+  "homepage": "https://github.com/devreplay/devreplay#readme",
   "author": "Yuki Ueda",
   "private": false
 }

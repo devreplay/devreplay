@@ -90,7 +90,7 @@ For the future, we are preparing default rules for each Language and Frameworks,
 ### Contribution
 
 ```sh
-git clone https://github.com/ikuyadeu/devreplay.git
+git clone https://github.com/devreplay/devreplay.git
 yarn
 yarn compile
 yarn test
