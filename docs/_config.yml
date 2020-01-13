@@ -22,7 +22,7 @@ title: DevReplay
 email: ueda.yuki.un7@is.naist.jp
 description: >- # this means to ignore newlines until "baseurl:"
   DevReplay is an static analysis tool that check source code based on developer own coding convention.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "devreplay" # the subpath of your site, e.g. /blog
 url: "https://devreplay.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 show_downloads: false
