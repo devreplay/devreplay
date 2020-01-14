@@ -4,8 +4,6 @@ layout: default
 subtitle: An linter based on developer own coding convention.
 ---
 
-DevReplay is an linter that check source code based on developer own coding convention.
-
 # Quick start
 
 
