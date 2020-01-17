@@ -89,6 +89,9 @@ For the future, we are preparing default rules for each Language and Frameworks,
 
 ### Contribution
 
+Please check [here](https://github.com/devreplay/devreplay/blob/master/CONTRIBUTING.md)
+
+Quick Start
 ```sh
 git clone https://github.com/devreplay/devreplay.git
 yarn
