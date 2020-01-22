@@ -62,10 +62,6 @@ for a in six.moves.range(array.x):
     pass
 ```
 
-**Recommend**: 
-* If you want to use it on editor, please try [vscode extensions](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
-* If you want to get programing style automatically, please try [review_pattern_gen](https://github.com/Ikuyadeu/review_pattern_gen/tree/master)
-
 
 ## Supported Language
 
@@ -76,16 +72,6 @@ for a in six.moves.range(array.x):
 * Python
 * Ruby
 
-## Future work
-For the future, we are preparing default rules for each Language and Frameworks, such as...
-
-* Tensorflow
-* Ruby on Rails
-* jQuery
-* Pandas
-* React
-* Unity 3D
-...
 
 ### Contribution
 
