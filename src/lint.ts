@@ -38,20 +38,8 @@ export function fixWithPattern(fileContents: string, pattern: IPattern) {
         return "";
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
-    let consequent = pattern.consequent.join("\n").replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-
-    const tokenIndex: number[] = [];
-    consequent = consequent.replace(dollar, (x) => {
-        const index = parseInt(x[1], 10);
-        if (tokenIndex.includes(index)) {
-            return `$(${tokenIndex.indexOf(index) + 1}`;
-        }
-        tokenIndex.push(index);
-
-        return `$${tokenIndex.indexOf(index) + 1}`;
-    });
-
-    const reCondition = conditon2regex(pattern.condition);
+    let consequent = pattern.consequent.join("\n").replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
+    const reCondition = conditon2regex2(pattern.condition);
     if (reCondition !== undefined) {
         const matchedStr = reCondition.exec(fileContents);
         if (matchedStr !== null) {
@@ -76,14 +64,36 @@ export function lintFromFile(fileName: string, ruleFileName?: string) {
 export function fixFromFile(fileName: string, ruleFileName?: string) {
     const fileContents = tryReadFile(fileName);
     if (fileContents !== undefined) {
-        const result = lint(fileName, fileContents, ruleFileName);
-        if (result.length !== 0) {
-            return fixWithPattern(fileContents, result[0].pattern);
+        const problems = lint(fileName, fileContents, ruleFileName);
+        if (problems.length !== 0) {
+            return fixWithPattern(fileContents, problems[0].pattern);
         }
     }
 
     return "";
 }
+
+function conditon2regex2(condition: string[]) {
+    const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
+    let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
+
+    const tokenIndex: number[] = [];
+    joinedCondition = joinedCondition.replace(dollar, (x) => {
+        const index = parseInt(x[1], 10) + 1;
+        if (tokenIndex.includes(index)) {
+            return `(\\k<token${index}>)`;
+        }
+        tokenIndex.push(index);
+
+        return `(?<token${index}>.+)`;
+    });
+    try {
+        return new RegExp(joinedCondition, "gm");
+    } catch (error) {
+        return undefined;
+    }
+}
+
 
 function conditon2regex(condition: string[]) {
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;

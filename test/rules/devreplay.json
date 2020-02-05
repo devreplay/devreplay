@@ -1,28 +1,25 @@
 [
-  {
-    "condition": ["hello-$3"],
-    "consequent": ["Hello $3"]
-  },
-  {
-    "condition": [
-        "for ${1:Name} in range($0):"
-    ],
-    "consequent": [
-        "import six",
-        "for ${1:Name} in six.moves.range($0):"
-    ],
-    "description": "Python2互換のためsixを使用してください",
-    "severity": "Warning"
-  },
-
-
+{
+"condition": [
+  "$3 = $1",
+  "$1 = $2",
+  "$2 = $3"
+],
+"consequent": [
+  "$2, $1 = $1, $2"
+],
+"description": "Value exchanging can be one line",
+"severity": "Information"
+},
 {
   "condition": [
-      "ans ="
+      "for ${1:Name} in range($0):"
   ],
-   "consequent": [
-      "answer ="
+  "consequent": [
+      "import six",
+      "for ${1:Name} in six.moves.range($0):"
   ],
-  "severity": "Information"
+  "description": "Python2互換のためsixを使用してください",
+  "severity": "Warning"
 }
 ]

@@ -1,9 +1,11 @@
 # Devreplay
 
 Devreplay is static analysis tool based on your own proguramming pattern.
-* Visual Studio Code for DevReplay is [here](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
-* GitHub Application for DevReplay is [here](https://github.com/marketplace/dev-replay)
-* Auto pattern generator is [here](https://github.com/Ikuyadeu/review_pattern_gen)
+
+* [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
+* [Other Editors (Language Server)](https://www.npmjs.com/package/devreplay-server)
+* [GitHub Application](https://github.com/marketplace/dev-replay)
+* [Auto pattern generator](https://github.com/devreplay/review_pattern_gen)
 
 ## How to use
 
@@ -19,24 +21,47 @@ sudo npm install devreplay
 [
     {
         "condition": [
-            "for $0 in xrange(${1:name}.$2):"
+            "tmp = $1",
+            "$1 = $2",
+            "$2 = tmp"
         ],
         "consequent": [
-            "import six",
-            "for $0 in six.moves.range(${1:name}.$2):"
-        ],
-        "description": "You shoud use six for python 3",
-        "severity": "E"
+            "$1, $2 = $2, $1"
+        ]
     },
 ]
 ```
-This mean if your code has `xrange`, it should be `six.moves.range`
 
-And create your code(`hello.py`) like this.
+If you write the following code,
 ```python
-for a in xrange(array.x):
-    pass
+tmp = a
+a = b
+b = a
 ```
+it will be
+```python
+a, b = b, a
+```
+
+3. **Step up**: Make the pattern description and severity. Also condition can be more abstract
+
+```json
+[
+    {
+        "condition": [
+            "$3 = $1",
+            "$1 = $2",
+            "$2 = $3"
+        ],
+        "consequent": [
+            "$1, $2 = $2, $1"
+        ],
+        "description": "Value exchanging can be one line",
+        "severity": "Information"
+    },
+]
+```
+
 
 `Severity` means how this pattern is important
 * `E`: **E**rror

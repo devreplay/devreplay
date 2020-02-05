@@ -5,7 +5,6 @@ module.exports = {
     node: true
   },
   extends: [
-    "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended"
   ],
   globals: {
