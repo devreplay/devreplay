@@ -2,10 +2,11 @@ import { existsSync, readFileSync } from "fs";
 
 import { IPattern } from "./patterns";
 import { extend as Extend } from "./extend";
+import { join } from "path";
 
 export function readPatternFile(ruleFileName?: string) {
     let location;
-    if (ruleFileName !== undefined &&  existsSync(ruleFileName)) {
+    if (ruleFileName !== undefined && existsSync(ruleFileName)) {
         location = ruleFileName;
     } else if ((existsSync("./devreplay.json"))) {
         location = "devreplay.json";
@@ -37,10 +38,11 @@ export function readPatternFile(ruleFileName?: string) {
 
 function readExtends(extend: string): IPattern[] {
     let location;
+    if (Extend[extend] !== undefined){
+        extend = join(__dirname, "../rules", Extend[extend].path);
+    } 
     if (existsSync(extend)) {
         location = extend;
-    } else if (Extend[extend] !== undefined){
-        location = `${__dirname}/../rules/${Extend[extend].path}`;
     } else {
         return [];
     }
