@@ -1,4 +1,9 @@
 [
+  {
+    "extends": [
+      "python"
+    ]
+  },
 {
 "condition": [
   "$3 = $1",

@@ -1,7 +1,6 @@
 import { tryReadFile } from "./file";
 import { IPattern } from "./patterns";
 import { readPatternFile } from "./rulemanage";
-import { getSource } from "./source";
 
 export interface ILintOut {
     pattern: IPattern;
@@ -10,8 +9,7 @@ export interface ILintOut {
 }
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string) {
-    const fileSource = getSource(fileName);
-    const patterns = readPatternFile(ruleFileName, fileSource);
+    const patterns = readPatternFile(ruleFileName);
     const adoptablePatterns = lintWithPattern(fileName, fileContents, patterns);
 
     return adoptablePatterns;
@@ -39,7 +37,10 @@ export function fixWithPattern(fileContents: string, pattern: IPattern) {
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
     let consequent = pattern.consequent.join("\n").replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
+    console.log(consequent)
     const reCondition = conditon2regex2(pattern.condition);
+    console.log(reCondition)
+
     if (reCondition !== undefined) {
         const matchedStr = reCondition.exec(fileContents);
         if (matchedStr !== null) {
@@ -76,10 +77,12 @@ export function fixFromFile(fileName: string, ruleFileName?: string) {
 function conditon2regex2(condition: string[]) {
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
+    joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
+    joinedCondition = joinedCondition.replace(/[<>*()?.]/g, "\\$&");
 
     const tokenIndex: number[] = [];
     joinedCondition = joinedCondition.replace(dollar, (x) => {
-        const index = parseInt(x[1], 10) + 1;
+        const index = parseInt(x[1], 10);
         if (tokenIndex.includes(index)) {
             return `(\\k<token${index}>)`;
         }
@@ -171,8 +174,15 @@ export function makeSeverity(severity?: string) {
 
 export function code2String(pattern: IPattern) {
     if (pattern.description !== undefined) {
+        if (pattern.author !== undefined) {
+            pattern.description += ` by ${pattern.author}`;
+        }
         return pattern.description;
     }
+    let description = `${pattern.condition.join("")} should be ${pattern.consequent.join("")}`
 
-    return `${pattern.condition.join("")} should be ${pattern.consequent.join("")}`;
+    if (pattern.author !== undefined) {
+        description += ` by ${pattern.author}`;
+    }
+    return description;
 }

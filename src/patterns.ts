@@ -1,8 +1,9 @@
 export interface IPattern {
-    number?: number;
-    author?: number;
     condition: string[];
     consequent: string[];
+    extends?: string[];
+    number?: number;
+    author?: string;
     severity?: string;
     description?: string;
 }
