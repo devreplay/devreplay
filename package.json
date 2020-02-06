@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "0.3.9",
+  "version": "1.0.0",
   "description": "Replay your source code development",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -20,7 +20,7 @@
   "dependencies": {
     "@babel/code-frame": "^7.5.5",
     "builtin-modules": "^3.1.0",
-    "commander": "^4.0.1",
+    "commander": "^4.1.1",
     "tslib": "^1.10.0",
     "tsutils": "^3.17.1",
     "unicode": "^12.1.0"
@@ -39,7 +39,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.0",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.5"
   },
   "engines": {
     "node": ">=10.15.0"
@@ -50,7 +50,8 @@
   },
   "keywords": [
     "cli",
-    "linter"
+    "linter",
+    "lint"
   ],
   "license": "MIT",
   "bugs": {
