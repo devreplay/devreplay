@@ -35,5 +35,13 @@ Here is the example.
 
 Lint source code
 ```sh
-devreplay 'src/target.ts' devreplay.json
+devreplay --fix yourfile.py devreplay.json
+```
+
+The source code will be
+```diff
+- tmp = a
+- a = b
+- b = a
++ a, b = b, a
 ```

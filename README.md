@@ -12,36 +12,45 @@ Devreplay is static analysis tool based on your own proguramming pattern.
 1. Install on local
 
 ```sh
-npm install devreplay
+$ npm install devreplay
 # or
-yarn global add 
+$ yarn global add 
 ```
 
 2. Put your own programming pattern(`devreplay.json`) on the project like bellow
+
 ```json
 [
-    {
-        "condition": [
-            "tmp = $1",
-            "$1 = $2",
-            "$2 = tmp"
-        ],
-        "consequent": [
-            "$1, $2 = $2, $1"
-        ]
-    }
+  {
+    "condition": [
+      "tmp = $1",
+      "$1 = $2",
+      "$2 = tmp"
+    ],
+    "consequent": [
+      "$1, $2 = $2, $1"
+    ]
+  }
 ]
 ```
 
-If you write the following code,
-```python
-tmp = a
-a = b
-b = a
+3. Run the devreplay
+
+```sh
+$ devreplay yourfile.py devreplay
+W:yourfile.py:15:$3 = $1$1 = $2$2 = $3 should be $2, $1 = $1, $2
 ```
-it will be
-```python
-a, b = b, a
+or get fixed code
+```sh
+$ devreplay --fix yourfile.py devreplay
+```
+
+The target source code file will be
+```diff
+- tmp = a
+- a = b
+- b = a
++ a, b = b, a
 ```
 
 
@@ -50,51 +59,44 @@ a, b = b, a
 
 ```json
 [
-    {
-        "condition": [
-            "$3 = $1",
-            "$1 = $2",
-            "$2 = $3"
-        ],
-        "consequent": [
-            "$1, $2 = $2, $1"
-        ],
-        "description": "Value exchanging can be one line",
-        "severity": "Information"
-    },
+  {
+    "condition": [
+      "$3 = $1",
+      "$1 = $2",
+      "$2 = $3"
+    ],
+    "consequent": [
+      "$1, $2 = $2, $1"
+    ],
+    "author": "Yuki Ueda",
+    "description": "Value exchanging can be one line",
+    "severity": "Information"
+  }
 ]
 ```
 
+* `severity` means how this pattern is important
+    * `E`: **E**rror
+    * `W`: **W**arning
+    * `I`: **I**nformation
+    * `H`: **H**int
 
-`Severity` means how this pattern is important
-* `E`: **E**rror
-* `W`: **W**arning
-* `I`: **I**nformation
-* `H`: **H**int
-
-3. Run to get warning
+* Run devreplay again
 ```sh
-$ devreplay hello.py devreplay.json
-I:test/files/test.py:15:Value exchanging can be one line
+$ devreplay yourfile.py devreplay
+I:yourfile.py:15:Value exchanging can be one line by Yuki Ueda
 ```
-
-or get correct code
-
-```sh
-devreplay --fix hello.py devreplay.json > hello.py
-```
-you can get fixed `hello.py`
-
 
 ## Supported Language
 
-* CPP
+* C/CPP
 * Java
-* JavsScript
-* TypeScript
+* JavsScript/TypeScript
 * Python
 * Ruby
 * Go
+* PHP
+* R
 
 ### [Contribution Link](https://github.com/devreplay/devreplay/blob/master/CONTRIBUTING.md)
 
@@ -105,8 +107,7 @@ This package is made based on
 * [vscode-python](https://github.com/Microsoft/vscode-python/blob/master/src/client/language/tokenizer.ts)
 * [vscode-textmate](https://github.com/microsoft/vscode-textmate)
 
-We would like to thank the Support Center for Advanced Telecommunications (SCAT) Technology Research, Foundation.
-This system was supported by JSPS KAKENHI Grant Numbers JP18H03222, JP17H00731, JP15H02683, and JP18KT0013.
+DevReplay is supported by 2019 Exploratory IT Human Resources Project [The MITOU Program](https://www.ipa.go.jp/jinzai/mitou/portal_index.html), Support Center for Advanced Telecommunications (SCAT) Technology Research, Foundation, JSPS KAKENHI Grant Numbers JP18H03222, JP17H00731, JP15H02683, and JP18KT0013.
 
 ## License
 
