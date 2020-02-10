@@ -11,26 +11,24 @@ Prerequisites: [Node.js](https://nodejs.org) built with SSL support. (If you are
 You can install DevReplay using npm or yarn:
 
 ```sh
-sudo npm install -g devreplay
+npm install -g devreplay
 # or
 yarn global add devreplay
 ```
 
-You should then set up a configuration file:
-```sh
-touch devreplay.json
-
-code devreplay.json
-# or
-vi devreplay.json
-```
-
-Here is example of configuration
+You should then make a `devreplay.json` file.
+Here is the example.
 ```json
 [
     {
-        "condition" ["hello $1"],
-        "consequent" ["Hello $1"]
+        "condition": [
+            "tmp = $1",
+            "$1 = $2",
+            "$2 = tmp"
+        ],
+        "consequent": [
+            "$1, $2 = $2, $1"
+        ]
     }
 ]
 ```

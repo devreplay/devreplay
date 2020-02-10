@@ -14,7 +14,7 @@ Devreplay is static analysis tool based on your own proguramming pattern.
 ```sh
 npm install devreplay
 # or
-yarn devreplay
+yarn global add 
 ```
 
 2. Put your own programming pattern(`devreplay.json`) on the project like bellow
@@ -29,7 +29,7 @@ yarn devreplay
         "consequent": [
             "$1, $2 = $2, $1"
         ]
-    },
+    }
 ]
 ```
 
