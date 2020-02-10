@@ -3,20 +3,21 @@
 Devreplay is static analysis tool based on your own proguramming pattern.
 
 * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
-* [Other Editors (Language Server)](https://www.npmjs.com/package/devreplay-server)
+* [Other Editor Support (Language Server)](https://www.npmjs.com/package/devreplay-server)
 * [GitHub Application](https://github.com/marketplace/dev-replay)
-* [Auto pattern generator](https://github.com/devreplay/review_pattern_gen)
+* [Pattern generator](https://github.com/devreplay/devreplay-pattern-generator)
 
 ## How to use
 
 1. Install on local
 
 ```sh
-sudo npm install devreplay
+npm install devreplay
+# or
+yarn devreplay
 ```
 
-2. Create your own programming pattern(`devreplay.json`) on the root like bellow
-(**Recommend**) [Review Pattern Generator](https://github.com/Ikuyadeu/review_pattern_gen) can generate your rule file automatically
+2. Put your own programming pattern(`devreplay.json`) on the project like bellow
 ```json
 [
     {
@@ -43,7 +44,9 @@ it will be
 a, b = b, a
 ```
 
-3. **Step up**: Make the pattern description and severity. Also condition can be more abstract
+
+* **Recommend**: [DevReplay Pattern Generator](https://github.com/devreplay/devreplay-pattern-generator) generate your pattern from .git
+* **Step up**: Make the pattern description and severity. Also condition can be more abstract
 
 ```json
 [
@@ -71,21 +74,16 @@ a, b = b, a
 
 3. Run to get warning
 ```sh
-devreplay hello.py devreplay.json
-test/files/hello.ts:4:
-for $0 in xrange($1.$2): should be import six       for $0 in six.moves.range($1.$2):
+$ devreplay hello.py devreplay.json
+I:test/files/test.py:15:Value exchanging can be one line
 ```
-or get correct code
-```sh
-devreplay --fix hello.py devreplay.json > hello2.py
-```
-you can get `hello2.py`, like bellow
 
-```python
-import six
-for a in six.moves.range(array.x):
-    pass
+or get correct code
+
+```sh
+devreplay --fix hello.py devreplay.json > hello.py
 ```
+you can get fixed `hello.py`
 
 
 ## Supported Language
@@ -96,22 +94,9 @@ for a in six.moves.range(array.x):
 * TypeScript
 * Python
 * Ruby
+* Go
 
-
-### Contribution
-
-Please check [here](https://github.com/devreplay/devreplay/blob/master/CONTRIBUTING.md)
-
-Quick Start
-```sh
-git clone https://github.com/devreplay/devreplay.git
-yarn
-yarn compile
-yarn test
-yarn test:fix
-```
-
-If you have suggestions for how another-code-reviewer could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
+### [Contribution Link](https://github.com/devreplay/devreplay/blob/master/CONTRIBUTING.md)
 
 ## Thanks
 
