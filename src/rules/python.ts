@@ -1,13 +1,24 @@
 module.exports = [
     {
       condition: [
+        "$3 = $1",
+        "$1 = $2",
+        "$2 = $3"
+      ],
+      consequent: [
+        "$2, $1 = $1, $2"
+      ],
+      description: "Value exchanging can be one line"
+    },
+    {
+      condition: [
         'if ${1:value} % ${2:value} != 0:'
       ],
       consequent: [
         'if ${1:value} % ${2:value}:'
       ],
       description: 'It can not cover when value is null',
-      severity: 'W',
+      severity: 'I',
       author: 'Google Guideline'
     },
     {
@@ -20,19 +31,21 @@ module.exports = [
     },
     {
       condition: [
-        'apply(${1:fn}, ${2:args}, ${3:kwargs})'
-      ],
-      consequent: [
-        'fn(*${2:args}, **${3:kwargs})'
-      ]
-    },
-    {
-      condition: [
         'string.split(${1:value}, ${2:string})'
       ],
       consequent: [
         '${1:value}.split(${2:string})'
-      ]
+      ],
+      message: "Deprecated language feature"
+    },
+    {
+      condition: [
+        'apply(${1:fn}, ${2:args}, ${3:kwargs})'
+      ],
+      consequent: [
+        '${1:fn}(*${2:args}, **${3:kwargs})'
+      ],
+      message: "Deprecated language feature"
     },
     {
       condition: [
