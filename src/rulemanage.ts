@@ -51,12 +51,8 @@ function readExtends(extend: string): IPattern[] {
         const patternJson = JSON.parse(patternContent) as IPattern[];
         const patterns: IPattern[] = [];
         for (const pattern of patternJson) {
-            if (pattern.extends == undefined){
+            if (pattern.extends === undefined){
                 patterns.push(pattern);
-            } else {
-                for (const extend of pattern.extends) {
-                    patterns.push(...readExtends(extend))
-                }
             }
         }
 

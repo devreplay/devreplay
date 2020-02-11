@@ -6,4 +6,5 @@ export interface IPattern {
     author?: string;
     severity?: string;
     description?: string;
+    link?: string;
 }

@@ -37,9 +37,7 @@ export function fixWithPattern(fileContents: string, pattern: IPattern) {
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
     let consequent = pattern.consequent.join("\n").replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
-    console.log(consequent)
     const reCondition = conditon2regex2(pattern.condition);
-    console.log(reCondition)
 
     if (reCondition !== undefined) {
         const matchedStr = reCondition.exec(fileContents);
