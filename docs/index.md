@@ -6,9 +6,7 @@ subtitle: An linter based on developer own coding convention.
 
 # Quick start
 
-Prerequisites: [Node.js](https://nodejs.org) built with SSL support. (If you are using an official Node.js distribution, SSL is always built in.)
-
-You can install DevReplay using npm or yarn:
+You can install DevReplay using [npm](https://nodejs.org) or yarn:
 
 ```sh
 npm install -g devreplay
@@ -33,12 +31,11 @@ Here is the example.
 ]
 ```
 
-Lint source code
+Fix the your source file.
 ```sh
-devreplay --fix yourfile.py
+devreplay --fix yourfile.py > yourfile.py
 ```
 
-The source code will be
 ```diff
 - tmp = a
 - a = b
