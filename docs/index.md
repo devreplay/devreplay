@@ -35,7 +35,7 @@ Here is the example.
 
 Lint source code
 ```sh
-devreplay --fix yourfile.py devreplay.json
+devreplay --fix yourfile.py
 ```
 
 The source code will be
