@@ -37,12 +37,12 @@ $ yarn global add
 3. Run the devreplay
 
 ```sh
-$ devreplay yourfile.py devreplay
+$ devreplay yourfile.py
 W:yourfile.py:15:$3 = $1$1 = $2$2 = $3 should be $2, $1 = $1, $2
 ```
 or get fixed code
 ```sh
-$ devreplay --fix yourfile.py devreplay
+$ devreplay --fix yourfile.py
 ```
 
 The target source code file will be
@@ -83,7 +83,7 @@ The target source code file will be
 
 * Run devreplay again
 ```sh
-$ devreplay yourfile.py devreplay
+$ devreplay yourfile.py
 I:yourfile.py:15:Value exchanging can be one line by Yuki Ueda
 ```
 

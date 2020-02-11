@@ -1,16 +1,16 @@
 import { existsSync, readFileSync } from "fs";
 
 import { IPattern } from "./patterns";
-import { extend as Extend } from "./extend";
+import { extend as Extend, getInitPattern } from "./extend";
 
-export function readPatternFile(ruleFileName?: string) {
+export function readPatternFile(fileName: string, ruleFileName?: string) {
     let location;
     if (ruleFileName !== undefined && existsSync(ruleFileName)) {
         location = ruleFileName;
     } else if ((existsSync("./devreplay.json"))) {
         location = "devreplay.json";
     } else {
-        return [];
+        return getInitPattern(fileName);
     }
     const patternContent = readFileSync(location).toString();
     try {

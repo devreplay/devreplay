@@ -9,7 +9,7 @@ export interface ILintOut {
 }
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string) {
-    const patterns = readPatternFile(ruleFileName);
+    const patterns = readPatternFile(fileName, ruleFileName);
     const adoptablePatterns = lintWithPattern(fileName, fileContents, patterns);
 
     return adoptablePatterns;
