@@ -172,16 +172,15 @@ export function makeSeverity(severity?: string) {
 
 export function code2String(pattern: IPattern) {
     if (pattern.description !== undefined) {
-        let description = pattern.description
         if (pattern.author !== undefined) {
-            description += ` by ${pattern.author}`;
+            return `${pattern.description} by ${pattern.author}`;
         }
-        return description;
+        return pattern.description;
     }
     let description = `${pattern.condition.join("")} should be ${pattern.consequent.join("")}`
 
     if (pattern.author !== undefined) {
-        description += ` by ${pattern.author}`;
+        return `${description} by ${pattern.author}`;
     }
     return description;
 }
