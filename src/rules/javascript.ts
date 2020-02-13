@@ -80,5 +80,108 @@ module.exports = [
       consequent: [
         'emitter.listenerCount(${1:eventName})'
       ]
+    },
+    {
+      condition: [
+        'export default'
+      ],
+      consequent: [
+        'export'
+      ]
+    },
+    {
+      condition: [
+        'for (let $3 = 0;i < $1.length;i++) $2($1[$3])'
+      ],
+      consequent: [
+        'for (let $3 = 0;i < $1.length;i++) {',
+        '    $2($1[$3])',
+        '}'
+      ]
+    },
+    {
+      condition: [
+        'const $1 = new Array()'
+      ],
+      consequent: [
+        'const $1 = []'
+      ]
+    },
+    {
+      condition: [
+        '$1.hasOwnProperty(\'$2\')'
+      ],
+      consequent: [
+        '$1.$2 != null'
+      ]
+    },
+    {
+      condition: [
+        'new Boolean($1)'
+      ],
+      consequent: [
+        '$1'
+      ],
+      severity: "Information"
+    },
+    {
+      condition: [
+        'new Number($1)'
+      ],
+      consequent: [
+        '$1'
+      ],
+      severity: "Information"
+    },
+    {
+      condition: [
+        'new String($1)'
+      ],
+      consequent: [
+        '$1'
+      ],
+      severity: "Information"
+    },
+    {
+      condition: [
+        'new Symbol($1)'
+      ],
+      consequent: [
+        '$1'
+      ],
+      severity: "Information"
+    },
+    {
+      condition: [
+        'new $1;'
+      ],
+      consequent: [
+        'new $1();'
+      ],
+      description: 'Never invoke a constructor in a new statement without using parentheses'
+    },
+    {
+      condition: [
+        '@code'
+      ],
+      consequent: [
+        ''
+      ]
+    },
+    {
+      condition: [
+        '@expose'
+      ],
+      consequent: [
+        '@export'
+      ]
+    },
+    {
+      condition: [
+        '@inheritDoc'
+      ],
+      consequent: [
+        '@override'
+      ]
     }
   ]

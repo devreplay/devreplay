@@ -1,5 +1,7 @@
 const android = require("./rules/android");
 const angular = require("./rules/angular");
+const c = require("./rules/c");
+const cpp = require("./rules/cpp");
 const dart = require("./rules/dart");
 const java = require("./rules/java");
 const javascript = require("./rules/javascript");
@@ -20,6 +22,8 @@ interface IExtend {
 export const extend: IExtend = {
     android: android,
     angular: angular,
+    c: c,
+    cpp: cpp,
     dart: dart,
     java: java,
     javascript: javascript,
@@ -37,7 +41,10 @@ interface ISource {
 }
 
 export const sources: ISource = {
+    c: [".c"],
+    cpp: [".cpp"],
     dart: [".dart"],
+    vue: [".vue"],
     java: [".java", ".jav"],
     javascript : [".js", ".es6", ".mjs", ".pac"],
     python: [".py", ".rpy", ".pyw", ".cpy", ".gyp", ".gypi", ".snakefile", ".smk"],

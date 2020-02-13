@@ -1,7 +1,9 @@
+const javascript = require("./javascript");
+
 module.exports = [
     {
       condition: [
-        'const $1: number = $2;'
+        'const $1: $3 = $2;'
       ],
       consequent: [
         'const $1 = $2;'
@@ -22,5 +24,21 @@ module.exports = [
       consequent: [
         'throwsA'
       ]
+    },
+    {
+      condition: [
+        'null'
+      ],
+      consequent: [
+        'undefined'
+      ]
+    },
+    {
+      condition: [
+        '$1.forEach($2 => {'
+      ],
+      consequent: [
+        'for (const $2 in $1) {'
+      ]
     }
-]
+].concat(javascript)

@@ -49,10 +49,42 @@ module.exports = [
     },
     {
       condition: [
-        'if len(${1:list}s) == 0:'
+        'if len(${1:list}) != 0:'
       ],
       consequent: [
-        'if not ${1:list}s:'
+        'if ${1:list}:'
+      ]
+    },
+    {
+      condition: [
+        'if len(${1:list}) > 0:'
+      ],
+      consequent: [
+        'if ${1:list}:'
+      ]
+    },
+    {
+      condition: [
+        'if len(${1:list}) == 0:'
+      ],
+      consequent: [
+        'if not ${1:list}:'
+      ]
+    },
+    {
+      condition: [
+        'if not len(${1:list}):'
+      ],
+      consequent: [
+        'if not ${1:list}:'
+      ]
+    },
+    {
+      condition: [
+        'if len(${1:list}):'
+      ],
+      consequent: [
+        'if ${1:list}:'
       ]
     },
     {
@@ -111,5 +143,104 @@ module.exports = [
       consequent: [
         'if ${1:exp}:'
       ]
-    }
+    },
+    {
+      condition: [
+        'if ${1:exp} == False:'
+      ],
+      consequent: [
+        'if not ${1:exp}:'
+      ]
+    },
+    {
+      condition: [
+        'if ${1:exp} is False:'
+      ],
+      consequent: [
+        'if not ${1:exp}:'
+      ]
+    },
+    {
+      condition: [
+        '$1 ()'
+      ],
+      consequent: [
+        '$1()'
+      ]
+    },
+    {
+      condition: [
+        '$1 ['
+      ],
+      consequent: [
+        '$1['
+      ]
+    },
+    {
+      condition: [
+        '$1[:$3] == \'$2\':'
+      ],
+      consequent: [
+        '$1.startswith(\'$2\'):'
+      ]
+    },
+    {
+      condition: [
+        '$1[:$3] == \"$2\":'
+      ],
+      consequent: [
+        '$1.startswith(\"$2\"):'
+      ]
+    },
+    {
+      condition: [
+        '$1[$3:] == \'$2\':'
+      ],
+      consequent: [
+        '$1.endswith(\'$2\'):'
+      ]
+    },
+    {
+      condition: [
+        '$1[$3:] == \"$2\":'
+      ],
+      consequent: [
+        '$1.endswith(\"$2\"):'
+      ]
+    },
+    {
+      condition: [
+        'type(${1:obj})) is type(${2:type}):'
+      ],
+      consequent: [
+        'isinstance(${1:obj}, ${2:type}):'
+      ]
+    },
+    {
+      condition: [
+        ';'
+      ],
+      consequent: [
+        '',
+        ''
+      ]
+    },
+    {
+      condition: [
+        '[$3($1) for $1 in $2]'
+      ],
+      consequent: [
+        'for $1 in $2:',
+        '    $3($1)'
+      ],
+      description: 'Never use a list comprehension just for its side effects'
+    },
+    {
+      condition: [
+        '$1 = open(\'$2\')'
+      ],
+      consequent: [
+        'with open(\'$2\') as $1:'
+      ]
+    },
   ]
