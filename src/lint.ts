@@ -76,7 +76,7 @@ function conditon2regex2(condition: string[]) {
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    joinedCondition = joinedCondition.replace(/[<>*()?.]/g, "\\$&");
+    joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, "\\$&");
 
     const tokenIndex: number[] = [];
     joinedCondition = joinedCondition.replace(dollar, (x) => {
@@ -86,7 +86,7 @@ function conditon2regex2(condition: string[]) {
         }
         tokenIndex.push(index);
 
-        return `(?<token${index}>.+)`;
+        return `(?<token${index}>\\w+)`;
     });
     try {
         return new RegExp(joinedCondition, "gm");
@@ -100,7 +100,7 @@ function conditon2regex(condition: string[]) {
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    joinedCondition = joinedCondition.replace(/[<>*()?.]/g, "\\$&");
+    joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, "\\$&");
 
     const tokenIndex: number[] = [];
     joinedCondition = joinedCondition.replace(dollar, (x) => {
@@ -110,7 +110,7 @@ function conditon2regex(condition: string[]) {
         }
         tokenIndex.push(index);
 
-        return `(?<token${tokenIndex.indexOf(index) + 1}>.+)`;
+        return `(?<token${tokenIndex.indexOf(index) + 1}>\\w+)`;
     });
     try {
         return new RegExp(joinedCondition, "gm");
