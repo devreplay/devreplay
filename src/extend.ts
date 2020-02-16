@@ -10,6 +10,7 @@ const rails = require("./rules/rails");
 const react = require("./rules/react");
 const ruby = require("./rules/ruby");
 const typescript = require("./rules/typescript");
+const tensorflow = require("./rules/tensorflow");
 const vscode = require("./rules/vscode");
 const vue = require("./rules/vue");
 
@@ -31,6 +32,7 @@ export const extend: IExtend = {
     rails: rails,
     react: react,
     ruby: ruby,
+    tensorflow: tensorflow,
     typescript: typescript,
     vscode: vscode,
     vue: vue

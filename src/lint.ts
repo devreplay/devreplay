@@ -86,7 +86,7 @@ function conditon2regex2(condition: string[]) {
         }
         tokenIndex.push(index);
 
-        return `(?<token${index}>\\w+)`;
+        return `(?<token${index}>[\\w\.]+)`;
     });
     try {
         return new RegExp(joinedCondition, "gm");
@@ -110,7 +110,7 @@ function conditon2regex(condition: string[]) {
         }
         tokenIndex.push(index);
 
-        return `(?<token${tokenIndex.indexOf(index) + 1}>\\w+)`;
+        return `(?<token${tokenIndex.indexOf(index) + 1}>[\\w\.]+)`;
     });
     try {
         return new RegExp(joinedCondition, "gm");
