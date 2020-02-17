@@ -1,6 +1,6 @@
 # Devreplay
 
-Devreplay is static analysis tool based on your own proguramming pattern.
+Devreplay is static analysis tool based on your own programming pattern.
 
 * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
 * [Other Editor Support (Language Server)](https://www.npmjs.com/package/devreplay-server)
