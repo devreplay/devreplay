@@ -2,6 +2,7 @@ const android = require("./rules/android");
 const angular = require("./rules/angular");
 const c = require("./rules/c");
 const cpp = require("./rules/cpp");
+const cobol = require("./rules/cobol");
 const dart = require("./rules/dart");
 const java = require("./rules/java");
 const javascript = require("./rules/javascript");
@@ -24,6 +25,7 @@ export const extend: IExtend = {
     android: android,
     angular: angular,
     c: c,
+    cobol: cobol,
     cpp: cpp,
     dart: dart,
     java: java,
@@ -44,6 +46,7 @@ interface ISource {
 
 export const sources: ISource = {
     c: [".c"],
+    cobol: [".cbl", ".cblsrce", ".ocb", ".ocb"],
     cpp: [".cpp"],
     dart: [".dart"],
     vue: [".vue"],
