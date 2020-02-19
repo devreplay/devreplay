@@ -170,14 +170,6 @@ module.exports = [
     },
     {
       condition: [
-        '$1 ['
-      ],
-      consequent: [
-        '$1['
-      ]
-    },
-    {
-      condition: [
         '$1[:$3] == \'$2\':'
       ],
       consequent: [
@@ -227,11 +219,11 @@ module.exports = [
     },
     {
       condition: [
-        '[$3($1) for $1 in $2]'
+        '[print($1) for $1 in $2]'
       ],
       consequent: [
         'for $1 in $2:',
-        '    $3($1)'
+        '    print($1)'
       ],
       description: 'Never use a list comprehension just for its side effects'
     },
