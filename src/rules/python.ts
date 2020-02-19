@@ -101,7 +101,7 @@ module.exports = [
       ],
       consequent: [
         'import ${1:lib1}',
-        'import ${1:lib2}'
+        'import ${2:lib2}'
       ]
     },
     {

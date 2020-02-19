@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.2.5
+
+* Fix python default rules
+* Add Cobol default rules
+
 ## v0.3.5
 
 * Refactoring
