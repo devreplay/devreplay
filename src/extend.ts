@@ -1,6 +1,7 @@
 const android = require("./rules/android");
 const angular = require("./rules/angular");
 const c = require("./rules/c");
+const chainer2pytouch = require("./rules/chainer2pytouch");
 const cpp = require("./rules/cpp");
 const cobol = require("./rules/cobol");
 const dart = require("./rules/dart");
@@ -26,6 +27,7 @@ export const extend: IExtend = {
     android: android,
     angular: angular,
     c: c,
+    chainer2pytouch: chainer2pytouch,
     cobol: cobol,
     cpp: cpp,
     dart: dart,
