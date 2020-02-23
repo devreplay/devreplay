@@ -6,6 +6,7 @@ const cobol = require("./rules/cobol");
 const dart = require("./rules/dart");
 const java = require("./rules/java");
 const javascript = require("./rules/javascript");
+const php = require("./rules/php");
 const python = require("./rules/python");
 const rails = require("./rules/rails");
 const react = require("./rules/react");
@@ -30,6 +31,7 @@ export const extend: IExtend = {
     dart: dart,
     java: java,
     javascript: javascript,
+    php: php,
     python: python,
     rails: rails,
     react: react,
@@ -52,6 +54,7 @@ export const sources: ISource = {
     vue: [".vue"],
     java: [".java", ".jav"],
     javascript : [".js", ".es6", ".mjs", ".pac"],
+    php : [".php"],
     python: [".py", ".rpy", ".pyw", ".cpy", ".gyp", ".gypi", ".snakefile", ".smk"],
     ruby: [ ".rb", ".rbx", ".rjs", ".gemspec", ".rake", ".ru", ".erb" ],
     typescript: [".ts"]
