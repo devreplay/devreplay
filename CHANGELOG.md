@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.2.7
+* Creating new default rules
+
 ## 1.2.5
 
 * Fix python default rules
