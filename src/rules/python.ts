@@ -97,9 +97,11 @@ module.exports = [
     },
     {
       condition: [
+        "",
         "import ${1:lib1}, ${2:lib2}",
       ],
       consequent: [
+        "",
         "import ${1:lib1}",
         "import ${2:lib2}",
       ],
