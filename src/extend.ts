@@ -1,3 +1,5 @@
+import { IPattern } from "./patterns";
+
 const android = require("./rules/android");
 const angular = require("./rules/angular");
 const c = require("./rules/c");
@@ -17,31 +19,29 @@ const tensorflow = require("./rules/tensorflow");
 const vscode = require("./rules/vscode");
 const vue = require("./rules/vue");
 
-import { IPattern } from "./patterns";
-
 interface IExtend {
     [key: string]: IPattern[];
 }
 
 export const extend: IExtend = {
-    android: android,
-    angular: angular,
-    c: c,
-    chainer2pytouch: chainer2pytouch,
-    cobol: cobol,
-    cpp: cpp,
-    dart: dart,
-    java: java,
-    javascript: javascript,
-    php: php,
-    python: python,
-    rails: rails,
-    react: react,
-    ruby: ruby,
-    tensorflow: tensorflow,
-    typescript: typescript,
-    vscode: vscode,
-    vue: vue
+    android,
+    angular,
+    c,
+    chainer2pytouch,
+    cobol,
+    cpp,
+    dart,
+    java,
+    javascript,
+    php,
+    python,
+    rails,
+    react,
+    ruby,
+    tensorflow,
+    typescript,
+    vscode,
+    vue,
 };
 
 interface ISource {
@@ -59,7 +59,7 @@ export const sources: ISource = {
     php : [".php"],
     python: [".py", ".rpy", ".pyw", ".cpy", ".gyp", ".gypi", ".snakefile", ".smk"],
     ruby: [ ".rb", ".rbx", ".rjs", ".gemspec", ".rake", ".ru", ".erb" ],
-    typescript: [".ts"]
+    typescript: [".ts"],
 };
 
 export function getInitPattern(fileName: string) {

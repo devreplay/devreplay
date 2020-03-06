@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "fs";
 
-import { IPattern } from "./patterns";
 import { extend as Extend, getInitPattern } from "./extend";
+import { IPattern } from "./patterns";
 
 export function readPatternFile(fileName: string, ruleFileName?: string) {
     let location;
@@ -17,18 +17,18 @@ export function readPatternFile(fileName: string, ruleFileName?: string) {
         const patternJson = JSON.parse(patternContent) as IPattern[];
         const patterns: IPattern[] = [];
         for (const pattern of patternJson) {
-            if (pattern.extends === undefined){
+            if (pattern.extends === undefined) {
                 patterns.push(pattern);
             } else {
                 for (const extend of pattern.extends) {
-                    patterns.push(...readExtends(extend))
+                    patterns.push(...readExtends(extend));
                 }
             }
         }
 
         return patterns;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         console.log("usage: devreplay [target_file] [adopt_rule.json]");
 
         return [];
@@ -37,10 +37,9 @@ export function readPatternFile(fileName: string, ruleFileName?: string) {
 
 function readExtends(extend: string): IPattern[] {
     let location;
-    if (Extend[extend] !== undefined){
+    if (Extend[extend] !== undefined) {
         return Extend[extend];
-        // extend = join(__dirname, "../rules", Extend[extend].path);
-    } 
+    }
     if (existsSync(extend)) {
         location = extend;
     } else {
@@ -51,14 +50,14 @@ function readExtends(extend: string): IPattern[] {
         const patternJson = JSON.parse(patternContent) as IPattern[];
         const patterns: IPattern[] = [];
         for (const pattern of patternJson) {
-            if (pattern.extends === undefined){
+            if (pattern.extends === undefined) {
                 patterns.push(pattern);
             }
         }
 
         return patterns;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         console.log("usage: devreplay [target_file] [adopt_rule.json]");
 
         return [];

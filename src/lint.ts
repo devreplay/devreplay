@@ -36,7 +36,7 @@ export function fixWithPattern(fileContents: string, pattern: IPattern) {
         return "";
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
-    let consequent = pattern.consequent.join("\n").replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
+    const consequent = pattern.consequent.join("\n").replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
     const reCondition = conditon2regex2(pattern.condition);
 
     if (reCondition !== undefined) {
@@ -94,7 +94,6 @@ function conditon2regex2(condition: string[]) {
         return undefined;
     }
 }
-
 
 function conditon2regex(condition: string[]) {
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
@@ -175,12 +174,14 @@ export function code2String(pattern: IPattern) {
         if (pattern.author !== undefined) {
             return `${pattern.description} by ${pattern.author}`;
         }
+
         return pattern.description;
     }
-    let description = `${pattern.condition.join("")} should be ${pattern.consequent.join("")}`
+    const description = `${pattern.condition.join("")} should be ${pattern.consequent.join("")}`;
 
     if (pattern.author !== undefined) {
         return `${description} by ${pattern.author}`;
     }
+
     return description;
 }
