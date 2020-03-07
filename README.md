@@ -91,7 +91,7 @@ I:yourfile.py:15:Value exchanging can be one line by Yuki Ueda
 
 * C/CPP
 * Java
-* JavsScript/TypeScript
+* JavaScript/TypeScript
 * Python
 * Ruby
 * Go
