@@ -152,7 +152,7 @@ function makePatternPosition(result: RegExpExecArray) {
     const endLine = startLine + matchedSlice.length - 1;
     const endChar = startLine == endLine ?
                     startChar + matchedSlice[matchedSlice.length - 1].length :
-                    matchedSlice[matchedSlice.length - 1].length
+                    1 + matchedSlice[matchedSlice.length - 1].length
 
     return {
         start:{
@@ -166,7 +166,7 @@ function makePatternPosition(result: RegExpExecArray) {
 }
 
 export function formatILintOut(matched: ILintOut) {
-    return `${makeSeverity(matched.pattern.severity)}:${matched.fileName}:${matched.position.start.line}:${code2String(matched.pattern)}`;
+    return `${makeSeverity(matched.pattern.severity)}:${matched.fileName}:${matched.position.start.line},${matched.position.start.character}: ${code2String(matched.pattern)}`;
 }
 
 export function makeSeverity(severity?: string) {

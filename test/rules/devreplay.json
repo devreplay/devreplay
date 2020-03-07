@@ -5,18 +5,6 @@
     ]
   },
 {
-"condition": [
-  "$3 = $1",
-  "$1 = $2",
-  "$2 = $3"
-],
-"consequent": [
-  "$2, $1 = $1, $2"
-],
-"description": "Value exchanging can be one line",
-"severity": "Information"
-},
-{
   "condition": [
       "for ${1:Name} in range($0):"
   ],
