@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2.8
+
+* Add position informations
+
 ## 1.2.7
 * Creating new default rules
 
