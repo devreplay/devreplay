@@ -2,10 +2,16 @@ import { tryReadFile } from "./file";
 import { IPattern } from "./patterns";
 import { readPatternFile } from "./rulemanage";
 
+export interface Position {
+    line: number;
+    character: number;
+}
+
 export interface ILintOut {
     pattern: IPattern;
     snippet: string;
-    position: {fileName: string; start: number; end: number};
+    fileName: string;
+    position: { start: Position; end: Position};
 }
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string) {
@@ -24,7 +30,8 @@ export function lintWithPattern(fileName: string, contents: string, patterns: IP
         if (result !== undefined) {
             matched.push({pattern,
                           snippet: result[0],
-                          position: makePatternPosition(fileName, result)});
+                          fileName,
+                          position: makePatternPosition(result)});
         }
     }
 
@@ -136,17 +143,30 @@ function verifyPattern(pattern: IPattern) {
     return Array.isArray(pattern.condition) && Array.isArray(pattern.consequent);
 }
 
-function makePatternPosition(fileName: string, result: RegExpExecArray) {
-    const startChar = result.index;
-    const startSlice = result.input.slice(undefined, startChar);
-    const startLine = startSlice.split(/\r\n|\r|\n/).length;
-    const endLine = startLine + result[0].split(/\r\n|\r|\n/).length - 1;
+function makePatternPosition(result: RegExpExecArray) {
+    const startIndex = result.index;
+    const headSlice = result.input.slice(undefined, startIndex).split(/\r\n|\r|\n/);
+    const startLine = headSlice.length;
+    const startChar = startIndex - headSlice.slice(undefined, -1).join("\n").length
+    const matchedSlice = result[0].split(/\r\n|\r|\n/)
+    const endLine = startLine + matchedSlice.length - 1;
+    const endChar = startLine == endLine ?
+                    startChar + matchedSlice[matchedSlice.length - 1].length :
+                    matchedSlice[matchedSlice.length - 1].length
 
-    return {fileName, start: startLine, end: endLine};
+    return {
+        start:{
+            line: startLine,
+            character: startChar
+        }, 
+        end: {
+            line: endLine,
+            character: endChar
+        }};
 }
 
 export function formatILintOut(matched: ILintOut) {
-    return `${makeSeverity(matched.pattern.severity)}:${matched.position.fileName}:${matched.position.start}:${code2String(matched.pattern)}`;
+    return `${makeSeverity(matched.pattern.severity)}:${matched.fileName}:${matched.position.start.line}:${code2String(matched.pattern)}`;
 }
 
 export function makeSeverity(severity?: string) {
