@@ -26,5 +26,13 @@
   ],
   "description": "Python2互換のためsixを使用してください",
   "severity": "Warning"
+},
+{
+  "condition": [
+    "hello"
+],
+"consequent": [
+    "Hello"
+]
 }
 ]
