@@ -89,6 +89,30 @@ module.exports = [
     },
     {
       condition: [
+        "if ${1:value} == None:",
+      ],
+      consequent: [
+        "if ${1:value} is None:",
+      ],
+    },
+    {
+      condition: [
+        "if ${1:value} != None:",
+      ],
+      consequent: [
+        "if ${1:value} is not None:",
+      ],
+    },
+    {
+      condition: [
+        "if not ${1:value} == None:",
+      ],
+      consequent: [
+        "if ${1:value} is not None:",
+      ],
+    },
+    {
+      condition: [
         "if not ${1:value} is None:",
       ],
       consequent: [
