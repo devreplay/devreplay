@@ -78,5 +78,61 @@ module.exports = [
       consequent: [
         'tf.keras.optimizers'
       ]
+    },
+    {
+      condition: [
+        '$1 ** $2'
+      ],
+      consequent: [
+        'tf.pow($1, $2)'
+      ]
+    },
+    {
+      condition: [
+        '$1 + $2'
+      ],
+      consequent: [
+        'tf.add($1, $2)'
+      ]
+    },
+    {
+      condition: [
+        '$1 / $2'
+      ],
+      consequent: [
+        'tf.divide($1, $2)'
+      ]
+    },
+    {
+      condition: [
+        '$1 * $2'
+      ],
+      consequent: [
+        'tf.multiply($1, $2)'
+      ]
+    },
+    {
+      condition: [
+        '$1 - $2'
+      ],
+      consequent: [
+        'tf.subtract($1, $2)'
+      ]
+    },
+    {
+      condition: [
+        '$1 and $2'
+      ],
+      consequent: [
+        'tf.logical_and($1, $2)'
+      ]
+    },
+    {
+      condition: [
+        '$1 or $2'
+      ],
+      consequent: [
+        'tf.logical_or($1, $2)'
+      ]
     }
   ]
