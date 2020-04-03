@@ -17,8 +17,14 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    '@typescript-eslint'
+    '@typescript-eslint',
+    "jsdoc"
   ],
   rules: {
-  }
+		"semi": "error",
+		"no-extra-semi": "warn",
+		"curly": "warn",
+		"quotes": ["error", "double", { "allowTemplateLiterals": true } ],
+		"eqeqeq": "error"
+	}
 }

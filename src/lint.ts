@@ -147,12 +147,12 @@ function makePatternPosition(result: RegExpExecArray) {
     const startIndex = result.index;
     const headSlice = result.input.slice(undefined, startIndex).split(/\r\n|\r|\n/);
     const startLine = headSlice.length;
-    const startChar = startIndex - headSlice.slice(undefined, -1).join("\n").length
-    const matchedSlice = result[0].split(/\r\n|\r|\n/)
+    const startChar = startIndex - headSlice.slice(undefined, -1).join("\n").length;
+    const matchedSlice = result[0].split(/\r\n|\r|\n/);
     const endLine = startLine + matchedSlice.length - 1;
-    const endChar = startLine == endLine ?
+    const endChar = startLine === endLine ?
                     startChar + matchedSlice[matchedSlice.length - 1].length :
-                    1 + matchedSlice[matchedSlice.length - 1].length
+                    1 + matchedSlice[matchedSlice.length - 1].length;
 
     return {
         start:{
