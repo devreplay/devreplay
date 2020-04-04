@@ -24,7 +24,7 @@ module.exports = {
 		"semi": "error",
 		"no-extra-semi": "warn",
 		"curly": "warn",
-		"quotes": ["error", "double", { "allowTemplateLiterals": true } ],
+		"quotes": ["error", "single", { "allowTemplateLiterals": true } ],
 		"eqeqeq": "error"
 	}
 }

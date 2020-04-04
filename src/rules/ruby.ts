@@ -36,7 +36,7 @@ module.exports = [
       consequent: [
         ''
       ],
-      description: "Don’t use ; to terminate statements and expressions."
+      description: 'Don’t use ; to terminate statements and expressions.'
     },
     {
       condition: [
@@ -53,7 +53,7 @@ module.exports = [
       consequent: [
         '/'
       ],
-      description: "Slash in rational literals"
+      description: 'Slash in rational literals'
     },
     {
       condition: [
@@ -62,7 +62,7 @@ module.exports = [
       consequent: [
         '&.'
       ],
-      description: "Safe navigation operator"
+      description: 'Safe navigation operator'
     },
     {
       condition: [
@@ -79,7 +79,7 @@ module.exports = [
       consequent: [
         '!'
       ],
-      description: "No space after !"
+      description: 'No space after !'
     },
     {
       condition: [
@@ -88,7 +88,7 @@ module.exports = [
       consequent: [
         '..'
       ],
-      description: "No space inside range literals."
+      description: 'No space inside range literals.'
     },
     {
       condition: [
@@ -179,7 +179,7 @@ module.exports = [
       consequent: [
         '= -> {'
       ],
-      description: "Omit the parameter parentheses when defining a stabby lambda with no parameters"
+      description: 'Omit the parameter parentheses when defining a stabby lambda with no parameters'
     },
     {
       condition: [
@@ -221,4 +221,4 @@ module.exports = [
         'until'
       ]
     }
-  ]
+  ];

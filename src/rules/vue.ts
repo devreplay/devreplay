@@ -23,4 +23,4 @@ module.exports = [
         '<template v-slot:${1:item}="{${2:item2}}">'
       ]
     }
-  ]
+  ];

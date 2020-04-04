@@ -1,14 +1,14 @@
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readFileSync } from 'fs';
 
-import { extend as Extend, getInitPattern } from "./extend";
-import { IPattern } from "./patterns";
+import { extend as Extend, getInitPattern } from './extend';
+import { IPattern } from './patterns';
 
 export function readPatternFile(fileName: string, ruleFileName?: string) {
     let location;
     if (ruleFileName !== undefined && existsSync(ruleFileName)) {
         location = ruleFileName;
-    } else if ((existsSync("./devreplay.json"))) {
-        location = "devreplay.json";
+    } else if ((existsSync('./devreplay.json'))) {
+        location = 'devreplay.json';
     } else {
         return getInitPattern(fileName);
     }
@@ -29,7 +29,7 @@ export function readPatternFile(fileName: string, ruleFileName?: string) {
         return patterns;
     } catch (error) {
         console.log(error);
-        console.log("usage: devreplay [target_file] [adopt_rule.json]");
+        console.log('usage: devreplay [target_file] [adopt_rule.json]');
 
         return [];
     }
@@ -58,7 +58,7 @@ function readExtends(extend: string): IPattern[] {
         return patterns;
     } catch (error) {
         console.log(error);
-        console.log("usage: devreplay [target_file] [adopt_rule.json]");
+        console.log('usage: devreplay [target_file] [adopt_rule.json]');
 
         return [];
     }

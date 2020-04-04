@@ -1,7 +1,7 @@
-import commander = require("commander");
+import commander = require('commander');
 
-import { fixFromFile, formatILintOut, lintFromFile } from "./lint";
-import { arrayify } from "./utils";
+import { fixFromFile, formatILintOut, lintFromFile } from './lint';
+import { arrayify } from './utils';
 
 interface IArgv {
     fix?: boolean;
@@ -12,24 +12,24 @@ interface IArgv {
 interface IOption {
     short?: string;
     // Commander will camelCase option names.
-    name: keyof IArgv | "fix" | "init";
-    type: "string" | "boolean" | "array";
+    name: keyof IArgv | 'fix' | 'init';
+    type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
     description: string; // Long, used for `--help`
 }
 
 const options: IOption[] = [
     {
-        name: "fix",
-        type: "boolean",
-        describe: "fix the file",
-        description: "fix the file",
+        name: 'fix',
+        type: 'boolean',
+        describe: 'fix the file',
+        description: 'fix the file',
     },
 ];
 
 for (const option of options) {
     const commanderStr = optionUsageTag(option) + optionParam(option);
-    if (option.type === "array") {
+    if (option.type === 'array') {
         commander.option(commanderStr, option.describe, collect, []);
     } else {
         commander.option(commanderStr, option.describe);
@@ -50,7 +50,7 @@ if (
         commander.args.length > 0
     )
 ) {
-    console.error("No files specified. Use --project to lint a project folder.");
+    console.error('No files specified. Use --project to lint a project folder.');
     process.exit(1);
 }
 
@@ -79,14 +79,14 @@ function optionUsageTag({ short, name }: IOption) {
 
 function optionParam(option: IOption) {
     switch (option.type) {
-        case "string":
+        case 'string':
             return ` [${option.name}]`;
-        case "array":
+        case 'array':
             return ` <${option.name}>`;
-        case "boolean":
-            return "";
+        case 'boolean':
+            return '';
         default:
-            return "";
+            return '';
     }
 }
 

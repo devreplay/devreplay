@@ -50,37 +50,37 @@ module.exports = [
   },
   {
     condition: [
-      "var $1 = React.createClass({});"
+      'var $1 = React.createClass({});'
     ],
     consequent: [
-      "var $1 = React.createClass({",
-      "  displayName: \"$1\"",
-      "});"
+      'var $1 = React.createClass({',
+      '  displayName: "$1"',
+      '});'
     ],
-    description: "@babel/plugin-transform-react-display-name",
+    description: '@babel/plugin-transform-react-display-name',
   },
   {
     condition: [
-      "var $1 = createReactClass({});"
+      'var $1 = createReactClass({});'
     ],
     consequent: [
-      "var $1 = createReactClass({",
-      "  displayName: \"$1\"",
-      "});"
+      'var $1 = createReactClass({',
+      '  displayName: "$1"',
+      '});'
     ],
-    description: "@babel/plugin-transform-react-display-name"
+    description: '@babel/plugin-transform-react-display-name'
   },
   {
     condition: [
-      "const Hr = () => {",
-      "  return <hr className=\"hr\" />;",
-      "};"
+      'const Hr = () => {',
+      '  return <hr className="hr" />;',
+      '};'
     ],
     consequent: [
-      "const _ref = <hr className=\"hr\" />;",
-      "const Hr = () => {",
-      "  return <hr className=\"hr\" />;",
-      "};"
+      'const _ref = <hr className="hr" />;',
+      'const Hr = () => {',
+      '  return <hr className="hr" />;',
+      '};'
     ]
   }
-]
+];

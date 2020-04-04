@@ -1,6 +1,6 @@
-import { tryReadFile } from "./file";
-import { IPattern } from "./patterns";
-import { readPatternFile } from "./rulemanage";
+import { tryReadFile } from './file';
+import { IPattern } from './patterns';
+import { readPatternFile } from './rulemanage';
 
 export interface Position {
     line: number;
@@ -40,10 +40,10 @@ export function lintWithPattern(fileName: string, contents: string, patterns: IP
 
 export function fixWithPattern(fileContents: string, pattern: IPattern) {
     if (pattern.consequent.length === 0 || pattern.condition.length === 0) {
-        return "";
+        return '';
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
-    const consequent = pattern.consequent.join("\n").replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
+    const consequent = pattern.consequent.join('\n').replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
     const reCondition = conditon2regex2(pattern.condition);
 
     if (reCondition !== undefined) {
@@ -76,14 +76,14 @@ export function fixFromFile(fileName: string, ruleFileName?: string) {
         }
     }
 
-    return "";
+    return '';
 }
 
 function conditon2regex2(condition: string[]) {
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
-    let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
+    let joinedCondition = condition.length < 2 ? condition[0] : condition.join('\n');
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, "\\$&");
+    joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, '\\$&');
 
     const tokenIndex: number[] = [];
     joinedCondition = joinedCondition.replace(dollar, (x) => {
@@ -96,7 +96,7 @@ function conditon2regex2(condition: string[]) {
         return `(?<token${index}>[\\w\.]+)`;
     });
     try {
-        return new RegExp(joinedCondition, "gm");
+        return new RegExp(joinedCondition, 'gm');
     } catch (error) {
         return undefined;
     }
@@ -104,9 +104,9 @@ function conditon2regex2(condition: string[]) {
 
 function conditon2regex(condition: string[]) {
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
-    let joinedCondition = condition.length < 2 ? condition[0] : condition.join("\n");
+    let joinedCondition = condition.length < 2 ? condition[0] : condition.join('\n');
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, "\\$&");
+    joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, '\\$&');
 
     const tokenIndex: number[] = [];
     joinedCondition = joinedCondition.replace(dollar, (x) => {
@@ -119,7 +119,7 @@ function conditon2regex(condition: string[]) {
         return `(?<token${tokenIndex.indexOf(index) + 1}>[\\w\.]+)`;
     });
     try {
-        return new RegExp(joinedCondition, "gm");
+        return new RegExp(joinedCondition, 'gm');
     } catch (error) {
         return undefined;
     }
@@ -147,7 +147,7 @@ function makePatternPosition(result: RegExpExecArray) {
     const startIndex = result.index;
     const headSlice = result.input.slice(undefined, startIndex).split(/\r\n|\r|\n/);
     const startLine = headSlice.length;
-    const startChar = startIndex - headSlice.slice(undefined, -1).join("\n").length;
+    const startChar = startIndex - headSlice.slice(undefined, -1).join('\n').length;
     const matchedSlice = result[0].split(/\r\n|\r|\n/);
     const endLine = startLine + matchedSlice.length - 1;
     const endChar = startLine === endLine ?
@@ -171,19 +171,19 @@ export function formatILintOut(matched: ILintOut) {
 
 export function makeSeverity(severity?: string) {
     if (severity === undefined) {
-        return "W";
+        return 'W';
     }
     let outSeverity;
-    if (severity.toUpperCase().startsWith("E")) {
-        outSeverity = "E";
-    } else if (severity.toUpperCase().startsWith("W")) {
-        outSeverity = "W";
-    } else if (severity.toUpperCase().startsWith("I")) {
-        outSeverity = "I";
-    } else if (severity.toUpperCase().startsWith("H")) {
-        outSeverity = "H";
+    if (severity.toUpperCase().startsWith('E')) {
+        outSeverity = 'E';
+    } else if (severity.toUpperCase().startsWith('W')) {
+        outSeverity = 'W';
+    } else if (severity.toUpperCase().startsWith('I')) {
+        outSeverity = 'I';
+    } else if (severity.toUpperCase().startsWith('H')) {
+        outSeverity = 'H';
     } else {
-        outSeverity = "W";
+        outSeverity = 'W';
     }
 
     return outSeverity;
@@ -197,7 +197,7 @@ export function code2String(pattern: IPattern) {
 
         return pattern.description;
     }
-    const description = `${pattern.condition.join("")} should be ${pattern.consequent.join("")}`;
+    const description = `${pattern.condition.join('')} should be ${pattern.consequent.join('')}`;
 
     if (pattern.author !== undefined) {
         return `${description} by ${pattern.author}`;

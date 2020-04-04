@@ -1,205 +1,205 @@
 module.exports = [
     {
       condition: [
-        "$3 = $1",
-        "$1 = $2",
-        "$2 = $3",
+        '$3 = $1',
+        '$1 = $2',
+        '$2 = $3',
       ],
       consequent: [
-        "$2, $1 = $1, $2",
+        '$2, $1 = $1, $2',
       ],
-      description: "Value exchanging can be one line",
+      description: 'Value exchanging can be one line',
     },
     {
       condition: [
-        "if ${1:value} % ${2:value} != 0:",
+        'if ${1:value} % ${2:value} != 0:',
       ],
       consequent: [
-        "if ${1:value} % ${2:value}:",
+        'if ${1:value} % ${2:value}:',
       ],
-      description: "It can not cover when value is null",
-      severity: "I",
-      author: "Google Guideline",
+      description: 'It can not cover when value is null',
+      severity: 'I',
+      author: 'Google Guideline',
     },
     {
       condition: [
-        "if ${1:value} % ${2:value} == 0:",
+        'if ${1:value} % ${2:value} == 0:',
       ],
       consequent: [
-        "if not ${1:value} % ${2:value}:",
-      ],
-    },
-    {
-      condition: [
-        "string.split(${1:value}, ${2:string})",
-      ],
-      consequent: [
-        "${1:value}.split(${2:string})",
-      ],
-      message: "Deprecated language feature",
-    },
-    {
-      condition: [
-        "apply(${1:fn}, ${2:args}, ${3:kwargs})",
-      ],
-      consequent: [
-        "${1:fn}(*${2:args}, **${3:kwargs})",
-      ],
-      message: "Deprecated language feature",
-    },
-    {
-      condition: [
-        "if len(${1:list}) != 0:",
-      ],
-      consequent: [
-        "if ${1:list}:",
+        'if not ${1:value} % ${2:value}:',
       ],
     },
     {
       condition: [
-        "if len(${1:list}) > 0:",
+        'string.split(${1:value}, ${2:string})',
       ],
       consequent: [
-        "if ${1:list}:",
+        '${1:value}.split(${2:string})',
+      ],
+      message: 'Deprecated language feature',
+    },
+    {
+      condition: [
+        'apply(${1:fn}, ${2:args}, ${3:kwargs})',
+      ],
+      consequent: [
+        '${1:fn}(*${2:args}, **${3:kwargs})',
+      ],
+      message: 'Deprecated language feature',
+    },
+    {
+      condition: [
+        'if len(${1:list}) != 0:',
+      ],
+      consequent: [
+        'if ${1:list}:',
       ],
     },
     {
       condition: [
-        "if len(${1:list}) == 0:",
+        'if len(${1:list}) > 0:',
       ],
       consequent: [
-        "if not ${1:list}:",
+        'if ${1:list}:',
       ],
     },
     {
       condition: [
-        "if not len(${1:list}):",
+        'if len(${1:list}) == 0:',
       ],
       consequent: [
-        "if not ${1:list}:",
+        'if not ${1:list}:',
       ],
     },
     {
       condition: [
-        "if len(${1:list}):",
+        'if not len(${1:list}):',
       ],
       consequent: [
-        "if ${1:list}:",
+        'if not ${1:list}:',
       ],
     },
     {
       condition: [
-        "if ${1:value} == None:",
+        'if len(${1:list}):',
       ],
       consequent: [
-        "if ${1:value} is None:",
+        'if ${1:list}:',
       ],
     },
     {
       condition: [
-        "if ${1:value} != None:",
+        'if ${1:value} == None:',
       ],
       consequent: [
-        "if ${1:value} is not None:",
+        'if ${1:value} is None:',
       ],
     },
     {
       condition: [
-        "if not ${1:value} == None:",
+        'if ${1:value} != None:',
       ],
       consequent: [
-        "if ${1:value} is not None:",
+        'if ${1:value} is not None:',
       ],
     },
     {
       condition: [
-        "if not ${1:value} is None:",
+        'if not ${1:value} == None:',
       ],
       consequent: [
-        "if ${1:value} is not None:",
+        'if ${1:value} is not None:',
       ],
     },
     {
       condition: [
-        "",
-        "import ${1:lib1}, ${2:lib2}",
+        'if not ${1:value} is None:',
       ],
       consequent: [
-        "",
-        "import ${1:lib1}",
-        "import ${2:lib2}",
+        'if ${1:value} is not None:',
       ],
     },
     {
       condition: [
-        "${1:value} * ${2:value2} -",
+        '',
+        'import ${1:lib1}, ${2:lib2}',
       ],
       consequent: [
-        "${1:value}*${2:value2} -",
+        '',
+        'import ${1:lib1}',
+        'import ${2:lib2}',
       ],
     },
     {
       condition: [
-        "${1:value} * ${2:value2} +",
+        '${1:value} * ${2:value2} -',
       ],
       consequent: [
-        "${1:value}*${2:value2} +",
+        '${1:value}*${2:value2} -',
       ],
     },
     {
       condition: [
-        "${1:func} = lambda ${2:value}: ${3:code}",
+        '${1:value} * ${2:value2} +',
       ],
       consequent: [
-        "def ${1:func}(${2:value}): return ${3:code}",
+        '${1:value}*${2:value2} +',
       ],
     },
     {
       condition: [
-        "if ${1:exp} == True:",
+        '${1:func} = lambda ${2:value}: ${3:code}',
       ],
       consequent: [
-        "if ${1:exp}:",
+        'def ${1:func}(${2:value}): return ${3:code}',
       ],
     },
     {
       condition: [
-        "if ${1:exp} is True:",
+        'if ${1:exp} == True:',
       ],
       consequent: [
-        "if ${1:exp}:",
+        'if ${1:exp}:',
       ],
     },
     {
       condition: [
-        "if ${1:exp} == False:",
+        'if ${1:exp} is True:',
       ],
       consequent: [
-        "if not ${1:exp}:",
+        'if ${1:exp}:',
       ],
     },
     {
       condition: [
-        "if ${1:exp} is False:",
+        'if ${1:exp} == False:',
       ],
       consequent: [
-        "if not ${1:exp}:",
+        'if not ${1:exp}:',
       ],
     },
     {
       condition: [
-        "$1 ()",
+        'if ${1:exp} is False:',
       ],
       consequent: [
-        "$1()",
+        'if not ${1:exp}:',
       ],
     },
     {
       condition: [
-        "$1[:$3] == '$2':",
+        '$1 ()',
       ],
       consequent: [
-        "$1.startswith('$2'):",
+        '$1()',
+      ],
+    },
+    {
+      condition: [
+        '$1[:$3] == \'$2\':',
+      ],
+      consequent: [
+        '$1.startswith(\'$2\'):',
       ],
     },
     {
@@ -212,10 +212,10 @@ module.exports = [
     },
     {
       condition: [
-        "$1[$3:] == '$2':",
+        '$1[$3:] == \'$2\':',
       ],
       consequent: [
-        "$1.endswith('$2'):",
+        '$1.endswith(\'$2\'):',
       ],
     },
     {
@@ -228,37 +228,37 @@ module.exports = [
     },
     {
       condition: [
-        "type(${1:obj})) is type(${2:type}):",
+        'type(${1:obj})) is type(${2:type}):',
       ],
       consequent: [
-        "isinstance(${1:obj}, ${2:type}):",
+        'isinstance(${1:obj}, ${2:type}):',
       ],
     },
     {
       condition: [
-        ";",
+        ';',
       ],
       consequent: [
-        "",
-        "",
+        '',
+        '',
       ],
     },
     {
       condition: [
-        "[print($1) for $1 in $2]",
+        '[print($1) for $1 in $2]',
       ],
       consequent: [
-        "for $1 in $2:",
-        "    print($1)",
+        'for $1 in $2:',
+        '    print($1)',
       ],
-      description: "Never use a list comprehension just for its side effects",
+      description: 'Never use a list comprehension just for its side effects',
     },
     {
       condition: [
-        "$1 = open('$2')",
+        '$1 = open(\'$2\')',
       ],
       consequent: [
-        "with open('$2') as $1:",
+        'with open(\'$2\') as $1:',
       ],
     },
   ];

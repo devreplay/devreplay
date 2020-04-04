@@ -1,44 +1,52 @@
-const javascript = require("./javascript");
+const javascript = require('./javascript');
 
 module.exports = [
-    {
-      condition: [
-        'const $1: $3 = $2;'
-      ],
-      consequent: [
-        'const $1 = $2;'
-      ]
-    },
-    {
-      condition: [
-        'isInstanceOf<${1:MyType}>'
-      ],
-      consequent: [
-        'isA<${1:MyType}>'
-      ]
-    },
-    {
-      condition: [
-        'throws'
-      ],
-      consequent: [
-        'throwsA'
-      ]
-    },
-    {
-      condition: [
-        'null'
-      ],
-      consequent: [
-        'undefined'
-      ]
-    },
-    {
-      condition: [
-        '$1.forEach($2 => {'
-      ],
-      consequent: [
-        'for (const $2 in $1) {'
-      ]
-    }
-].concat(javascript)
+  {
+    condition: [
+      'interface I$1'
+    ],
+    consequent: [
+      'interface $1'
+    ],
+    description: 'Don\'t prefix with I',
+    author: 'basarat/typescript-book'
+  },
+  {
+    condition: [
+      'return null'
+    ],
+    consequent: [
+      'return undefined'
+    ],
+    description: 'Use null where its a part of the API or conventional',
+    author: 'basarat/typescript-book'
+  },
+  {
+    condition: [
+      'cb(undefined)'
+    ],
+    consequent: [
+      'cb(null)'
+    ],
+    description: 'Use truthy check for objects being null or undefined',
+    author: 'basarat/typescript-book'
+  },
+  {
+    condition: [
+      '$1 === null'
+    ],
+    consequent: [
+      '$1'
+    ],
+    author: 'basarat/typescript-book'
+  },
+  {
+    condition: [
+      'error !== null'
+    ],
+    consequent: [
+      'error != null'
+    ],
+    author: 'basarat/typescript-book'
+  }
+].concat(javascript);

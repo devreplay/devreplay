@@ -2,8 +2,8 @@ module.exports = [
     {
         condition: ['elseif'],
         consequent: ['else if'],
-        description: "All control keywords look like single words",
-        author: "WordPress Coding Standards Docs"
+        description: 'All control keywords look like single words',
+        author: 'WordPress Coding Standards Docs'
     },
     {
         condition: ['preg_replace($1/e'],
@@ -15,4 +15,4 @@ module.exports = [
         consequent: ['<?php echo "\$$1"; ?>'],
         description: 'Never use shorthand PHP start tags. Always use full PHP tags',
     }
-]
+];

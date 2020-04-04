@@ -78,4 +78,4 @@ module.exports = [
       ],
       description: 'Don\'t ignore exceptions'
     }
-  ]
+  ];

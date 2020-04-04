@@ -2,27 +2,27 @@ module.exports = [
   {
     condition: ['if (${1:val1} = ${2:val2})'],
     consequent: ['if (${1:val1} == ${2:val2})'],
-    author: "future-architect"
+    author: 'future-architect'
   },
   {
     condition: ['XMLHTTPRequest'],
     consequent: ['XmlHttpRequest'],
-    author: "Google Java Style Guide"
+    author: 'Google Java Style Guide'
   },
   {
     condition: ['newCustomerID'],
     consequent: ['newCustomerId'],
-    author: "Google Java Style Guide"
+    author: 'Google Java Style Guide'
   },
   {
     condition: ['innerStopWatch'],
     consequent: ['innerStopwatch'],
-    author: "Google Java Style Guide"
+    author: 'Google Java Style Guide'
   },
   {
     condition: ['supportsIPv6OnIOS'],
     consequent: ['supportsIpv6OnIos'],
-    author: "Google Java Style Guide"
+    author: 'Google Java Style Guide'
   },
   {
     condition: ['$1 = $2 = $3'],
@@ -30,12 +30,12 @@ module.exports = [
       '$1 = $3',
       '$2 = $3'
     ],
-    author: "Oracle"
+    author: 'Oracle'
   },
   {
     condition: ['if (${1:val1}++ = ${2:val2}++)'],
     consequent: ['if ((${1:val1}++ = ${2:val2}++) != 0)'],
-    author: "Oracle"
+    author: 'Oracle'
   },
   {
     condition: ['$4 = ($1 = $2 + $3) + $5;'],
@@ -43,12 +43,12 @@ module.exports = [
       '$1 = $2 + $3',
       '$4 = $1 + $5'
     ],
-    author: "Oracle"
+    author: 'Oracle'
   },
   {
     condition: ['$1 == $2 && $3 == $4'],
     consequent: ['($1 == $2) && ($3 == $4)'],
-    author: "Oracle"
+    author: 'Oracle'
   },
   {
     condition: [
@@ -58,7 +58,7 @@ module.exports = [
       '    return false;',
       '}'],
     consequent: ['return ${1:booleanExpression}'],
-    author: "Oracle"
+    author: 'Oracle'
   },
   {
     condition: [
@@ -68,7 +68,7 @@ module.exports = [
       '    return ${3:y};',
       '}'],
     consequent: ['return (${1:condition} ? ${2:x} : ${3:y})'],
-    author: "Oracle"
+    author: 'Oracle'
   },
   {
     condition: [
@@ -77,44 +77,44 @@ module.exports = [
       '}',
       'return ${3:y};'],
     consequent: ['return (${1:condition} ? ${2:x} : ${3:y})'],
-    author: "Oracle"
+    author: 'Oracle'
   },
   {
     condition: ['$1 ++'],
     consequent: ['$1++'],
-    author: "future-architect"
+    author: 'future-architect'
   },
   {
     condition: ['if (${1:condition})'],
     consequent: ['if (${1:condition} == true)'],
-    author: "future-architect"
+    author: 'future-architect'
   },
   {
     condition: ['${1:scope} ${2:type} ${3:val1}, ${4:val2};'],
     consequent: [
       '${1:scope} ${2:type} ${3:val1};',
       '${1:scope} ${2:type} ${3:val2};'],
-      author: "future-architect"
+      author: 'future-architect'
   },
   {
     condition: ['${1:type} ${2:val}[] ='],
     consequent: ['${1:type}[] ${2:val} ='],
-    author: "future-architect"
+    author: 'future-architect'
   },
   {
     condition: ['final List<${1:type}> ${2:values} = Arrays.asList'],
     consequent: ['final List<${1:type}> ${2:values} = List.of'],
-    author: "future-architect"
+    author: 'future-architect'
   },
   {
     condition: ['new String();'],
     consequent: ['"";'],
-    author: "future-architect"
+    author: 'future-architect'
   },
   {
     condition: ['new StringBuilder($1).append($2).toString()'],
     consequent: ['$1 + $2'],
-    author: "future-architect"
+    author: 'future-architect'
   },
   {
     condition: [
@@ -270,4 +270,4 @@ module.exports = [
       'Cursor.WAIT_CURSOR'
     ]
   }
-]
+];

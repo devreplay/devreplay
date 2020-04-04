@@ -122,7 +122,7 @@ module.exports = [
       consequent: [
         '$1'
       ],
-      severity: "Information"
+      severity: 'Information'
     },
     {
       condition: [
@@ -131,7 +131,7 @@ module.exports = [
       consequent: [
         '$1'
       ],
-      severity: "Information"
+      severity: 'Information'
     },
     {
       condition: [
@@ -140,7 +140,7 @@ module.exports = [
       consequent: [
         '$1'
       ],
-      severity: "Information"
+      severity: 'Information'
     },
     {
       condition: [
@@ -149,7 +149,7 @@ module.exports = [
       consequent: [
         '$1'
       ],
-      severity: "Information"
+      severity: 'Information'
     },
     {
       condition: [
@@ -184,4 +184,4 @@ module.exports = [
         '@override'
       ]
     }
-  ]
+  ];
