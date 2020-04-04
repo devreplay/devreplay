@@ -12,40 +12,12 @@ module.exports = [
     },
     {
       condition: [
-        'if ${1:value} % ${2:value} != 0:',
+        'if len(${1:list}) == 0:',
       ],
       consequent: [
-        'if ${1:value} % ${2:value}:',
+        'if not ${1:list}:',
       ],
-      description: 'It can not cover when value is null',
-      severity: 'I',
-      author: 'Google Guideline',
-    },
-    {
-      condition: [
-        'if ${1:value} % ${2:value} == 0:',
-      ],
-      consequent: [
-        'if not ${1:value} % ${2:value}:',
-      ],
-    },
-    {
-      condition: [
-        'string.split(${1:value}, ${2:string})',
-      ],
-      consequent: [
-        '${1:value}.split(${2:string})',
-      ],
-      message: 'Deprecated language feature',
-    },
-    {
-      condition: [
-        'apply(${1:fn}, ${2:args}, ${3:kwargs})',
-      ],
-      consequent: [
-        '${1:fn}(*${2:args}, **${3:kwargs})',
-      ],
-      message: 'Deprecated language feature',
+      author: 'Google Python Style Guide',
     },
     {
       condition: [
@@ -54,6 +26,7 @@ module.exports = [
       consequent: [
         'if ${1:list}:',
       ],
+      author: 'Google Python Style Guide',
     },
     {
       condition: [
@@ -62,14 +35,7 @@ module.exports = [
       consequent: [
         'if ${1:list}:',
       ],
-    },
-    {
-      condition: [
-        'if len(${1:list}) == 0:',
-      ],
-      consequent: [
-        'if not ${1:list}:',
-      ],
+      author: 'Google Python Style Guide',
     },
     {
       condition: [
@@ -78,6 +44,7 @@ module.exports = [
       consequent: [
         'if not ${1:list}:',
       ],
+      author: 'Google Python Style Guide',
     },
     {
       condition: [
@@ -86,6 +53,56 @@ module.exports = [
       consequent: [
         'if ${1:list}:',
       ],
+      author: 'Google Python Style Guide',
+    },
+    {
+      condition: [
+        'if ${1:val} is not None and not ${1:val}:',
+      ],
+      consequent: [
+        'if ${1:val} == 0:',
+      ],
+      author: 'Google Python Style Guide',
+    },
+    {
+      condition: [
+        'if ${1:value} % ${2:value}:',
+      ],
+      consequent: [
+        'if ${1:value} % ${2:value} != 0:',
+      ],
+      description: 'When handling integers, implicit false may involve more risk than benefit',
+      author: 'Google Python Style Guide',
+    },
+    {
+      condition: [
+        'if not ${1:value} % ${2:value}:',
+      ],
+      consequent: [
+        'if ${1:value} % ${2:value} == 0:',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'When handling integers, implicit false may involve more risk than benefit'
+    },
+    {
+      condition: [
+        'string.split(${1:value}, ${2:string})',
+      ],
+      consequent: [
+        '${1:value}.split(${2:string})',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Deprecated language feature',
+    },
+    {
+      condition: [
+        'apply(${1:fn}, ${2:args}, ${3:kwargs})',
+      ],
+      consequent: [
+        '${1:fn}(*${2:args}, **${3:kwargs})',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Deprecated language feature',
     },
     {
       condition: [
@@ -94,6 +111,7 @@ module.exports = [
       consequent: [
         'if ${1:value} is None:',
       ],
+      author: 'Google Python Style Guide',
     },
     {
       condition: [
@@ -102,6 +120,7 @@ module.exports = [
       consequent: [
         'if ${1:value} is not None:',
       ],
+      author: 'Google Python Style Guide',
     },
     {
       condition: [
@@ -261,4 +280,127 @@ module.exports = [
         'with open(\'$2\') as $1:',
       ],
     },
+    {
+      condition: [
+        'assert $1 >= $2',
+        ''
+      ],
+      consequent: [
+        'if minimum < $2:',
+        '   raise ValueError()',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Make use of built-in exception classes when it makes sense'
+    },
+    {
+      condition: [
+        'assert $1 >= $2, $3',
+      ],
+      consequent: [
+        'if minimum < $2:',
+        '   raise ValueError($3)',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Make use of built-in exception classes when it makes sense'
+    },
+    {
+      condition: [
+        'except $1, $2:',
+      ],
+      consequent: [
+        'except $1 as $2:',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'When capturing an exception, use as rather than a comma'
+    },
+    {
+      condition: [
+        'for $1 in $2.keys():',
+      ],
+      consequent: [
+        'for $1 in $2:',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Never use Python 2 specific iteration method'
+    },
+    {
+      condition: [
+        'if not $1.has_key($2):',
+      ],
+      consequent: [
+        'if $2 not in $1',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Never use Python 2 specific iteration method'
+    },
+    {
+      condition: [
+        'for $1 in $2.readlines():',
+      ],
+      consequent: [
+        'for $1 in $2',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Never use Python 2 specific iteration method'
+    },
+    {
+      condition: [
+        'for $1, $2 in $3.iteritems():',
+      ],
+      consequent: [
+        'for $1, $2 in $3.items():',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Never use Python 2 specific iteration method'
+    },
+    {
+      condition: [
+        'lambda $1, $2: $1 * $2',
+      ],
+      consequent: [
+        'operator.mul($1, $2)',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'Use the functions from the operator module instead of lambda functions'
+    },
+    {
+      condition: [
+        '\'%s%s\' % ($1, $2)',
+      ],
+      consequent: [
+        '$1 + $2',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'use + in this case'
+    },
+    {
+      condition: [
+        '\'{}{}\'.format($1, $2)',
+      ],
+      consequent: [
+        '$1 + $2',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'use + in this case'
+    },
+    {
+      condition: [
+        ': Text',
+      ],
+      consequent: [
+        ': str',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'For Python 3 only code, prefer to use str'
+    },
+    {
+      condition: [
+        'Text(',
+      ],
+      consequent: [
+        'str(',
+      ],
+      author: 'Google Python Style Guide',
+      description: 'For Python 3 only code, prefer to use str'
+    }
   ];
