@@ -87,16 +87,36 @@ $ devreplay yourfile.py
 I:yourfile.py:15:Value exchanging can be one line by Yuki Ueda
 ```
 
-## Supported Language
 
-* C/CPP
-* Java
-* JavaScript/TypeScript
-* Python
-* Ruby
-* Go
-* PHP
-* R
+Also, you can use default rules by extends some rules such as
+```json
+[
+  {
+    "extends": ["typescript", "react", "vscode"]
+  }
+]
+```
+## Default rule languages
+
+* c
+* cpp
+* dart
+* cobol
+* java
+* javaScript
+* typeScript
+* python
+* ruby
+* go
+* php
+
+## Defaulr rule frameworks
+
+* Angular
+* chainer2pytouch
+* tensorflow
+* rails
+* vue
 
 ### [Contribution Link](https://github.com/devreplay/devreplay/blob/master/CONTRIBUTING.md)
 
@@ -107,7 +127,7 @@ This package is made based on
 * [vscode-python](https://github.com/Microsoft/vscode-python/blob/master/src/client/language/tokenizer.ts)
 * [vscode-textmate](https://github.com/microsoft/vscode-textmate)
 
-DevReplay is supported by 2019 Exploratory IT Human Resources Project [The MITOU Program](https://www.ipa.go.jp/jinzai/mitou/portal_index.html), Support Center for Advanced Telecommunications (SCAT) Technology Research, Foundation, JSPS KAKENHI Grant Numbers JP18H03222, JP17H00731, JP15H02683, and JP18KT0013.
+DevReplay is supported by 2019 Exploratory IT Human Resources Project [The MITOU Program](https://www.ipa.go.jp/jinzai/mitou/portal_index.html), JSPS KAKENHI Grant Numbers JP17H00731, JP15H02683, JP18H03221, and JP18KT0013.
 
 ## License
 

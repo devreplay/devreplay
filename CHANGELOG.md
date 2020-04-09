@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.9
+
+* Fix the vulnerability
+
 ## 1.2.8
 
 * Add position informations
