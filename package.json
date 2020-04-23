@@ -13,6 +13,7 @@
     "compile": "tsc -p src",
     "publish:local": "sh ./scripts/npmPublish.sh",
     "test": "node ./bin/devreplay test/files/test.py test/rules/devreplay.json",
+    "test:all": "node ./bin/devreplay --dir test/files test/rules/devreplay.json",
     "test:fix": "node ./bin/devreplay --fix test/files/test.py test/rules/devreplay.json",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile test"

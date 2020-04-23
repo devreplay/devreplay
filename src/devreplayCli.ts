@@ -2,17 +2,20 @@ import commander = require('commander');
 
 import { fixFromFile, formatILintOut, lintFromFile } from './lint';
 import { arrayify } from './utils';
+import path = require('path');
+import fs = require('fs');
 
 interface IArgv {
     fix?: boolean;
     init?: boolean;
+    dir?: boolean;
     out?: string;
 }
 
 interface IOption {
     short?: string;
     // Commander will camelCase option names.
-    name: keyof IArgv | 'fix' | 'init';
+    name: keyof IArgv | 'fix' | 'init' | 'dir';
     type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
     description: string; // Long, used for `--help`
@@ -25,6 +28,12 @@ const options: IOption[] = [
         describe: 'fix the file',
         description: 'fix the file',
     },
+    {
+        name: 'dir',
+        type: 'boolean',
+        describe: 'target the directory files',
+        description: 'target the directory files'
+    }
 ];
 
 for (const option of options) {
@@ -54,22 +63,42 @@ if (
     process.exit(1);
 }
 
-const files = arrayify(commander.args);
-const fileName = files[0];
 let ruleFileName: string | undefined;
 
-if (files.length >= 2) {
-    ruleFileName = files[1];
+if (argv.dir) {
+    const files = arrayify(commander.args);
+    const dirName = files[0];
+    if (files.length >= 2) {
+        ruleFileName = files[1];
+    }
+    fs.readdirSync(dirName).forEach(fileName => {
+        fileName = path.join(dirName, fileName);
+        if (argv.fix === true) {
+            const results = fixFromFile(fileName, ruleFileName);
+            console.log(results);
+        } else {
+            const results = lintFromFile(fileName, ruleFileName);
+            for (const result of results) {
+                console.log(formatILintOut(result));
+            }
+        }
+      });
 }
-
-if (argv.fix === true) {
-    const results = fixFromFile(fileName, ruleFileName);
-    console.log(results);
-} else {
-    console.log(fileName);
-    const results = lintFromFile(fileName, ruleFileName);
-    for (const result of results) {
-        console.log(formatILintOut(result));
+else{
+    const files = arrayify(commander.args);
+    const fileName = files[0];
+    if (files.length >= 2) {
+        ruleFileName = files[1];
+    }
+    if (argv.fix === true) {
+        const results = fixFromFile(fileName, ruleFileName);
+        console.log(results);
+    } else {
+        console.log(fileName);
+        const results = lintFromFile(fileName, ruleFileName);
+        for (const result of results) {
+            console.log(formatILintOut(result));
+        }
     }
 }
 
