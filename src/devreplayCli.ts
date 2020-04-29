@@ -71,8 +71,9 @@ if (argv.dir) {
     if (files.length >= 2) {
         ruleFileName = files[1];
     }
-    fs.readdirSync(dirName).forEach(fileName => {
-        fileName = path.join(dirName, fileName);
+    const fileNames = getAllFiles(dirName);
+
+    for (const fileName of fileNames) {
         if (argv.fix === true) {
             const results = fixFromFile(fileName, ruleFileName);
             console.log(results);
@@ -82,9 +83,8 @@ if (argv.dir) {
                 console.log(formatILintOut(result));
             }
         }
-      });
-}
-else{
+      }
+} else{
     const files = arrayify(commander.args);
     const fileName = files[0];
     if (files.length >= 2) {
@@ -123,4 +123,17 @@ function collect(val: string, memo: string[]) {
     memo.push(val);
 
     return memo;
+}
+
+function getAllFiles(dirName: string) {
+    const dirents = fs.readdirSync(dirName, { withFileTypes: true });
+    const filesNames: string[] = [];
+    for (const files of dirents) {
+        if (files.isDirectory()){
+            filesNames.push(...getAllFiles(path.join(dirName, files.name)));
+        } else {
+            filesNames.push(path.join(dirName, files.name));
+        }
+    }
+    return filesNames;
 }
