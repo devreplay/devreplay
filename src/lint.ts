@@ -191,7 +191,7 @@ export function makeSeverity(severity?: string) {
 
 export function makeFullSeverity(severity?: string) {
     if (severity === undefined) {
-        return 'W';
+        return 'Warning';
     }
     let outSeverity;
     if (severity.toUpperCase().startsWith('E')) {
