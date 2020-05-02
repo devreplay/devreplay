@@ -1,4 +1,4 @@
-import { IPattern } from './patterns';
+import { Pattern } from './patterns';
 
 const android = require('./rules/android');
 const angular = require('./rules/angular');
@@ -20,7 +20,7 @@ const vscode = require('./rules/vscode');
 const vue = require('./rules/vue');
 
 interface IExtend {
-    [key: string]: IPattern[];
+    [key: string]: Pattern[];
 }
 
 export const extend: IExtend = {

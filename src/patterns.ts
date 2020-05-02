@@ -1,4 +1,4 @@
-export interface IPattern {
+export interface Pattern {
     condition: string[];
     consequent: string[];
     extends?: string[];

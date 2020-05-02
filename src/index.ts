@@ -1,6 +1,7 @@
 import { extend } from './extend';
-import { code2String, fixFromFile, fixWithPattern,
-         ILintOut, lint, lintFromFile, lintWithPattern, makeSeverity, makeFullSeverity } from './lint';
-import { IPattern } from './patterns';
+import { fixFromFile, fixWithPattern,
+         lint, lintFromFile, lintWithPattern } from './lint';
+import { LintOut, code2String, makeSeverity, makeFullSeverity } from './output';
+import { Pattern } from './patterns';
 export { code2String, extend, fixFromFile, fixWithPattern,
-         ILintOut, lint, lintFromFile, lintWithPattern, makeSeverity, makeFullSeverity, IPattern  };
+         LintOut, lint, lintFromFile, lintWithPattern, makeSeverity, makeFullSeverity, Pattern  };

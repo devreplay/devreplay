@@ -1,18 +1,7 @@
 import { tryReadFile } from './file';
-import { IPattern } from './patterns';
+import { Pattern } from './patterns';
 import { readPatternFile } from './rulemanage';
-
-export interface Position {
-    line: number;
-    character: number;
-}
-
-export interface ILintOut {
-    pattern: IPattern;
-    snippet: string;
-    fileName: string;
-    position: { start: Position; end: Position};
-}
+import { LintOut } from './output';
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string) {
     const patterns = readPatternFile(fileName, ruleFileName);
@@ -21,8 +10,8 @@ export function lint(fileName: string, fileContents: string, ruleFileName?: stri
     return adoptablePatterns;
 }
 
-export function lintWithPattern(fileName: string, contents: string, patterns: IPattern[]) {
-    const matched: ILintOut[] = [];
+export function lintWithPattern(fileName: string, contents: string, patterns: Pattern[]) {
+    const matched: LintOut[] = [];
     for (const pattern of patterns) {
 
         if (!verifyPattern(pattern)) { continue; }
@@ -38,7 +27,7 @@ export function lintWithPattern(fileName: string, contents: string, patterns: IP
     return matched;
 }
 
-export function fixWithPattern(fileContents: string, pattern: IPattern) {
+export function fixWithPattern(fileContents: string, pattern: Pattern) {
     if (pattern.consequent.length === 0 || pattern.condition.length === 0) {
         return '';
     }
@@ -139,7 +128,7 @@ function makeSnippetRegex(condition: string[], contents: string) {
     return undefined;
 }
 
-function verifyPattern(pattern: IPattern) {
+function verifyPattern(pattern: Pattern) {
     return Array.isArray(pattern.condition) && Array.isArray(pattern.consequent);
 }
 
@@ -163,65 +152,4 @@ function makePatternPosition(result: RegExpExecArray) {
             line: endLine,
             character: endChar
         }};
-}
-
-export function formatILintOut(matched: ILintOut) {
-    return `${makeFullSeverity(matched.pattern.severity)}:${matched.fileName}:${matched.position.start.line},${matched.position.start.character}: ${code2String(matched.pattern)}`;
-}
-
-export function makeSeverity(severity?: string) {
-    if (severity === undefined) {
-        return 'W';
-    }
-    let outSeverity;
-    if (severity.toUpperCase().startsWith('E')) {
-        outSeverity = 'E';
-    } else if (severity.toUpperCase().startsWith('W')) {
-        outSeverity = 'W';
-    } else if (severity.toUpperCase().startsWith('I')) {
-        outSeverity = 'I';
-    } else if (severity.toUpperCase().startsWith('H')) {
-        outSeverity = 'H';
-    } else {
-        outSeverity = 'W';
-    }
-
-    return outSeverity;
-}
-
-export function makeFullSeverity(severity?: string) {
-    if (severity === undefined) {
-        return 'Warning';
-    }
-    let outSeverity;
-    if (severity.toUpperCase().startsWith('E')) {
-        outSeverity = 'Error';
-    } else if (severity.toUpperCase().startsWith('W')) {
-        outSeverity = 'Warning';
-    } else if (severity.toUpperCase().startsWith('I')) {
-        outSeverity = 'Info';
-    } else if (severity.toUpperCase().startsWith('H')) {
-        outSeverity = 'Hint';
-    } else {
-        outSeverity = 'Error';
-    }
-
-    return outSeverity;
-}
-
-export function code2String(pattern: IPattern) {
-    if (pattern.description !== undefined) {
-        if (pattern.author !== undefined) {
-            return `${pattern.description} by ${pattern.author}`;
-        }
-
-        return pattern.description;
-    }
-    const description = `${pattern.condition.join('')} should be ${pattern.consequent.join('')}`;
-
-    if (pattern.author !== undefined) {
-        return `${description} by ${pattern.author}`;
-    }
-
-    return description;
 }

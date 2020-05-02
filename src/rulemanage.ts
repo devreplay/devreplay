@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'fs';
 
 import { extend as Extend, getInitPattern } from './extend';
-import { IPattern } from './patterns';
+import { Pattern } from './patterns';
 
 export function readPatternFile(fileName: string, ruleFileName?: string) {
     let location;
@@ -14,8 +14,8 @@ export function readPatternFile(fileName: string, ruleFileName?: string) {
     }
     const patternContent = readFileSync(location).toString();
     try {
-        const patternJson = JSON.parse(patternContent) as IPattern[];
-        const patterns: IPattern[] = [];
+        const patternJson = JSON.parse(patternContent) as Pattern[];
+        const patterns: Pattern[] = [];
         for (const pattern of patternJson) {
             if (pattern.extends === undefined) {
                 patterns.push(pattern);
@@ -35,7 +35,7 @@ export function readPatternFile(fileName: string, ruleFileName?: string) {
     }
 }
 
-function readExtends(extend: string): IPattern[] {
+function readExtends(extend: string): Pattern[] {
     let location;
     if (Extend[extend] !== undefined) {
         return Extend[extend];
@@ -47,8 +47,8 @@ function readExtends(extend: string): IPattern[] {
     }
     const patternContent = readFileSync(location).toString();
     try {
-        const patternJson = JSON.parse(patternContent) as IPattern[];
-        const patterns: IPattern[] = [];
+        const patternJson = JSON.parse(patternContent) as Pattern[];
+        const patterns: Pattern[] = [];
         for (const pattern of patternJson) {
             if (pattern.extends === undefined) {
                 patterns.push(pattern);

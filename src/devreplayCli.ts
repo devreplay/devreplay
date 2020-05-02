@@ -1,6 +1,7 @@
 import commander = require('commander');
 
-import { fixFromFile, formatILintOut, lintFromFile } from './lint';
+import { fixFromFile, lintFromFile } from './lint';
+import { outputLintOut } from './output';
 import { arrayify } from './utils';
 import path = require('path');
 import fs = require('fs');
@@ -80,7 +81,7 @@ if (argv.dir) {
         } else {
             const results = lintFromFile(fileName, ruleFileName);
             for (const result of results) {
-                console.log(formatILintOut(result));
+                outputLintOut(result);
             }
         }
       }
@@ -94,10 +95,9 @@ if (argv.dir) {
         const results = fixFromFile(fileName, ruleFileName);
         console.log(results);
     } else {
-        console.log(fileName);
         const results = lintFromFile(fileName, ruleFileName);
         for (const result of results) {
-            console.log(formatILintOut(result));
+            outputLintOut(result);
         }
     }
 }
