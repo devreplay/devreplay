@@ -6,23 +6,23 @@ import { arrayify } from './utils';
 import path = require('path');
 import fs = require('fs');
 
-interface IArgv {
+interface Argv {
     fix?: boolean;
     init?: boolean;
     dir?: boolean;
     out?: string;
 }
 
-interface IOption {
+interface Option {
     short?: string;
     // Commander will camelCase option names.
-    name: keyof IArgv | 'fix' | 'init' | 'dir';
+    name: keyof Argv | 'fix' | 'init' | 'dir';
     type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
     description: string; // Long, used for `--help`
 }
 
-const options: IOption[] = [
+const options: Option[] = [
     {
         name: 'fix',
         type: 'boolean',
@@ -37,76 +37,89 @@ const options: IOption[] = [
     }
 ];
 
-for (const option of options) {
-    const commanderStr = optionUsageTag(option) + optionParam(option);
-    if (option.type === 'array') {
-        commander.option(commanderStr, option.describe, collect, []);
-    } else {
-        commander.option(commanderStr, option.describe);
-    }
-}
-
-// Hack to get unknown option errors to work. https://github.com/visionmedia/commander.js/pull/121
-const parsed = commander.parseOptions(process.argv.slice(2));
-commander.args = parsed.operands;
-if (parsed.unknown.length !== 0) {
-    (commander.parseArgs as (args: string[], unknown: string[]) => void)([], parsed.unknown);
-}
-const argv = commander.opts() as IArgv;
-
-if (
-    !(
-        argv.init === undefined ||
-        commander.args.length > 0
-    )
-) {
-    console.error('No files specified. Use --project to lint a project folder.');
-    process.exit(1);
-}
-
-let ruleFileName: string | undefined;
-
-if (argv.dir) {
-    const files = arrayify(commander.args);
-    const dirName = files[0];
-    if (files.length >= 2) {
-        ruleFileName = files[1];
-    }
-    const fileNames = getAllFiles(dirName);
-
-    for (const fileName of fileNames) {
-        if (argv.fix === true) {
-            const results = fixFromFile(fileName, ruleFileName);
-            console.log(results);
-        } else {
-            const results = lintFromFile(fileName, ruleFileName);
-            for (const result of results) {
-                outputLintOut(result);
+const cli = {
+    execute() {
+        for (const option of options) {
+            const commanderStr = optionUsageTag(option) + optionParam(option);
+            if (option.type === 'array') {
+                commander.option(commanderStr, option.describe, collect, []);
+            } else {
+                commander.option(commanderStr, option.describe);
             }
         }
-      }
-} else{
-    const files = arrayify(commander.args);
-    const fileName = files[0];
-    if (files.length >= 2) {
-        ruleFileName = files[1];
-    }
-    if (argv.fix === true) {
-        const results = fixFromFile(fileName, ruleFileName);
-        console.log(results);
-    } else {
-        const results = lintFromFile(fileName, ruleFileName);
-        for (const result of results) {
-            outputLintOut(result);
+
+        // Hack to get unknown option errors to work. https://github.com/visionmedia/commander.js/pull/121
+        const parsed = commander.parseOptions(process.argv.slice(2));
+        commander.args = parsed.operands;
+        if (parsed.unknown.length !== 0) {
+            (commander.parseArgs as (args: string[], unknown: string[]) => void)([], parsed.unknown);
+        }
+        const argv = commander.opts() as Argv;
+
+        if (
+            !(
+                argv.init === undefined ||
+                commander.args.length > 0
+            )
+        ) {
+            console.error('No files specified. Use --project to lint a project folder.');
+            return 2;
+        }
+
+        let ruleFileName: string | undefined;
+
+        if (argv.dir) {
+            const files = arrayify(commander.args);
+            const dirName = files[0];
+            if (files.length >= 2) {
+                ruleFileName = files[1];
+            }
+            const fileNames = getAllFiles(dirName);
+            let results_length = 0;
+
+            for (const fileName of fileNames) {
+                if (argv.fix === true) {
+                    const results = fixFromFile(fileName, ruleFileName);
+                    console.log(results);
+                    return 0;
+                } else {
+                    const results = lintFromFile(fileName, ruleFileName);
+                    for (const result of results) {
+                        outputLintOut(result);
+                    }
+                    results_length += results.length;
+                }
+            }
+            return results_length === 0 ? 0 : 1;
+        } else{
+            const files = arrayify(commander.args);
+            const fileName = files[0];
+            if (files.length >= 2) {
+                ruleFileName = files[1];
+            }
+            let results_length = 0;
+
+            if (argv.fix === true) {
+                const results = fixFromFile(fileName, ruleFileName);
+                console.log(results);
+                return 0;
+            } else {
+                const results = lintFromFile(fileName, ruleFileName);
+                for (const result of results) {
+                    outputLintOut(result);
+                }
+                results_length += results.length;
+            }
+            return results_length === 0 ? 0 : 1;
         }
     }
-}
+};
 
-function optionUsageTag({ short, name }: IOption) {
+function optionUsageTag({ short, name }: Option) {
     return short !== undefined ? `-${short}, --${name}` : `--${name}`;
 }
 
-function optionParam(option: IOption) {
+function optionParam(option: Option) {
     switch (option.type) {
         case 'string':
             return ` [${option.name}]`;
@@ -137,3 +150,5 @@ function getAllFiles(dirName: string) {
     }
     return filesNames;
 }
+
+module.exports = cli;
