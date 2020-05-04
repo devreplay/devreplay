@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -17,7 +17,7 @@
     "test:fix": "node ./bin/devreplay --fix test/files/test.py test/rules/devreplay.json",
     "test:all": "yarn run test && yarn run test:dir && yarn run test:fix",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
-    "verify": "npm-run-all clean compile test"
+    "verify": "npm-run-all clean compile"
   },
   "dependencies": {
     "@babel/code-frame": "^7.8.3",
