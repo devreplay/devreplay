@@ -57,15 +57,15 @@ export function makeSeverity(severity?: string) {
 export function makeFullSeverity(severity?: string) {
     const fixed_severity = makeSeverity(severity);
     if (fixed_severity === 'E') {
-        return chalk.default.red('error');
+        return chalk.red('error');
     } if (fixed_severity === 'W') {
-        return chalk.default.yellow('warning');
+        return chalk.yellow('warning');
     } if (fixed_severity === 'I') {
-        return chalk.default.blue('information');
+        return chalk.blue('information');
     } if (fixed_severity === 'H') {
-        return chalk.default.gray('hint');
+        return chalk.gray('hint');
     }
-    return chalk.default.gray('hint');
+    return chalk.gray('hint');
 }
 
 export function code2String(pattern: Pattern) {
