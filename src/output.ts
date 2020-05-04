@@ -1,6 +1,8 @@
 
+import * as chalk from 'chalk';
 import { Pattern } from './patterns';
 import { Position } from './position';
+
 
 export interface LintOut {
     pattern: Pattern;
@@ -31,47 +33,39 @@ export function outputLintOut(matched: LintOut) {
 }
 
 export function formatLintOut(matched: LintOut) {
-    const severity = makeSeverity(matched.pattern.severity);
-    const position = `${matched.fileName}:${matched.position.start.line},${matched.position.start.character}`;
+    const severity = makeFullSeverity(matched.pattern.severity);
+    const position = `${matched.fileName}:${matched.position.start.line}:${matched.position.start.character}`;
     const description = `${code2String(matched.pattern)}`;
-    return `${severity}:${position}: ${description}`;
+    return `${position} ${severity} ${description}`;
 }
 
-export function makeSeverity(severity?: string): 'H' | 'I' | 'W' | 'E' {
+export function makeSeverity(severity?: string) {
     if (severity === undefined) {
         return 'W';
-    }
-    if (severity.toUpperCase().startsWith('E')) {
+    } if (severity.toUpperCase().startsWith('E')) {
         return 'E';
-    } else if (severity.toUpperCase().startsWith('W')) {
+    } if (severity.toUpperCase().startsWith('W')) {
         return 'W';
-    } else if (severity.toUpperCase().startsWith('I')) {
+    } if (severity.toUpperCase().startsWith('I')) {
         return 'I';
-    } else if (severity.toUpperCase().startsWith('H')) {
+    } if (severity.toUpperCase().startsWith('H')) {
         return 'H';
-    } else {
-        return 'W';
-    }
+    } 
+    return 'W';
 }
 
 export function makeFullSeverity(severity?: string) {
-    if (severity === undefined) {
-        return 'Warning';
+    const fixed_severity = makeSeverity(severity);
+    if (fixed_severity === 'E') {
+        return chalk.default.red('error');
+    } if (fixed_severity === 'W') {
+        return chalk.default.yellow('warning');
+    } if (fixed_severity === 'I') {
+        return chalk.default.blue('information');
+    } if (fixed_severity === 'H') {
+        return chalk.default.gray('hint');
     }
-    let outSeverity;
-    if (severity.toUpperCase().startsWith('E')) {
-        outSeverity = 'Error';
-    } else if (severity.toUpperCase().startsWith('W')) {
-        outSeverity = 'Warning';
-    } else if (severity.toUpperCase().startsWith('I')) {
-        outSeverity = 'Info';
-    } else if (severity.toUpperCase().startsWith('H')) {
-        outSeverity = 'Hint';
-    } else {
-        outSeverity = 'Error';
-    }
-
-    return outSeverity;
+    return chalk.default.gray('hint');
 }
 
 export function code2String(pattern: Pattern) {
