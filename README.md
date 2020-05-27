@@ -96,6 +96,31 @@ Also, you can use default rules by extends some rules such as
   }
 ]
 ```
+
+
+## Make patterns from two files
+
+```sh
+devreplay --init targetA.py targetB.py
+```
+
+```json
+{
+  "condition": [
+    "tmp = ${1:source.python}",
+    "${1:source.python} = ${2:source.python}",
+    "${2:source.python} = tmp"
+  ],
+  "consequent": [
+    "${1:source.python}, ${1:source.python} = ${2:source.python}, ${1:source.python}"
+  ],
+  "identifiers": [
+    "a",
+    "b",
+  ]
+}
+```
+
 ## Default rule languages
 
 * c
