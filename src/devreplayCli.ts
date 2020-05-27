@@ -1,6 +1,7 @@
 import commander = require('commander');
 
 import { fixFromFile, lintFromFile } from './lint';
+import { makePatternsFromFiles } from './makePatterns';
 import { outputLintOuts } from './output';
 import { arrayify } from './utils';
 import path = require('path');
@@ -34,6 +35,12 @@ const options: Option[] = [
         type: 'boolean',
         describe: 'target the directory files',
         description: 'target the directory files'
+    },
+    {
+        name: 'init',
+        type: 'boolean',
+        describe: 'make pattern from two files',
+        description: 'make pattern from two files'
     }
 ];
 
@@ -67,6 +74,20 @@ const cli = {
         }
 
         let ruleFileName: string | undefined;
+        if (argv.init) {
+            const files = arrayify(commander.args);
+            if (files.length < 2) {
+                console.log('Make pattern command require two files');
+                return 1;
+            }
+            const patterns = makePatternsFromFiles(files[0], files[1]);
+            if (patterns!== undefined) {
+                patterns?.then(content => {
+                    console.log(JSON.stringify(content, undefined, 2));
+                });
+            }
+            return 0;
+        }
 
         if (argv.dir) {
             const files = arrayify(commander.args);
