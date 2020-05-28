@@ -10,15 +10,14 @@ export function makePatternsFromFiles(fileNameA: string, fileNameB: string) {
     const fileContentsA = tryReadFile(fileNameA);
     const fileContentsB = tryReadFile(fileNameB);
     const filesource = getFileSource(fileNameA);
-    if (fileContentsA === undefined ||
-        fileContentsB === undefined ||
-        filesource === undefined) {
-        return undefined;
-    }
     return makePatterns(fileContentsA, fileContentsB, filesource);
 }
 
-export async function makePatterns(before: string, after: string, source: string) {
+export async function makePatterns(before?: string, after?: string, source?: string) {
+    if (before === undefined || after === undefined || source === undefined) {
+        return undefined;
+    }
+
     const beforeTokens = await tokenize(before, source);
     const afterTokens = await tokenize(after, source);
 
@@ -111,7 +110,7 @@ function checkInIdentifiers(identifiers: Identifier[], token: IToken) {
 function isAbstractable(token: IToken) {
     const scope = token.scopes[token.scopes.length - 1];
     const isAlphanumeric = token.value.match(/^([a-zA-Z][a-zA-Z0-9]*)|[0-9]+$/i);
-    return isAlphanumeric && !scope.includes('keyword') && !scope.includes('builtin');
+    return isAlphanumeric && !scope.includes('keyword') && !scope.includes('builtin') && !scope.includes('storage');
 }
 
 
