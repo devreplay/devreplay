@@ -31,7 +31,7 @@ export function fixWithPattern(fileContents: string, pattern: Pattern) {
     if (pattern.consequent.length === 0 || pattern.condition.length === 0) {
         return '';
     }
-    const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
+    const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
     const consequent = pattern.consequent.join('\n').replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
     const reCondition = conditon2regex2(pattern.condition);
 
@@ -69,7 +69,7 @@ export function fixFromFile(fileName: string, ruleFileName?: string) {
 }
 
 function conditon2regex2(condition: string[]) {
-    const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
+    const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join('\n');
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
     joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, '\\$&');
@@ -92,7 +92,7 @@ function conditon2regex2(condition: string[]) {
 }
 
 function conditon2regex(condition: string[]) {
-    const dollar = /\${?(\d+)(:[a-zA-Z0-9_]+})?/gm;
+    const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join('\n');
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
     joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, '\\$&');
