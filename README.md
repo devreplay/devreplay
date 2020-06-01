@@ -98,7 +98,7 @@ Also, you can use default rules by extends some rules such as
 ```
 
 
-## Make patterns from two files
+<!-- ## Make patterns from two files
 
 ```sh
 devreplay --init targetA.py targetB.py
@@ -119,7 +119,7 @@ devreplay --init targetA.py targetB.py
     "b",
   ]
 }
-```
+``` -->
 
 ## Default rule languages
 
