@@ -7,4 +7,5 @@ export interface Pattern {
     severity?: string;
     description?: string;
     link?: string;
+    identifiers?: string[];
 }

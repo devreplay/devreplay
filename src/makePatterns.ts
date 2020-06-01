@@ -1,5 +1,6 @@
 import { tokenize, IToken, getFileSource } from 'source-code-tokenizer';
 import { tryReadFile } from './file';
+import { Pattern } from './patterns';
 
 export interface Identifier {
     value: string;
@@ -13,7 +14,7 @@ export function makePatternsFromFiles(fileNameA: string, fileNameB: string) {
     return makePatterns(fileContentsA, fileContentsB, filesource);
 }
 
-export async function makePatterns(before?: string, after?: string, source?: string) {
+export async function makePatterns(before?: string, after?: string, source?: string): Promise<Pattern|undefined> {
     if (before === undefined || after === undefined || source === undefined) {
         return undefined;
     }
@@ -112,13 +113,3 @@ function isAbstractable(token: IToken) {
     const isAlphanumeric = token.value.match(/^([a-zA-Z][a-zA-Z0-9]*)|[0-9]+$/i);
     return isAlphanumeric && !scope.includes('keyword') && !scope.includes('builtin') && !scope.includes('storage');
 }
-
-
-// function makeIdentifiersIndex(identifiers: Identifier[]) {
-//     const identIndex: string[] = [];
-//     for (let index = 0; index < identifiers.length; index++) {
-//         const identifier = identifiers[index];
-//         identIndex.push(identifier.value);
-//     }
-//     return identIndex;
-// }
