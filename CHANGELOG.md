@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.4.5
+
+* Support Regex
+
 ## 1.3.9
 
 * Fix the vulnerability
