@@ -97,6 +97,27 @@ Also, you can use default rules by extends some rules such as
 ]
 ```
 
+## Make patterns by using Regular Expression
+
+```json
+{
+  "condition": [
+    "([a-z]+)-([a-z]+)"
+],
+"consequent": [
+    "$1 $2"
+],
+"regex": true
+}
+```
+
+That will fix
+
+```diff
+- print("hello-world")
++ print("hello world")
+```
+
 
 <!-- ## Make patterns from two files
 
