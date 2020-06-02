@@ -17,10 +17,11 @@
 },
 {
   "condition": [
-    "hello"
+    "([a-z]+)-([a-z]+)"
 ],
 "consequent": [
-    "Hello"
-]
+    "$1 $2"
+],
+"regex": true
 }
 ]

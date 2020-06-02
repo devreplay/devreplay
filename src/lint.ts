@@ -15,7 +15,7 @@ export function lintWithPattern(fileName: string, contents: string, patterns: Pa
     for (const pattern of patterns) {
 
         if (!verifyPattern(pattern)) { continue; }
-        const result = makeSnippetRegex(pattern.condition, contents);
+        const result = makeSnippetRegex(pattern.condition, contents, pattern.regex);
         if (result !== undefined) {
             matched.push({pattern,
                           snippet: result[0],
@@ -32,8 +32,12 @@ export function fixWithPattern(fileContents: string, pattern: Pattern) {
         return '';
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    const consequent = pattern.consequent.join('\n').replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
-    const reCondition = conditon2regex2(pattern.condition);
+    let consequent = pattern.consequent.join('\n').replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
+
+    if (pattern.regex) {
+        consequent = pattern.consequent[0];
+    }
+    const reCondition = condition2regex2(pattern.condition, pattern.regex);
 
     if (reCondition !== undefined) {
         const matchedStr = reCondition.exec(fileContents);
@@ -68,7 +72,10 @@ export function fixFromFile(fileName: string, ruleFileName?: string) {
     return '';
 }
 
-function conditon2regex2(condition: string[]) {
+function condition2regex2(condition: string[], regex?: boolean) {
+    if (regex) {
+        return new RegExp(condition[0], 'gm');
+    }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join('\n');
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
@@ -91,7 +98,10 @@ function conditon2regex2(condition: string[]) {
     }
 }
 
-function conditon2regex(condition: string[]) {
+function condition2regex(condition: string[], regex?: boolean) {
+    if (regex) {
+        return new RegExp(condition[0], 'gm');
+    }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
     let joinedCondition = condition.length < 2 ? condition[0] : condition.join('\n');
     joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
@@ -114,8 +124,8 @@ function conditon2regex(condition: string[]) {
     }
 }
 
-function makeSnippetRegex(condition: string[], contents: string) {
-    const reCondition = conditon2regex(condition);
+function makeSnippetRegex(condition: string[], contents: string, regex?: boolean) {
+    const reCondition = condition2regex(condition, regex);
     if (reCondition !== undefined) {
         const matchedStr = reCondition.exec(contents);
         if (matchedStr !== null) {

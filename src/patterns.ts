@@ -8,4 +8,5 @@ export interface Pattern {
     description?: string;
     link?: string;
     identifiers?: string[];
+    regex?: boolean;
 }
