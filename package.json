@@ -20,17 +20,17 @@
     "verify": "npm-run-all clean compile"
   },
   "dependencies": {
-    "@babel/code-frame": "^7.8.3",
+    "@babel/code-frame": "^7.10.4",
     "@types/text-table": "^0.2.1",
     "builtin-modules": "^3.1.0",
-    "chalk": "4.0.0",
-    "commander": "^5.1.0",
+    "chalk": "4.1.0",
+    "commander": "^6.0.0",
     "text-table": "0.2.0",
-    "tslib": "^1.11.1",
+    "tslib": "^2.0.1",
     "tsutils": "^3.17.1",
     "unicode": "^12.1.0",
-    "v8-compile-cache": "^2.1.0",
-    "lodash": "^4.17.15"
+    "v8-compile-cache": "^2.1.1",
+    "lodash": "^4.17.19"
   },
   "devDependencies": {
     "@types/node": "^13.13.4",
