@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -24,27 +24,27 @@
     "@types/text-table": "^0.2.1",
     "builtin-modules": "^3.1.0",
     "chalk": "4.1.0",
-    "commander": "^6.0.0",
+    "commander": "^6.2.0",
     "text-table": "0.2.0",
-    "tslib": "^2.0.1",
+    "tslib": "^2.0.3",
     "tsutils": "^3.17.1",
     "unicode": "^12.1.0",
-    "v8-compile-cache": "^2.1.1",
-    "lodash": "^4.17.19"
+    "v8-compile-cache": "^2.2.0",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "@types/node": "^14.0.27",
+    "@types/node": "^14.14.6",
     "@types/rimraf": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^3.8.0",
-    "@typescript-eslint/parser": "^3.8.0",
-    "eslint": "^7.6.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsdoc": "^30.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
+    "eslint": "^7.12.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.5"
   },
   "engines": {
     "node": ">=10.15.0"
