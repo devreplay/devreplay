@@ -18,11 +18,11 @@ export interface LintOut {
 }
 
 export function outputLintOuts(lintouts: LintOut[]) {
-    let lintoutputs: string[][] = [],
-        errorCount = 0,
-        warningCount = 0,
-        informationCount = 0,
-        hintCount = 0;
+    const lintoutputs: string[][] = [];
+    let errorCount = 0;
+    let warningCount = 0;
+    let informationCount = 0;
+    let hintCount = 0;
     for (const lintout of lintouts) {
         const severity = makeSeverity(lintout.pattern.severity);
         lintoutputs.push(formatLintOut(lintout));

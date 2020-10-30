@@ -19,11 +19,11 @@ const tensorflow = require('./rules/tensorflow');
 const vscode = require('./rules/vscode');
 const vue = require('./rules/vue');
 
-interface IExtend {
+interface Extends {
     [key: string]: Pattern[];
 }
 
-export const extend: IExtend = {
+export const extend: Extends = {
     android,
     angular,
     c,
@@ -44,11 +44,11 @@ export const extend: IExtend = {
     vue,
 };
 
-interface ISource {
+interface Source {
     [key: string]: string[];
 }
 
-export const sources: ISource = {
+export const sources: Source = {
     c: ['.c'],
     cobol: ['.cbl', '.cblsrce', '.ocb', '.ocb'],
     cpp: ['.cpp'],
