@@ -5,7 +5,7 @@ module.exports = {
     node: true
   },
   extends: [
-    "plugin:@typescript-eslint/eslint-recommended"
+    'plugin:@typescript-eslint/eslint-recommended'
   ],
   globals: {
     Atomics: 'readonly',
@@ -18,13 +18,13 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
-    "jsdoc"
+    'jsdoc'
   ],
   rules: {
-		"semi": "error",
-		"no-extra-semi": "warn",
-		"curly": "warn",
-		"quotes": ["error", "single", { "allowTemplateLiterals": true } ],
-		"eqeqeq": "error"
+		'semi': 'error',
+		'no-extra-semi': 'warn',
+		'curly': 'warn',
+		'quotes': ['error', 'single', { 'allowTemplateLiterals': true } ],
+		'eqeqeq': 'error'
 	}
-}
+};
