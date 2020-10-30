@@ -1,6 +1,6 @@
 import { tryReadFile } from './file';
 import { Pattern } from './patterns';
-import { readPatternFile } from './rulemanage';
+import { readPatternFile } from './ruleManager';
 import { LintOut } from './output';
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string) {
