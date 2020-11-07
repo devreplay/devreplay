@@ -1,11 +1,14 @@
 import commander = require('commander');
 
 import { fixFromFile, lintFromFile } from './lint';
-// import { makePatternsFromFiles } from './makePatterns';
 import { outputLintOuts } from './output';
 import { arrayify } from './utils';
 import path = require('path');
 import fs = require('fs');
+import { Project } from './diff/gitMiner';
+import { Pattern } from './patterns';
+import { makePatternsFromDiff } from './diff/makePatterns';
+import { writePatternFile } from './ruleManager';
 
 interface Argv {
     fix?: boolean;
@@ -45,7 +48,7 @@ const options: Option[] = [
 ];
 
 const cli = {
-    execute() {
+    async execute() {
         for (const option of options) {
             const commanderStr = optionUsageTag(option) + optionParam(option);
             if (option.type === 'array') {
@@ -74,20 +77,24 @@ const cli = {
         }
 
         let ruleFileName: string | undefined;
-        // if (argv.init) {
-        //     const files = arrayify(commander.args);
-        //     if (files.length < 2) {
-        //         console.log('Make pattern command require two files');
-        //         return 1;
-        //     }
-        //     const patterns = makePatternsFromFiles(files[0], files[1]);
-        //     if (patterns!== undefined) {
-        //         patterns?.then(content => {
-        //             console.log(JSON.stringify(content, undefined, 2));
-        //         });
-        //     }
-        //     return 0;
-        // }
+        if (argv.init) {
+            const files = arrayify(commander.args);
+            const dirName = files[0];
+            let logLength = 10;
+            if (files.length > 1 && !isNaN(Number(files[1]))) {
+                logLength = Number(files[1]);
+            }
+            const project = new Project(dirName);
+            const diffs = await project.getDiff(logLength);
+            let allPatterns: Pattern[] = [];
+            for (const diff of diffs) {
+                const patterns = await makePatternsFromDiff(diff);
+                allPatterns = allPatterns.concat(patterns);
+            }
+            writePatternFile(allPatterns, dirName);
+
+            return 0;
+        }
 
         if (argv.dir) {
             const files = arrayify(commander.args);

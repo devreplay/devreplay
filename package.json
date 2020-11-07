@@ -15,6 +15,7 @@
     "test": "node ./bin/devreplay test/files/test.py test/rules/devreplay.json",
     "test:dir": "node ./bin/devreplay --dir ./test test/rules/devreplay.json",
     "test:fix": "node ./bin/devreplay --fix test/files/test.py test/rules/devreplay.json",
+    "test:init": "node ./bin/devreplay --init ./",
     "test:all": "yarn run test && yarn run test:dir && yarn run test:fix",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile"
@@ -30,7 +31,10 @@
     "tsutils": "^3.17.1",
     "unicode": "^12.1.0",
     "v8-compile-cache": "^2.2.0",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "simple-git": "2.21.0",
+    "source-code-tokenizer": "^0.1.5",
+    "parse-diff": "^0.7.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.6",
