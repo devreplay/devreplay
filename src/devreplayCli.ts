@@ -68,7 +68,7 @@ const cli = {
 
         if (
             !(
-                argv.init === undefined ||
+                argv.init !== undefined ||
                 commander.args.length > 0
             )
         ) {
@@ -79,7 +79,10 @@ const cli = {
         let ruleFileName: string | undefined;
         if (argv.init) {
             const files = arrayify(commander.args);
-            const dirName = files[0];
+            let dirName = './';
+            if (files.length > 0) {
+                dirName = files[0];
+            }
             let logLength = 10;
             if (files.length > 1 && !isNaN(Number(files[1]))) {
                 logLength = Number(files[1]);
