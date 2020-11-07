@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.7.0
+
+* Make init command
+
 ## 1.4.5
 
 * Support Regex

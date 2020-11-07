@@ -53,8 +53,6 @@ The target source code file will be
 + a, b = b, a
 ```
 
-
-* **Recommend**: [DevReplay Pattern Generator](https://github.com/devreplay/devreplay-pattern-generator) generate your pattern from .git
 * **Step up**: Make the pattern description and severity. Also condition can be more abstract
 
 ```json
@@ -73,6 +71,12 @@ The target source code file will be
     "severity": "Information"
   }
 ]
+```
+
+* **Recommend**: Also you can generate pattern file automatically by following command on your git repository
+
+```sh
+devreplay --init
 ```
 
 * `severity` means how this pattern is important
