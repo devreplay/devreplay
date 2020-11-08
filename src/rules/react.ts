@@ -1,82 +1,82 @@
 module.exports = [
   {
-    condition: [
+    before: [
       'React.render(<MyComponent />, root)'
     ],
-    consequent: [
+    after: [
       'ReactDOM.render(<MyComponent />, root)'
     ]
   },
   {
-    condition: [
+    before: [
       'React.findDOMNode(this.refs.foo)'
     ],
-    consequent: [
+    after: [
       'ReactDOM.findDOMNode(this.refs.foo)'
     ]
   },
   {
-    condition: [
+    before: [
       'import React, { PropTypes } from \'react\';'
     ],
-    consequent: [
+    after: [
       'import { React } from \'react\';',
       'import { PropTypes } from \'prop-types\';'
     ]
   },
   {
-    condition: [
+    before: [
       'componentWillMount()'
     ],
-    consequent: [
+    after: [
       'UNSAFE_componentWillMount()'
     ]
   },
   {
-    condition: [
+    before: [
       'componentWillReceiveProps()'
     ],
-    consequent: [
+    after: [
       'UNSAFE_componentWillReceiveProps()'
     ]
   },
   {
-    condition: [
+    before: [
       'componentWillUpdate()'
     ],
-    consequent: [
+    after: [
       'UNSAFE_componentWillUpdate()'
     ]
   },
   {
-    condition: [
+    before: [
       'var $1 = React.createClass({});'
     ],
-    consequent: [
+    after: [
       'var $1 = React.createClass({',
       '  displayName: "$1"',
       '});'
     ],
-    description: '@babel/plugin-transform-react-display-name',
+    message: '@babel/plugin-transform-react-display-name',
   },
   {
-    condition: [
+    before: [
       'var $1 = createReactClass({});'
     ],
-    consequent: [
+    after: [
       'var $1 = createReactClass({',
       '  displayName: "$1"',
       '});'
     ],
-    description: '@babel/plugin-transform-react-display-name'
+    message: '@babel/plugin-transform-react-display-name'
   },
   {
-    condition: [
+    before: [
       'const Hr = () => {',
       '  return <hr className="hr" />;',
       '};'
     ],
-    consequent: [
+    after: [
       'const _ref = <hr className="hr" />;',
       'const Hr = () => {',
       '  return <hr className="hr" />;',

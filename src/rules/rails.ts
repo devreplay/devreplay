@@ -1,91 +1,91 @@
 module.exports = [
     {
-      condition: [
+      before: [
         'read_attribute(:${1:attribute})'
       ],
-      consequent: [
+      after: [
         'self[:${1:attribute}]'
       ]
     },
     {
-      condition: [
+      before: [
         'write_attribute(:${1:attribute}, ${2:value})'
       ],
-      consequent: [
+      after: [
         'self[:${1:attribute}] = ${2:value}'
       ],
-      description: 'Prefer self[:attribute] = value over write_attribute(:attribute, value)',
+      message: 'Prefer self[:attribute] = value over write_attribute(:attribute, value)',
       severity: 'W'
     },
     {
-      condition: [
+      before: [
         'validates_presence_of :${1:attribute}'
       ],
-      consequent: [
+      after: [
         'validates :${1:attribute}, presence: true'
       ]
     },
     {
-      condition: [
+      before: [
         '.where(${1:id}: ${1:id}).take'
       ],
-      consequent: [
+      after: [
         '.find(${1:id})'
       ]
     },
     {
-      condition: [
+      before: [
         '.where(${1:firstname}: ${2:firstvalue}, ${3:lastname}: ${4:lastvalue}).first'
       ],
-      consequent: [
+      after: [
         '.find_by(${1:firstname}: ${2:firstvalue}, ${3:lastname}: ${4:lastvalue}))'
       ]
     },
     {
-      condition: [
+      before: [
         'Time.parse'
       ],
-      consequent: [
+      after: [
         'Time.zone.parse'
       ]
     },
     {
-      condition: [
+      before: [
         'Time.now'
       ],
-      consequent: [
+      after: [
         'Time.zone.now'
       ]
     },
     {
-      condition: [
+      before: [
         '.where("${1:id}: != ?", ${1:id}:)'
       ],
-      consequent: [
+      after: [
         '.where.not(${1:id}: ${1:id}:)'
       ]
     },
     {
-      condition: [
+      before: [
         'rmagick'
       ],
-      consequent: [
+      after: [
         'minimagick'
       ]
     },
     {
-      condition: [
+      before: [
         'autotest'
       ],
-      consequent: [
+      after: [
         'guard'
       ]
     },
     {
-      condition: [
+      before: [
         'rcov'
       ],
-      consequent: [
+      after: [
         'SimpleCov'
       ]
     }

@@ -1,291 +1,291 @@
 module.exports = [
     {
-        condition: ['chainer.Variable'],
-        consequent: ['torch.Tensor'],
+        before: ['chainer.Variable'],
+        after: ['torch.Tensor'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.FunctionNode'],
-        consequent: ['torch.autograd.Function'],
+        before: ['chainer.FunctionNode'],
+        after: ['torch.autograd.Function'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.functions.*'],
-        consequent: ['torch.nn.functional.*'],
+        before: ['chainer.functions.*'],
+        after: ['torch.nn.functional.*'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.Link'],
-        consequent: ['torch.nn.Module'],
+        before: ['chainer.Link'],
+        after: ['torch.nn.Module'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.Chain'],
-        consequent: ['torch.nn.Module'],
+        before: ['chainer.Chain'],
+        after: ['torch.nn.Module'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.Sequential'],
-        consequent: ['torch.nn.Sequential'],
+        before: ['chainer.Sequential'],
+        after: ['torch.nn.Sequential'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.dataset.DatasetMixin'],
-        consequent: ['torch.utils.data.Dataset'],
+        before: ['chainer.dataset.DatasetMixin'],
+        after: ['torch.utils.data.Dataset'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.iterators.*'],
-        consequent: ['torch.utils.data.DataLoader'],
+        before: ['chainer.iterators.*'],
+        after: ['torch.utils.data.DataLoader'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.Optimizer'],
-        consequent: ['torch.optim.Optimizer'],
+        before: ['chainer.Optimizer'],
+        after: ['torch.optim.Optimizer'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.optimizers.*'],
-        consequent: ['torch.optim.*'],
+        before: ['chainer.optimizers.*'],
+        after: ['torch.optim.*'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.training.Trainer'],
-        consequent: ['ignite.engine.create_supervised_trainer()'],
+        before: ['chainer.training.Trainer'],
+        after: ['ignite.engine.create_supervised_trainer()'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.training.Updater'],
-        consequent: ['ignite.engine.create_supervised_trainer()'],
+        before: ['chainer.training.Updater'],
+        after: ['ignite.engine.create_supervised_trainer()'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.training.extensions.Evaluator'],
-        consequent: ['ignite.engine.create_supervised_evaluator()'],
+        before: ['chainer.training.extensions.Evaluator'],
+        after: ['ignite.engine.create_supervised_evaluator()'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['chainer.training.Extension'],
-        consequent: ['ignite.handlers.*'],
+        before: ['chainer.training.Extension'],
+        after: ['ignite.handlers.*'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: [''],
-        consequent: [''],
+        before: [''],
+        after: [''],
         author: 'Framework Migration Guide'
     },
     {
-        condition: [''],
-        consequent: [''],
+        before: [''],
+        after: [''],
         author: 'Framework Migration Guide'
     },
     {
-        condition: [''],
-        consequent: [''],
+        before: [''],
+        after: [''],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.add'],
-        consequent: ['torch.add'],
-        description: 'Batched addition (accumulating multiple tensors in a single call) is not supported.',
+        before: ['F.add'],
+        after: ['torch.add'],
+        message: 'Batched addition (accumulating multiple tensors in a single call) is not supported.',
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.clipped_relu($1, $2=$2)'],
-        consequent: ['$1.clamp(0, $2)'],
+        before: ['F.clipped_relu($1, $2=$2)'],
+        after: ['$1.clamp(0, $2)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.crelu($1, axis=1)'],
-        consequent: ['torch.cat((F.relu($1), F.relu(-$1)))'],
+        before: ['F.crelu($1, axis=1)'],
+        after: ['torch.cat((F.relu($1), F.relu(-$1)))'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.hard_sigmoid($1)'],
-        consequent: ['torch.clamp(x * 0.2 + 0.5, 0, 1)'],
+        before: ['F.hard_sigmoid($1)'],
+        after: ['torch.clamp(x * 0.2 + 0.5, 0, 1)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.swish($1, $2)'],
-        consequent: ['$1 * F.sigmoid($2 * $1)'],
+        before: ['F.swish($1, $2)'],
+        after: ['$1 * F.sigmoid($2 * $1)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.as_strided'],
-        consequent: ['torch.as_strided'],
+        before: ['F.as_strided'],
+        after: ['torch.as_strided'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.broadcast'],
-        consequent: ['torch.broadcast_tensors'],
-        description: 'PyTorch operations perform broadcast automatically like as in NumPy: https://pytorch.org/docs/stable/notes/broadcasting.html',
+        before: ['F.broadcast'],
+        after: ['torch.broadcast_tensors'],
+        message: 'PyTorch operations perform broadcast automatically like as in NumPy: https://pytorch.org/docs/stable/notes/broadcasting.html',
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.cast'],
-        consequent: ['Tensor.to'],
+        before: ['F.cast'],
+        after: ['Tensor.to'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.concat'],
-        consequent: ['torch.cat'],
+        before: ['F.concat'],
+        after: ['torch.cat'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.copy'],
-        consequent: ['Tensor.to'],
+        before: ['F.copy'],
+        after: ['Tensor.to'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.depth2space'],
-        consequent: ['F.pixel_shuffle'],
+        before: ['F.depth2space'],
+        after: ['F.pixel_shuffle'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.diagonal'],
-        consequent: ['torch.diagonal'],
+        before: ['F.diagonal'],
+        after: ['torch.diagonal'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.dstack([$1, $2])'],
-        consequent: ['torch.cat([$1,$2],dim=2)'],
+        before: ['F.dstack([$1, $2])'],
+        after: ['torch.cat([$1,$2],dim=2)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.expand_dims($1, axis=$2)'],
-        consequent: ['torch.unsqueeze($1, $2)'],
+        before: ['F.expand_dims($1, axis=$2)'],
+        after: ['torch.unsqueeze($1, $2)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.flatten'],
-        consequent: ['torch.flatten'],
+        before: ['F.flatten'],
+        after: ['torch.flatten'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.flip'],
-        consequent: ['torch.flip'],
+        before: ['F.flip'],
+        after: ['torch.flip'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.fliplr($1)'],
-        consequent: ['torch.flip(x, 1)'],
+        before: ['F.fliplr($1)'],
+        after: ['torch.flip(x, 1)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.flipud($1)'],
-        consequent: ['torch.flip(x, 0)'],
+        before: ['F.flipud($1)'],
+        after: ['torch.flip(x, 0)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.get_item($1, $2)'],
-        consequent: ['$1[$2]'],
+        before: ['F.get_item($1, $2)'],
+        after: ['$1[$2]'],
         author: 'Framework Migration Guide',
-        description: 'Use direct indexing'
+        message: 'Use direct indexing'
     },
     {
-        condition: ['F.hstack'],
-        consequent: ['torch.cat([a,b],dim=1)'],
+        before: ['F.hstack'],
+        after: ['torch.cat([a,b],dim=1)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.im2col'],
-        consequent: ['F.unfold'],
+        before: ['F.im2col'],
+        after: ['F.unfold'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.moveaxis'],
-        consequent: ['Tensor.permute'],
+        before: ['F.moveaxis'],
+        after: ['Tensor.permute'],
         author: 'Framework Migration Guide',
-        description: 'See: https://discuss.pytorch.org/t/swap-axes-in-pytorch/970/2'
+        message: 'See: https://discuss.pytorch.org/t/swap-axes-in-pytorch/970/2'
     },
     {
-        condition: ['F.pad_sequence'],
-        consequent: ['nn.utils.rnn.pad_squence'],
+        before: ['F.pad_sequence'],
+        after: ['nn.utils.rnn.pad_squence'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.permutate'],
-        consequent: ['Tensor.permute'],
+        before: ['F.permutate'],
+        after: ['Tensor.permute'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.repeat'],
-        consequent: ['Tensor.repeat'],
+        before: ['F.repeat'],
+        after: ['Tensor.repeat'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.reshape'],
-        consequent: ['torch.reshape'],
+        before: ['F.reshape'],
+        after: ['torch.reshape'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.resize_images'],
-        consequent: ['F.interpolate'],
+        before: ['F.resize_images'],
+        after: ['F.interpolate'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.rollaxis'],
-        consequent: ['Tensor.premute'],
+        before: ['F.rollaxis'],
+        after: ['Tensor.premute'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.scatter_add'],
-        consequent: ['Tensor.scatter_add'],
+        before: ['F.scatter_add'],
+        after: ['Tensor.scatter_add'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.select_item'],
-        consequent: ['torch.gather(x, 1, t[:, None])[:, 0]'],
+        before: ['F.select_item'],
+        after: ['torch.gather(x, 1, t[:, None])[:, 0]'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.separate'],
-        consequent: ['torch.split'],
+        before: ['F.separate'],
+        after: ['torch.split'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.spatial_transformer_grid'],
-        consequent: ['F.affine_grid'],
+        before: ['F.spatial_transformer_grid'],
+        after: ['F.affine_grid'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.spatial_transformer_sampler'],
-        consequent: ['F.grid_sample'],
+        before: ['F.spatial_transformer_sampler'],
+        after: ['F.grid_sample'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.split_axis'],
-        consequent: ['torch.split'],
+        before: ['F.split_axis'],
+        after: ['torch.split'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.squeeze'],
-        consequent: ['torch.squeeze'],
+        before: ['F.squeeze'],
+        after: ['torch.squeeze'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.stack'],
-        consequent: ['torch.stack'],
+        before: ['F.stack'],
+        after: ['torch.stack'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.tile'],
-        consequent: ['F.repeat'],
+        before: ['F.tile'],
+        after: ['F.repeat'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.transpose'],
-        consequent: ['torch.t'],
+        before: ['F.transpose'],
+        after: ['torch.t'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.vstack'],
-        consequent: ['torch.cat([a,b],dim=0)'],
+        before: ['F.vstack'],
+        after: ['torch.cat([a,b],dim=0)'],
         author: 'Framework Migration Guide'
     },
     {
-        condition: ['F.where'],
-        consequent: ['torch.where'],
+        before: ['F.where'],
+        after: ['torch.where'],
         author: 'Framework Migration Guide'
     }
 ];

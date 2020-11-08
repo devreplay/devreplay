@@ -5,21 +5,21 @@
     ]
   },
 {
-  "condition": [
+  "before": [
       "for ${1:Name} in range($0):"
   ],
-  "consequent": [
+  "after": [
       "import six",
       "for ${1:Name} in six.moves.range($0):"
   ],
-  "description": "Python2互換のためsixを使用してください",
+  "message": "Python2互換のためsixを使用してください",
   "severity": "Warning"
 },
 {
-  "condition": [
+  "before": [
     "([a-z]+)-([a-z]+)"
 ],
-"consequent": [
+"after": [
     "$1 $2"
 ],
 "regex": true

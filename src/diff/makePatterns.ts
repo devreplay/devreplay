@@ -13,7 +13,7 @@ export async function makePatternsFromDiff(diff: string): Promise<Pattern[]> {
     const patterns: Pattern[] = [];
     for (const chunk of chunks) {
         const pattern = await makePatternsFromChunk(chunk);
-        if (pattern !== undefined && !isEmptyPattern(pattern.condition) && !isEmptyPattern(pattern.consequent)) {
+        if (pattern !== undefined && !isEmptyPattern(pattern.before) && !isEmptyPattern(pattern.after)) {
             patterns.push(pattern);
         }
     }
@@ -24,27 +24,27 @@ export function makePatternsFromChunk(chunk: Chunk) {
     return makePatterns(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source); 
 }
 
-export async function makePatterns(before?: string, after?: string, source?: string): Promise<Pattern|undefined> {
-    if (before === undefined || after === undefined || source === undefined) {
+export async function makePatterns(deletedContents?: string, addedContents?: string, source?: string): Promise<Pattern|undefined> {
+    if (deletedContents === undefined || addedContents === undefined || source === undefined) {
         return undefined;
     }
 
-    const beforeTokens = await tokenize(before, source);
-    const afterTokens = await tokenize(after, source);
+    const beforeTokens = await tokenize(deletedContents, source);
+    const afterTokens = await tokenize(addedContents, source);
 
     if (beforeTokens === undefined || afterTokens === undefined) {
         return undefined;
     }
 
     const identifiers: Identifier[] = collectCommonIdentifiers(beforeTokens.tokens, afterTokens.tokens);
-    const conditionPatterns = makeAbstractedCode(beforeTokens.tokens, identifiers);
-    const consequentPatterns = makeAbstractedCode(afterTokens.tokens, identifiers);
+    const beforePatterns = makeAbstractedCode(beforeTokens.tokens, identifiers);
+    const afterPatterns = makeAbstractedCode(afterTokens.tokens, identifiers);
 
-    const { condition, consequent } = formatPatterns(conditionPatterns, consequentPatterns);
+    const { before, after } = formatPatterns(beforePatterns, afterPatterns);
 
     return {
-        condition: condition,
-        consequent: consequent,
+        before: before,
+        after: after,
         identifiers: identifiers.map(identifier => { return identifier.value; })
     };
 }
@@ -124,17 +124,17 @@ function isEmptyPattern(pattern: string[]) {
     return pattern.length === 1 && pattern[0] === '';
 }
 
-function formatPatterns(conditon: string[], consequent: string[]) {
-    const minSpace = Math.min(countSpace(conditon), countSpace(consequent));
-    const formatCondition = [];
-    for (const line of conditon) {
-        formatCondition.push(line.slice(minSpace));
+function formatPatterns(before: string[], after: string[]) {
+    const minSpace = Math.min(countSpace(before), countSpace(after));
+    const formatBefore = [];
+    for (const line of before) {
+        formatBefore.push(line.slice(minSpace));
     }
-    const formatConsequent = [];
-    for (const line of consequent) {
-        formatConsequent.push(line.slice(minSpace));
+    const formatAfter = [];
+    for (const line of after) {
+        formatAfter.push(line.slice(minSpace));
     }
-    return {condition: formatCondition, consequent: formatConsequent};
+    return {before: formatBefore, after: formatAfter};
 }
 
 function countSpace(patternLines: string[]) {

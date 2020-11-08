@@ -15,7 +15,7 @@ export function lintWithPattern(fileName: string, contents: string, patterns: Pa
     for (const pattern of patterns) {
 
         if (!verifyPattern(pattern)) { continue; }
-        const result = makeSnippetRegex(pattern.condition, contents, pattern.regex);
+        const result = makeSnippetRegex(pattern.before, contents, pattern.regex);
         if (result !== undefined) {
             matched.push({pattern,
                           snippet: result[0],
@@ -28,21 +28,21 @@ export function lintWithPattern(fileName: string, contents: string, patterns: Pa
 }
 
 export function fixWithPattern(fileContents: string, pattern: Pattern) {
-    if (pattern.consequent.length === 0 || pattern.condition.length === 0) {
+    if (pattern.after.length === 0 || pattern.before.length === 0) {
         return '';
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let consequent = pattern.consequent.join('\n').replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
+    let after = pattern.after.join('\n').replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
 
     if (pattern.regex) {
-        consequent = pattern.consequent[0];
+        after = pattern.after[0];
     }
-    const reCondition = condition2regex2(pattern.condition, pattern.regex);
+    const reBefore = before2regex2(pattern.before, pattern.regex);
 
-    if (reCondition !== undefined) {
-        const matchedStr = reCondition.exec(fileContents);
+    if (reBefore !== undefined) {
+        const matchedStr = reBefore.exec(fileContents);
         if (matchedStr !== null) {
-            return fileContents.replace(reCondition, consequent);
+            return fileContents.replace(reBefore, after);
         }
 
         return undefined;
@@ -72,17 +72,17 @@ export function fixFromFile(fileName: string, ruleFileName?: string) {
     return '';
 }
 
-function condition2regex2(condition: string[], regex?: boolean) {
+function before2regex2(before: string[], regex?: boolean) {
     if (regex) {
-        return new RegExp(condition[0], 'gm');
+        return new RegExp(before[0], 'gm');
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let joinedCondition = condition.length < 2 ? condition[0] : condition.join('\n');
-    joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, '\\$&');
+    let joinedBefore = before.length < 2 ? before[0] : before.join('\n');
+    joinedBefore = joinedBefore.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
+    joinedBefore = joinedBefore.replace(/[<>*()?.\[\]]/g, '\\$&');
 
     const tokenIndex: number[] = [];
-    joinedCondition = joinedCondition.replace(dollar, (x) => {
+    joinedBefore = joinedBefore.replace(dollar, (x) => {
         const index = parseInt(x[1], 10);
         if (tokenIndex.includes(index)) {
             return `(\\k<token${index}>)`;
@@ -92,23 +92,23 @@ function condition2regex2(condition: string[], regex?: boolean) {
         return `(?<token${index}>[\\w\.]+)`;
     });
     try {
-        return new RegExp(joinedCondition, 'gm');
+        return new RegExp(joinedBefore, 'gm');
     } catch (error) {
         return undefined;
     }
 }
 
-function condition2regex(condition: string[], regex?: boolean) {
+function before2regex(before: string[], regex?: boolean) {
     if (regex) {
-        return new RegExp(condition[0], 'gm');
+        return new RegExp(before[0], 'gm');
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let joinedCondition = condition.length < 2 ? condition[0] : condition.join('\n');
-    joinedCondition = joinedCondition.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    joinedCondition = joinedCondition.replace(/[<>*()?.\[\]]/g, '\\$&');
+    let joinedBefore = before.length < 2 ? before[0] : before.join('\n');
+    joinedBefore = joinedBefore.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
+    joinedBefore = joinedBefore.replace(/[<>*()?.\[\]]/g, '\\$&');
 
     const tokenIndex: number[] = [];
-    joinedCondition = joinedCondition.replace(dollar, (x) => {
+    joinedBefore = joinedBefore.replace(dollar, (x) => {
         const index = parseInt(x[1], 10);
         if (tokenIndex.includes(index)) {
             return `(\\k<token${tokenIndex.indexOf(index) + 1}>)`;
@@ -118,16 +118,16 @@ function condition2regex(condition: string[], regex?: boolean) {
         return `(?<token${tokenIndex.indexOf(index) + 1}>[\\w\.]+)`;
     });
     try {
-        return new RegExp(joinedCondition, 'gm');
+        return new RegExp(joinedBefore, 'gm');
     } catch (error) {
         return undefined;
     }
 }
 
-function makeSnippetRegex(condition: string[], contents: string, regex?: boolean) {
-    const reCondition = condition2regex(condition, regex);
-    if (reCondition !== undefined) {
-        const matchedStr = reCondition.exec(contents);
+function makeSnippetRegex(before: string[], contents: string, regex?: boolean) {
+    const reBefore = before2regex(before, regex);
+    if (reBefore !== undefined) {
+        const matchedStr = reBefore.exec(contents);
         if (matchedStr !== null) {
             return matchedStr;
         }
@@ -139,7 +139,7 @@ function makeSnippetRegex(condition: string[], contents: string, regex?: boolean
 }
 
 function verifyPattern(pattern: Pattern) {
-    return Array.isArray(pattern.condition) && Array.isArray(pattern.consequent);
+    return Array.isArray(pattern.before) && Array.isArray(pattern.after);
 }
 
 function makePatternPosition(result: RegExpExecArray) {

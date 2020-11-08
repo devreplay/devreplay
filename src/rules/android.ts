@@ -1,81 +1,81 @@
 module.exports = [
     {
-      condition: [
-        'if (${1:condition})',
+      before: [
+        'if (${1:before})',
         '  ${1:func}()'
       ],
-      consequent: [
-        'if (${1:condition}) ${1:func}()'
+      after: [
+        'if (${1:before}) ${1:func}()'
       ],
-      description: 'Use standard brace style (https://source.android.com/setup/contribute/code-style#use-standard-brace-style)'
+      message: 'Use standard brace style (https://source.android.com/setup/contribute/code-style#use-standard-brace-style)'
     },
     {
-      condition: [
+      before: [
         'XMLHTTPRequest'
       ],
-      consequent: [
+      after: [
         'XmlHttpRequest'
       ]
     },
     {
-      condition: [
+      before: [
         'getCustomerID'
       ],
-      consequent: [
+      after: [
         'getCustomerId'
       ]
     },
     {
-      condition: [
+      before: [
         'class HTML'
       ],
-      consequent: [
+      after: [
         'class Html'
       ]
     },
     {
-      condition: [
+      before: [
         'String URL'
       ],
-      consequent: [
+      after: [
         'String url'
       ]
     },
     {
-      condition: [
+      before: [
         'long ID'
       ],
-      consequent: [
+      after: [
         'long id'
       ]
     },
     {
-      condition: [
+      before: [
         'System.out.println()'
       ],
-      consequent: [
+      after: [
         ''
       ],
-      description: 'System.out and System.err get redirected to /dev/null'
+      message: 'System.out and System.err get redirected to /dev/null'
     },
     {
-      condition: [
+      before: [
         'catch (Exception e)'
       ],
-      consequent: [
+      after: [
         'catch (XXXXException e)'
       ],
-      description: 'Don\'t catch generic exception'
+      message: 'Don\'t catch generic exception'
     },
     {
-      condition: [
+      before: [
         'Exception e) { }'
       ],
-      consequent: [
+      after: [
         'Exception e) {',
         '',
         '}'
       ],
-      description: 'Don\'t ignore exceptions'
+      message: 'Don\'t ignore exceptions'
     }
   ];

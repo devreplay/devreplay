@@ -1,12 +1,13 @@
 export interface Pattern {
-    condition: string[];
-    consequent: string[];
+    before: string[];
+    after: string[];
+    ruleId?: string;
     extends?: string[];
     number?: number;
     author?: string;
     severity?: string;
-    description?: string;
-    link?: string;
+    message?: string;
+    helpUri?: string;
     identifiers?: string[];
     regex?: boolean;
 }

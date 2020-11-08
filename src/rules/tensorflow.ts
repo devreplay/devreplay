@@ -1,137 +1,137 @@
 module.exports = [
     {
-      condition: [
+      before: [
         'v1.get_variable'
       ],
-      consequent: [
+      after: [
         'tf.Variable'
       ]
     },
     {
-      condition: [
+      before: [
         'v1.variable_scope'
       ],
-      consequent: [
+      after: [
         'tf.keras.layers.Layer'
       ]
     },
     {
-      condition: [
+      before: [
         'v1.variable_scope'
       ],
-      consequent: [
+      after: [
         'tf.keras.Model'
       ]
     },
     {
-      condition: [
+      before: [
         'v1.variable_scope'
       ],
-      consequent: [
+      after: [
         'tf.Module'
       ]
     },
     {
-      condition: [
+      before: [
         '1e-8'
       ],
-      consequent: [
+      after: [
         '1e-7'
       ]
     },
     {
-      condition: [
+      before: [
         'Model.losses,'
       ],
-      consequent: [
+      after: [
         'Model.get_losses_for'
       ]
     },
     {
-      condition: [
+      before: [
         'v1.train.Optimizer'
       ],
-      consequent: [
+      after: [
         'tf.keras.optimizers'
       ]
     },
     {
-      condition: [
+      before: [
         'tf.compat.v1.metrics'
       ],
-      consequent: [
+      after: [
         'tf.keras.metrics'
       ]
     },
     {
-      condition: [
+      before: [
         'tf.compat.v1.losses.Reduction'
       ],
-      consequent: [
+      after: [
         'tf.keras.losses.Reduction'
       ]
     },
     {
-      condition: [
+      before: [
         'tf.compat.v1.train.Optimizer'
       ],
-      consequent: [
+      after: [
         'tf.keras.optimizers'
       ]
     },
     {
-      condition: [
+      before: [
         '$1 ** $2'
       ],
-      consequent: [
+      after: [
         'tf.pow($1, $2)'
       ]
     },
     {
-      condition: [
+      before: [
         '$1 + $2'
       ],
-      consequent: [
+      after: [
         'tf.add($1, $2)'
       ]
     },
     {
-      condition: [
+      before: [
         '$1 / $2'
       ],
-      consequent: [
+      after: [
         'tf.divide($1, $2)'
       ]
     },
     {
-      condition: [
+      before: [
         '$1 * $2'
       ],
-      consequent: [
+      after: [
         'tf.multiply($1, $2)'
       ]
     },
     {
-      condition: [
+      before: [
         '$1 - $2'
       ],
-      consequent: [
+      after: [
         'tf.subtract($1, $2)'
       ]
     },
     {
-      condition: [
+      before: [
         '$1 and $2'
       ],
-      consequent: [
+      after: [
         'tf.logical_and($1, $2)'
       ]
     },
     {
-      condition: [
+      before: [
         '$1 or $2'
       ],
-      consequent: [
+      after: [
         'tf.logical_or($1, $2)'
       ]
     }

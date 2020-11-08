@@ -1,223 +1,223 @@
 module.exports = [
     {
-      condition: [
+      before: [
         'fail '
       ],
-      consequent: [
+      after: [
         'raise '
       ],
-      description: 'Prefer raise over fail for exceptions. https://github.com/rubocop-hq/ruby-style-guide#prefer-raise-over-fail',
+      message: 'Prefer raise over fail for exceptions. https://github.com/rubocop-hq/ruby-style-guide#prefer-raise-over-fail',
       severity: 'W'
     },
     {
-      condition: [
+      before: [
         'raise RuntimeError,${1:message}'
       ],
-      consequent: [
+      after: [
         'raise ${1:message}'
       ]
     },
     {
-      condition: [
+      before: [
         'def ${1:some_method}',
         '    ${2:do_something}',
         'end'
       ],
-      consequent: [
+      after: [
         'def ${1:some_method}',
         '  ${2:do_something}',
         'end'
       ]
     },
     {
-      condition: [
+      before: [
         ';'
       ],
-      consequent: [
+      after: [
         ''
       ],
-      description: 'Don’t use ; to terminate statements and expressions.'
+      message: 'Don’t use ; to terminate statements and expressions.'
     },
     {
-      condition: [
+      before: [
         ' ** '
       ],
-      consequent: [
+      after: [
         '**'
       ]
     },
     {
-      condition: [
+      before: [
         ' / '
       ],
-      consequent: [
+      after: [
         '/'
       ],
-      description: 'Slash in rational literals'
+      message: 'Slash in rational literals'
     },
     {
-      condition: [
+      before: [
         ' &. '
       ],
-      consequent: [
+      after: [
         '&.'
       ],
-      description: 'Safe navigation operator'
+      message: 'Safe navigation operator'
     },
     {
-      condition: [
+      before: [
         '${1:some}( ${2:arg} )'
       ],
-      consequent: [
+      after: [
         '${1:some}(${2:arg})'
       ]
     },
     {
-      condition: [
+      before: [
         '! '
       ],
-      consequent: [
+      after: [
         '!'
       ],
-      description: 'No space after !'
+      message: 'No space after !'
     },
     {
-      condition: [
+      before: [
         ' .. '
       ],
-      consequent: [
+      after: [
         '..'
       ],
-      description: 'No space inside range literals.'
+      message: 'No space inside range literals.'
     },
     {
-      condition: [
+      before: [
         'def ${1:some_method}()'
       ],
-      consequent: [
+      after: [
         'def ${1:some_method}'
       ]
     },
     {
-      condition: [
+      before: [
         'for ${1:elem} in ${2:arr} do'
       ],
-      consequent: [
+      after: [
         '${2:arr}.each { |${1:elem}|'
       ]
     },
     {
-      condition: [
+      before: [
         ' then',
         ''
       ],
-      consequent: [
+      after: [
         '',
         ''
       ]
     },
     {
-      condition: [
+      before: [
         'not '
       ],
-      consequent: [
+      after: [
         '!'
       ]
     },
     {
-      condition: [
+      before: [
         '!!'
       ],
-      consequent: [
+      after: [
         ''
       ]
     },
     {
-      condition: [
+      before: [
         'and'
       ],
-      consequent: [
+      after: [
         '&&'
       ]
     },
     {
-      condition: [
+      before: [
         'or'
       ],
-      consequent: [
+      after: [
         '||'
       ]
     },
     {
-      condition: [
+      before: [
         'if !$1'
       ],
-      consequent: [
+      after: [
         'unless $1'
       ]
     },
     {
-      condition: [
+      before: [
         'raise RuntimeError, \'$1\''
       ],
-      consequent: [
+      after: [
         'raise \'$1\''
       ]
     },
     {
-      condition: [
+      before: [
         'raise ${1:SomeException}.new(\'$2\')'
       ],
-      consequent: [
+      after: [
         'raise ${1:SomeException}, \'$2\''
       ]
     },
     {
-      condition: [
+      before: [
         '= ->() {'
       ],
-      consequent: [
+      after: [
         '= -> {'
       ],
-      description: 'Omit the parameter parentheses when defining a stabby lambda with no parameters'
+      message: 'Omit the parameter parentheses when defining a stabby lambda with no parameters'
     },
     {
-      condition: [
+      before: [
         'Proc.new'
       ],
-      consequent: [
+      after: [
         'proc'
       ]
     },
     {
-      condition: [
+      before: [
         'super $1'
       ],
-      consequent: [
+      after: [
         'super($1)'
       ]
     },
     {
-      condition: [
+      before: [
         'count'
       ],
-      consequent: [
+      after: [
         'size'
       ]
     },
     {
-      condition: [
+      before: [
         'Array'
       ],
-      consequent: [
+      after: [
         'Set'
       ]
     },
     {
-      condition: [
+      before: [
         'while !'
       ],
-      consequent: [
+      after: [
         'until'
       ]
     }

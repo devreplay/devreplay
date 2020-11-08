@@ -22,12 +22,12 @@ $ yarn global add
 ```json
 [
   {
-    "condition": [
+    "before": [
       "tmp = $1",
       "$1 = $2",
       "$2 = tmp"
     ],
-    "consequent": [
+    "after": [
       "$1, $2 = $2, $1"
     ]
   }
@@ -53,21 +53,21 @@ The target source code file will be
 + a, b = b, a
 ```
 
-* **Step up**: Make the pattern description and severity. Also condition can be more abstract
+* **Step up**: Make the pattern message and severity. Also `after` can be more abstract
 
 ```json
 [
   {
-    "condition": [
+    "before": [
       "$3 = $1",
       "$1 = $2",
       "$2 = $3"
     ],
-    "consequent": [
+    "after": [
       "$1, $2 = $2, $1"
     ],
     "author": "Yuki Ueda",
-    "description": "Value exchanging can be one line",
+    "message": "Value exchanging can be one line",
     "severity": "Information"
   }
 ]
@@ -105,13 +105,13 @@ Also, you can use default rules by extends some rules such as
 
 ```json
 {
-  "condition": [
+  "before": [
     "([a-z]+)-([a-z]+)"
-],
-"consequent": [
-    "$1 $2"
-],
-"regex": true
+  ],
+  "after": [
+      "$1 $2"
+  ],
+  "regex": true
 }
 ```
 
@@ -121,30 +121,6 @@ That will fix
 - print("hello-world")
 + print("hello world")
 ```
-
-
-<!-- ## Make patterns from two files
-
-```sh
-devreplay --init targetA.py targetB.py
-```
-
-```json
-{
-  "condition": [
-    "tmp = ${1:source.python}",
-    "${1:source.python} = ${2:source.python}",
-    "${2:source.python} = tmp"
-  ],
-  "consequent": [
-    "${1:source.python}, ${1:source.python} = ${2:source.python}, ${1:source.python}"
-  ],
-  "identifiers": [
-    "a",
-    "b",
-  ]
-}
-``` -->
 
 ## Default rule languages
 

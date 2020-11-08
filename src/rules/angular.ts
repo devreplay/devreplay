@@ -1,156 +1,156 @@
 module.exports = [
     {
-      condition: [
+      before: [
         'DeprecatedI18NPipesModule'
       ],
-      consequent: [
+      after: [
         'CommonModule'
       ]
     },
     {
-      condition: [
+      before: [
         'DeprecatedCurrencyPipe'
       ],
-      consequent: [
+      after: [
         'CurrencyPipe'
       ]
     },
     {
-      condition: [
+      before: [
         'DeprecatedDatePipe'
       ],
-      consequent: [
+      after: [
         'DatePipe'
       ]
     },
     {
-      condition: [
+      before: [
         'DeprecatedDecimalPipe'
       ],
-      consequent: [
+      after: [
         'DecimalPipe'
       ]
     },
     {
-      condition: [
+      before: [
         'DeprecatedPercentPipe'
       ],
-      consequent: [
+      after: [
         'PercentPipe'
       ]
     },
     {
-      condition: [
+      before: [
         'CollectionChangeRecord'
       ],
-      consequent: [
+      after: [
         'IterableChangeRecord'
       ]
     },
     {
-      condition: [
+      before: [
         'defineInjectable'
       ],
-      consequent: [
+      after: [
         'ɵɵdefineInjectable'
       ]
     },
     {
-      condition: [
+      before: [
         'ReflectiveInjector'
       ],
-      consequent: [
+      after: [
         'Injector.create'
       ]
     },
     {
-      condition: [
+      before: [
         'RenderComponentType'
       ],
-      consequent: [
+      after: [
         'RendererType2'
       ]
     },
     {
-      condition: [
+      before: [
         'RenderComponentType'
       ],
-      consequent: [
+      after: [
         'Renderer2'
       ]
     },
     {
-      condition: [
+      before: [
         'Renderer'
       ],
-      consequent: [
+      after: [
         'Renderer2'
       ]
     },
     {
-      condition: [
+      before: [
         'RootRenderer'
       ],
-      consequent: [
+      after: [
         'RendererFactory2'
       ]
     },
     {
-      condition: [
+      before: [
         'ViewEncapsulation.Native'
       ],
-      consequent: [
+      after: [
         'ViewEncapsulation.ShadowDom'
       ]
     },
     {
-      condition: [
+      before: [
         'preserveQueryParams'
       ],
-      consequent: [
+      after: [
         'queryParamsHandling'
       ]
     },
     {
-      condition: [
+      before: [
         'getAngularLib'
       ],
-      consequent: [
+      after: [
         'getAngularJSGlobal'
       ]
     },
     {
-      condition: [
+      before: [
         'setAngularLib'
       ],
-      consequent: [
+      after: [
         'setAngularJSGlobal'
       ]
     },
     {
-      condition: [
+      before: [
         '<ngForm #${1:value}=${1:str}>'
       ],
-      consequent: [
+      after: [
         '<ng-Form #${1:value}=${1:str}>'
       ]
     },
     {
-      condition: [
+      before: [
         'ReflectiveInjector.resolveAndCreate(${1:providers});'
       ],
-      consequent: [
+      after: [
         'Injector.create({${1:providers}});'
       ]
     },
     {
-      condition: [
+      before: [
         'const routes: Routes = [{',
         '${1:path}',
         '    ${2:loadChildren}: ${3:pathstring}#${4:Module}',
         '}];'
       ],
-      consequent: [
+      after: [
         'const routes: Routes = [{',
         '${1:path}',
         '    ${2:loadChildren}: () => import(${3:pathstring}).then(m => m.${4:Module})',
@@ -158,34 +158,34 @@ module.exports = [
       ]
     },
     {
-      condition: [
+      before: [
         'params'
       ],
-      consequent: [
+      after: [
         'paramsMap'
       ]
     },
     {
-      condition: [
+      before: [
         'queryParams'
       ],
-      consequent: [
+      after: [
         'queryParamsMap'
       ]
     },
     {
-      condition: [
+      before: [
         '@angular/http'
       ],
-      consequent: [
+      after: [
         '@angular/common/http'
       ]
     },
     {
-      condition: [
+      before: [
         '@angular/http/testing'
       ],
-      consequent: [
+      after: [
         '@angular/common/http/testing'
       ]
     }

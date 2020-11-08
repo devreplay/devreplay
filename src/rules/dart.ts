@@ -1,25 +1,25 @@
 module.exports = [
     {
-      condition: [
+      before: [
         'expires'
       ],
-      consequent: [
+      after: [
         'message'
       ]
     },
     {
-      condition: [
+      before: [
         'isInstanceOf<${1:MyType}>'
       ],
-      consequent: [
+      after: [
         'isA<${1:MyType}>'
       ]
     },
     {
-      condition: [
+      before: [
         'throws'
       ],
-      consequent: [
+      after: [
         'throwsA'
       ]
     }

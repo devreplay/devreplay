@@ -60,8 +60,8 @@ export function outputLintOuts(lintouts: LintOut[]) {
 export function formatLintOut(matched: LintOut) {
     const severity = makeFullSeverity(matched.pattern.severity);
     const position = `${matched.fileName}:${matched.position.start.line}:${matched.position.start.character}`;
-    const description = `${code2String(matched.pattern)}`;
-    return [position, severity, description];
+    const message = `${code2String(matched.pattern)}`;
+    return [position, severity, message];
 }
 
 export function makeSeverity(severity?: string) {
@@ -94,18 +94,18 @@ export function makeFullSeverity(severity?: string) {
 }
 
 export function code2String(pattern: Pattern) {
-    if (pattern.description !== undefined) {
+    if (pattern.message !== undefined) {
         if (pattern.author !== undefined) {
-            return `${pattern.description} by ${pattern.author}`;
+            return `${pattern.message} by ${pattern.author}`;
         }
 
-        return pattern.description;
+        return pattern.message;
     }
-    const description = `${pattern.condition.join('')} should be ${pattern.consequent.join('')}`;
+    const message = `${pattern.before.join('')} should be ${pattern.after.join('')}`;
 
     if (pattern.author !== undefined) {
-        return `${description} by ${pattern.author}`;
+        return `${message} by ${pattern.author}`;
     }
 
-    return description;
+    return message;
 }

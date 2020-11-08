@@ -1,18 +1,18 @@
 module.exports = [
     {
-        condition: ['NOT < '],
-        consequent: ['>= ']
+        before: ['NOT < '],
+        after: ['>= ']
     },
     {
-        condition: ['NOT > '],
-        consequent: ['<= ']
+        before: ['NOT > '],
+        after: ['<= ']
     },
     {
-        condition: ['NOT <='],
-        consequent: ['>']
+        before: ['NOT <='],
+        after: ['>']
     },
     {
-        condition: ['NOT >='],
-        consequent: ['<']
+        before: ['NOT >='],
+        after: ['<']
     }
 ];

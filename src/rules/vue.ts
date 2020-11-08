@@ -1,25 +1,25 @@
 module.exports = [
     {
-      condition: [
+      before: [
         '<template slot'
       ],
-      consequent: [
+      after: [
         '<template v-slot'
       ]
     },
     {
-      condition: [
+      before: [
         '<template slot-scope'
       ],
-      consequent: [
+      after: [
         '<template v-slot:item="slotProps"'
       ]
     },
     {
-      condition: [
+      before: [
         '<template slot="${1:item}" slot-scope="{${2:item2}}">'
       ],
-      consequent: [
+      after: [
         '<template v-slot:${1:item}="{${2:item2}}">'
       ]
     }

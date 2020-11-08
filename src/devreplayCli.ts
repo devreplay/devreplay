@@ -23,7 +23,7 @@ interface Option {
     name: keyof Argv | 'fix' | 'init' | 'dir';
     type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
-    description: string; // Long, used for `--help`
+    message: string; // Long, used for `--help`
 }
 
 const options: Option[] = [
@@ -31,19 +31,19 @@ const options: Option[] = [
         name: 'fix',
         type: 'boolean',
         describe: 'fix the file',
-        description: 'fix the file',
+        message: 'fix the file',
     },
     {
         name: 'dir',
         type: 'boolean',
         describe: 'target the directory files',
-        description: 'target the directory files'
+        message: 'target the directory files'
     },
     {
         name: 'init',
         type: 'boolean',
         describe: 'make pattern from two files',
-        description: 'make pattern from two files'
+        message: 'make pattern from two files'
     }
 ];
 

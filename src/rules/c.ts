@@ -1,71 +1,71 @@
 module.exports = [
     {
-        condition: ['asctime'],
-        consequent: ['asctime_s']
+        before: ['asctime'],
+        after: ['asctime_s']
     },
     {
-        condition: ['atof'],
-        consequent: ['strtod']
+        before: ['atof'],
+        after: ['strtod']
     },
     {
-        condition: ['atoi'],
-        consequent: ['strtol']
+        before: ['atoi'],
+        after: ['strtol']
     },
     {
-        condition: ['atol'],
-        consequent: ['strtol']
+        before: ['atol'],
+        after: ['strtol']
     },
     {
-        condition: ['atoll'],
-        consequent: ['strtoll']
+        before: ['atoll'],
+        after: ['strtoll']
     },
     {
-        condition: ['ctime'],
-        consequent: ['ctime_s']
+        before: ['ctime'],
+        after: ['ctime_s']
     },
     {
-        condition: ['fopen'],
-        consequent: ['fopen_s']
+        before: ['fopen'],
+        after: ['fopen_s']
     },
     {
-        condition: ['freopen'],
-        consequent: ['freopen_s']
+        before: ['freopen'],
+        after: ['freopen_s']
     },
     {
-        condition: ['rewind'],
-        consequent: ['fseek']
+        before: ['rewind'],
+        after: ['fseek']
     },
     {
-        condition: ['setbuf'],
-        consequent: ['setvbuf']
+        before: ['setbuf'],
+        after: ['setvbuf']
     },
     {
-        condition: ['for ($1 = $2; $1 != $3; $1 += $4)'],
-        consequent: ['for ($1 = $2; $1 <= $3; $1 += $4)']
+        before: ['for ($1 = $2; $1 != $3; $1 += $4)'],
+        after: ['for ($1 = $2; $1 <= $3; $1 += $4)']
     },
     {
-        condition: ['for ($1 = $2; $1 != $3; $1++)'],
-        consequent: ['for ($1 = $2; $1 <= $3; $1++)']
+        before: ['for ($1 = $2; $1 != $3; $1++)'],
+        after: ['for ($1 = $2; $1 <= $3; $1++)']
     },
     {
-        condition: ['for ($1 = $2; $1 != $3; ++$1)'],
-        consequent: ['for ($1 = $2; $1 < $3; ++$1)']
+        before: ['for ($1 = $2; $1 != $3; ++$1)'],
+        after: ['for ($1 = $2; $1 < $3; ++$1)']
     },
     {
-        condition: ['<= SIZE_MAX; $2 += $1)'],
-        consequent: ['<= INT_MAX - $1; $2 += $1)']
+        before: ['<= SIZE_MAX; $2 += $1)'],
+        after: ['<= INT_MAX - $1; $2 += $1)']
     },
     {
-        condition: ['<= SIZE_MAX; $1++)'],
-        consequent: ['<= INT_MAX - 1; $1++)']
+        before: ['<= SIZE_MAX; $1++)'],
+        after: ['<= INT_MAX - 1; $1++)']
     },
     {
-        condition: ['int $1 = open($2, O_RDWR);'],
-        consequent: ['int $1 = open($2, O_RDWR | O_NOFOLLOW);']
+        before: ['int $1 = open($2, O_RDWR);'],
+        after: ['int $1 = open($2, O_RDWR | O_NOFOLLOW);']
     },
     {
-        condition: ['assert(NULL != dup);'],
-        consequent: [
+        before: ['assert(NULL != dup);'],
+        after: [
             'if (NULL == dup) {',
             '    return NULLl',
             '}'

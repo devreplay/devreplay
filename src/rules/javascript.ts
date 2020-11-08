@@ -1,186 +1,186 @@
 module.exports = [
     {
-      condition: [
+      before: [
         'OutgoingMessage.prototype.flush'
       ],
-      consequent: [
+      after: [
         'OutgoingMessage.prototype.flushHeaders'
       ],
-      description: 'Prefer self[:attribute] = value over write_attribute(:attribute, value)',
+      message: 'Prefer self[:attribute] = value over write_attribute(:attribute, value)',
       severity: 'I'
     },
     {
-      condition: [
+      before: [
         '_writableState.buffer'
       ],
-      consequent: [
+      after: [
         '_writableState.getBuffer()'
       ]
     },
     {
-      condition: [
+      before: [
         'require(\'constants\')'
       ],
-      consequent: [
+      after: [
         'require(\'fs\').constants'
       ]
     },
     {
-      condition: [
+      before: [
         'crypto.createCredentials'
       ],
-      consequent: [
+      after: [
         'tls.createSecureContext'
       ]
     },
     {
-      condition: [
+      before: [
         'Server.connections'
       ],
-      consequent: [
+      after: [
         'Server.getConnections()'
       ]
     },
     {
-      condition: [
+      before: [
         'Server.listenFD()'
       ],
-      consequent: [
+      after: [
         'Server.listen({fd: <number>})'
       ]
     },
     {
-      condition: [
+      before: [
         'tmpDir()'
       ],
-      consequent: [
+      after: [
         'tmpdir()'
       ]
     },
     {
-      condition: [
+      before: [
         'getNetworkInterfaces()'
       ],
-      consequent: [
+      after: [
         'networkInterfaces()'
       ]
     },
     {
-      condition: [
+      before: [
         'SlowBuffer'
       ],
-      consequent: [
+      after: [
         'Buffer.allocUnsafeSlow(size)'
       ]
     },
     {
-      condition: [
+      before: [
         'EventEmitter.listenerCount(emitter, ${1:eventName})'
       ],
-      consequent: [
+      after: [
         'emitter.listenerCount(${1:eventName})'
       ]
     },
     {
-      condition: [
+      before: [
         'export default'
       ],
-      consequent: [
+      after: [
         'export'
       ]
     },
     {
-      condition: [
+      before: [
         'for (let $3 = 0;i < $1.length;i++) $2($1[$3])'
       ],
-      consequent: [
+      after: [
         'for (let $3 = 0;i < $1.length;i++) {',
         '    $2($1[$3])',
         '}'
       ]
     },
     {
-      condition: [
+      before: [
         'const $1 = new Array()'
       ],
-      consequent: [
+      after: [
         'const $1 = []'
       ]
     },
     {
-      condition: [
+      before: [
         '$1.hasOwnProperty(\'$2\')'
       ],
-      consequent: [
+      after: [
         '$1.$2 != null'
       ]
     },
     {
-      condition: [
+      before: [
         'new Boolean($1)'
       ],
-      consequent: [
+      after: [
         '$1'
       ],
       severity: 'Information'
     },
     {
-      condition: [
+      before: [
         'new Number($1)'
       ],
-      consequent: [
+      after: [
         '$1'
       ],
       severity: 'Information'
     },
     {
-      condition: [
+      before: [
         'new String($1)'
       ],
-      consequent: [
+      after: [
         '$1'
       ],
       severity: 'Information'
     },
     {
-      condition: [
+      before: [
         'new Symbol($1)'
       ],
-      consequent: [
+      after: [
         '$1'
       ],
       severity: 'Information'
     },
     {
-      condition: [
+      before: [
         'new $1;'
       ],
-      consequent: [
+      after: [
         'new $1();'
       ],
-      description: 'Never invoke a constructor in a new statement without using parentheses'
+      message: 'Never invoke a constructor in a new statement without using parentheses'
     },
     {
-      condition: [
+      before: [
         '@code'
       ],
-      consequent: [
+      after: [
         ''
       ]
     },
     {
-      condition: [
+      before: [
         '@expose'
       ],
-      consequent: [
+      after: [
         '@export'
       ]
     },
     {
-      condition: [
+      before: [
         '@inheritDoc'
       ],
-      consequent: [
+      after: [
         '@override'
       ]
     }

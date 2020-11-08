@@ -1,406 +1,406 @@
 module.exports = [
     {
-      condition: [
+      before: [
         '$3 = $1',
         '$1 = $2',
         '$2 = $3',
       ],
-      consequent: [
+      after: [
         '$2, $1 = $1, $2',
       ],
-      description: 'Value exchanging can be one line',
+      message: 'Value exchanging can be one line',
     },
     {
-      condition: [
+      before: [
         'if len(${1:list}) == 0:',
       ],
-      consequent: [
+      after: [
         'if not ${1:list}:',
       ],
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if len(${1:list}) != 0:',
       ],
-      consequent: [
+      after: [
         'if ${1:list}:',
       ],
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if len(${1:list}) > 0:',
       ],
-      consequent: [
+      after: [
         'if ${1:list}:',
       ],
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if not len(${1:list}):',
       ],
-      consequent: [
+      after: [
         'if not ${1:list}:',
       ],
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if len(${1:list}):',
       ],
-      consequent: [
+      after: [
         'if ${1:list}:',
       ],
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if ${1:val} is not None and not ${1:val}:',
       ],
-      consequent: [
+      after: [
         'if ${1:val} == 0:',
       ],
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if ${1:value} % ${2:value}:',
       ],
-      consequent: [
+      after: [
         'if ${1:value} % ${2:value} != 0:',
       ],
-      description: 'When handling integers, implicit false may involve more risk than benefit',
+      message: 'When handling integers, implicit false may involve more risk than benefit',
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if not ${1:value} % ${2:value}:',
       ],
-      consequent: [
+      after: [
         'if ${1:value} % ${2:value} == 0:',
       ],
       author: 'Google Python Style Guide',
-      description: 'When handling integers, implicit false may involve more risk than benefit'
+      message: 'When handling integers, implicit false may involve more risk than benefit'
     },
     {
-      condition: [
+      before: [
         'string.split(${1:value}, ${2:string})',
       ],
-      consequent: [
+      after: [
         '${1:value}.split(${2:string})',
       ],
       author: 'Google Python Style Guide',
-      description: 'Deprecated language feature',
+      message: 'Deprecated language feature',
     },
     {
-      condition: [
+      before: [
         'apply(${1:fn}, ${2:args}, ${3:kwargs})',
       ],
-      consequent: [
+      after: [
         '${1:fn}(*${2:args}, **${3:kwargs})',
       ],
       author: 'Google Python Style Guide',
-      description: 'Deprecated language feature',
+      message: 'Deprecated language feature',
     },
     {
-      condition: [
+      before: [
         'if ${1:value} == None:',
       ],
-      consequent: [
+      after: [
         'if ${1:value} is None:',
       ],
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if ${1:value} != None:',
       ],
-      consequent: [
+      after: [
         'if ${1:value} is not None:',
       ],
       author: 'Google Python Style Guide',
     },
     {
-      condition: [
+      before: [
         'if not ${1:value} == None:',
       ],
-      consequent: [
+      after: [
         'if ${1:value} is not None:',
       ],
     },
     {
-      condition: [
+      before: [
         'if not ${1:value} is None:',
       ],
-      consequent: [
+      after: [
         'if ${1:value} is not None:',
       ],
     },
     {
-      condition: [
+      before: [
         '',
         'import ${1:lib1}, ${2:lib2}',
       ],
-      consequent: [
+      after: [
         '',
         'import ${1:lib1}',
         'import ${2:lib2}',
       ],
     },
     {
-      condition: [
+      before: [
         '${1:value} * ${2:value2} -',
       ],
-      consequent: [
+      after: [
         '${1:value}*${2:value2} -',
       ],
     },
     {
-      condition: [
+      before: [
         '${1:value} * ${2:value2} +',
       ],
-      consequent: [
+      after: [
         '${1:value}*${2:value2} +',
       ],
     },
     {
-      condition: [
+      before: [
         '${1:func} = lambda ${2:value}: ${3:code}',
       ],
-      consequent: [
+      after: [
         'def ${1:func}(${2:value}): return ${3:code}',
       ],
     },
     {
-      condition: [
+      before: [
         'if ${1:exp} == True:',
       ],
-      consequent: [
+      after: [
         'if ${1:exp}:',
       ],
     },
     {
-      condition: [
+      before: [
         'if ${1:exp} is True:',
       ],
-      consequent: [
+      after: [
         'if ${1:exp}:',
       ],
     },
     {
-      condition: [
+      before: [
         'if ${1:exp} == False:',
       ],
-      consequent: [
+      after: [
         'if not ${1:exp}:',
       ],
     },
     {
-      condition: [
+      before: [
         'if ${1:exp} is False:',
       ],
-      consequent: [
+      after: [
         'if not ${1:exp}:',
       ],
     },
     {
-      condition: [
+      before: [
         '$1 ()',
       ],
-      consequent: [
+      after: [
         '$1()',
       ],
     },
     {
-      condition: [
+      before: [
         '$1[:$3] == \'$2\':',
       ],
-      consequent: [
+      after: [
         '$1.startswith(\'$2\'):',
       ],
     },
     {
-      condition: [
+      before: [
         '$1[:$3] == \"$2\":',
       ],
-      consequent: [
+      after: [
         '$1.startswith(\"$2\"):',
       ],
     },
     {
-      condition: [
+      before: [
         '$1[$3:] == \'$2\':',
       ],
-      consequent: [
+      after: [
         '$1.endswith(\'$2\'):',
       ],
     },
     {
-      condition: [
+      before: [
         '$1[$3:] == \"$2\":',
       ],
-      consequent: [
+      after: [
         '$1.endswith(\"$2\"):',
       ],
     },
     {
-      condition: [
+      before: [
         'type(${1:obj})) is type(${2:type}):',
       ],
-      consequent: [
+      after: [
         'isinstance(${1:obj}, ${2:type}):',
       ],
     },
     {
-      condition: [
+      before: [
         ';',
       ],
-      consequent: [
+      after: [
         '',
         '',
       ],
     },
     {
-      condition: [
+      before: [
         '[print($1) for $1 in $2]',
       ],
-      consequent: [
+      after: [
         'for $1 in $2:',
         '    print($1)',
       ],
-      description: 'Never use a list comprehension just for its side effects',
+      message: 'Never use a list comprehension just for its side effects',
     },
     {
-      condition: [
+      before: [
         '$1 = open(\'$2\')',
       ],
-      consequent: [
+      after: [
         'with open(\'$2\') as $1:',
       ],
     },
     {
-      condition: [
+      before: [
         'assert $1 >= $2',
         ''
       ],
-      consequent: [
+      after: [
         'if minimum < $2:',
         '   raise ValueError()',
       ],
       author: 'Google Python Style Guide',
-      description: 'Make use of built-in exception classes when it makes sense'
+      message: 'Make use of built-in exception classes when it makes sense'
     },
     {
-      condition: [
+      before: [
         'assert $1 >= $2, $3',
       ],
-      consequent: [
+      after: [
         'if minimum < $2:',
         '   raise ValueError($3)',
       ],
       author: 'Google Python Style Guide',
-      description: 'Make use of built-in exception classes when it makes sense'
+      message: 'Make use of built-in exception classes when it makes sense'
     },
     {
-      condition: [
+      before: [
         'except $1, $2:',
       ],
-      consequent: [
+      after: [
         'except $1 as $2:',
       ],
       author: 'Google Python Style Guide',
-      description: 'When capturing an exception, use as rather than a comma'
+      message: 'When capturing an exception, use as rather than a comma'
     },
     {
-      condition: [
+      before: [
         'for $1 in $2.keys():',
       ],
-      consequent: [
+      after: [
         'for $1 in $2:',
       ],
       author: 'Google Python Style Guide',
-      description: 'Never use Python 2 specific iteration method'
+      message: 'Never use Python 2 specific iteration method'
     },
     {
-      condition: [
+      before: [
         'if not $1.has_key($2):',
       ],
-      consequent: [
+      after: [
         'if $2 not in $1',
       ],
       author: 'Google Python Style Guide',
-      description: 'Never use Python 2 specific iteration method'
+      message: 'Never use Python 2 specific iteration method'
     },
     {
-      condition: [
+      before: [
         'for $1 in $2.readlines():',
       ],
-      consequent: [
+      after: [
         'for $1 in $2',
       ],
       author: 'Google Python Style Guide',
-      description: 'Never use Python 2 specific iteration method'
+      message: 'Never use Python 2 specific iteration method'
     },
     {
-      condition: [
+      before: [
         'for $1, $2 in $3.iteritems():',
       ],
-      consequent: [
+      after: [
         'for $1, $2 in $3.items():',
       ],
       author: 'Google Python Style Guide',
-      description: 'Never use Python 2 specific iteration method'
+      message: 'Never use Python 2 specific iteration method'
     },
     {
-      condition: [
+      before: [
         'lambda $1, $2: $1 * $2',
       ],
-      consequent: [
+      after: [
         'operator.mul($1, $2)',
       ],
       author: 'Google Python Style Guide',
-      description: 'Use the functions from the operator module instead of lambda functions'
+      message: 'Use the functions from the operator module instead of lambda functions'
     },
     {
-      condition: [
+      before: [
         '\'%s%s\' % ($1, $2)',
       ],
-      consequent: [
+      after: [
         '$1 + $2',
       ],
       author: 'Google Python Style Guide',
-      description: 'use + in this case'
+      message: 'use + in this case'
     },
     {
-      condition: [
+      before: [
         '\'{}{}\'.format($1, $2)',
       ],
-      consequent: [
+      after: [
         '$1 + $2',
       ],
       author: 'Google Python Style Guide',
-      description: 'use + in this case'
+      message: 'use + in this case'
     },
     {
-      condition: [
+      before: [
         ': Text',
       ],
-      consequent: [
+      after: [
         ': str',
       ],
       author: 'Google Python Style Guide',
-      description: 'For Python 3 only code, prefer to use str'
+      message: 'For Python 3 only code, prefer to use str'
     },
     {
-      condition: [
+      before: [
         'Text(',
       ],
-      consequent: [
+      after: [
         'str(',
       ],
       author: 'Google Python Style Guide',
-      description: 'For Python 3 only code, prefer to use str'
+      message: 'For Python 3 only code, prefer to use str'
     }
   ];

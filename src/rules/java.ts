@@ -1,272 +1,272 @@
 module.exports = [
   {
-    condition: ['if (${1:val1} = ${2:val2})'],
-    consequent: ['if (${1:val1} == ${2:val2})'],
+    before: ['if (${1:val1} = ${2:val2})'],
+    after: ['if (${1:val1} == ${2:val2})'],
     author: 'future-architect'
   },
   {
-    condition: ['XMLHTTPRequest'],
-    consequent: ['XmlHttpRequest'],
+    before: ['XMLHTTPRequest'],
+    after: ['XmlHttpRequest'],
     author: 'Google Java Style Guide'
   },
   {
-    condition: ['newCustomerID'],
-    consequent: ['newCustomerId'],
+    before: ['newCustomerID'],
+    after: ['newCustomerId'],
     author: 'Google Java Style Guide'
   },
   {
-    condition: ['innerStopWatch'],
-    consequent: ['innerStopwatch'],
+    before: ['innerStopWatch'],
+    after: ['innerStopwatch'],
     author: 'Google Java Style Guide'
   },
   {
-    condition: ['supportsIPv6OnIOS'],
-    consequent: ['supportsIpv6OnIos'],
+    before: ['supportsIPv6OnIOS'],
+    after: ['supportsIpv6OnIos'],
     author: 'Google Java Style Guide'
   },
   {
-    condition: ['$1 = $2 = $3'],
-    consequent: [
+    before: ['$1 = $2 = $3'],
+    after: [
       '$1 = $3',
       '$2 = $3'
     ],
     author: 'Oracle'
   },
   {
-    condition: ['if (${1:val1}++ = ${2:val2}++)'],
-    consequent: ['if ((${1:val1}++ = ${2:val2}++) != 0)'],
+    before: ['if (${1:val1}++ = ${2:val2}++)'],
+    after: ['if ((${1:val1}++ = ${2:val2}++) != 0)'],
     author: 'Oracle'
   },
   {
-    condition: ['$4 = ($1 = $2 + $3) + $5;'],
-    consequent: [
+    before: ['$4 = ($1 = $2 + $3) + $5;'],
+    after: [
       '$1 = $2 + $3',
       '$4 = $1 + $5'
     ],
     author: 'Oracle'
   },
   {
-    condition: ['$1 == $2 && $3 == $4'],
-    consequent: ['($1 == $2) && ($3 == $4)'],
+    before: ['$1 == $2 && $3 == $4'],
+    after: ['($1 == $2) && ($3 == $4)'],
     author: 'Oracle'
   },
   {
-    condition: [
+    before: [
       'if (${1:booleanExpression}) {',
       '    return true;',
       '} else {',
       '    return false;',
       '}'],
-    consequent: ['return ${1:booleanExpression}'],
+    after: ['return ${1:booleanExpression}'],
     author: 'Oracle'
   },
   {
-    condition: [
-      'if (${1:condition}) {',
+    before: [
+      'if (${1:before}) {',
       '    return ${2:x};',
       '} else {',
       '    return ${3:y};',
       '}'],
-    consequent: ['return (${1:condition} ? ${2:x} : ${3:y})'],
+    after: ['return (${1:before} ? ${2:x} : ${3:y})'],
     author: 'Oracle'
   },
   {
-    condition: [
-      'if (${1:condition}) {',
+    before: [
+      'if (${1:before}) {',
       '    return ${2:x};',
       '}',
       'return ${3:y};'],
-    consequent: ['return (${1:condition} ? ${2:x} : ${3:y})'],
+    after: ['return (${1:before} ? ${2:x} : ${3:y})'],
     author: 'Oracle'
   },
   {
-    condition: ['$1 ++'],
-    consequent: ['$1++'],
+    before: ['$1 ++'],
+    after: ['$1++'],
     author: 'future-architect'
   },
   {
-    condition: ['if (${1:condition})'],
-    consequent: ['if (${1:condition} == true)'],
+    before: ['if (${1:before})'],
+    after: ['if (${1:before} == true)'],
     author: 'future-architect'
   },
   {
-    condition: ['${1:scope} ${2:type} ${3:val1}, ${4:val2};'],
-    consequent: [
+    before: ['${1:scope} ${2:type} ${3:val1}, ${4:val2};'],
+    after: [
       '${1:scope} ${2:type} ${3:val1};',
       '${1:scope} ${2:type} ${3:val2};'],
       author: 'future-architect'
   },
   {
-    condition: ['${1:type} ${2:val}[] ='],
-    consequent: ['${1:type}[] ${2:val} ='],
+    before: ['${1:type} ${2:val}[] ='],
+    after: ['${1:type}[] ${2:val} ='],
     author: 'future-architect'
   },
   {
-    condition: ['final List<${1:type}> ${2:values} = Arrays.asList'],
-    consequent: ['final List<${1:type}> ${2:values} = List.of'],
+    before: ['final List<${1:type}> ${2:values} = Arrays.asList'],
+    after: ['final List<${1:type}> ${2:values} = List.of'],
     author: 'future-architect'
   },
   {
-    condition: ['new String();'],
-    consequent: ['"";'],
+    before: ['new String();'],
+    after: ['"";'],
     author: 'future-architect'
   },
   {
-    condition: ['new StringBuilder($1).append($2).toString()'],
-    consequent: ['$1 + $2'],
+    before: ['new StringBuilder($1).append($2).toString()'],
+    after: ['$1 + $2'],
     author: 'future-architect'
   },
   {
-    condition: [
+    before: [
       'org.xml.sax.AttributeList'
     ],
-    consequent: [
+    after: [
       'org.xml.sax.Attributes'
     ],
-    description: 'org.xml.sax.AttributeList is deprecated',
+    message: 'org.xml.sax.AttributeList is deprecated',
     severity: 'E'
   },
   {
-    condition: [
+    before: [
       'org.xml.sax.DocumentHandler'
     ],
-    consequent: [
+    after: [
       'org.xml.sax.ContentHandler'
     ]
   },
   {
-    condition: [
+    before: [
       'org.omg.CORBA.DynAny'
     ],
-    consequent: [
+    after: [
       'org.omg.DynamicAny.DynAny'
     ]
   },
   {
-    condition: [
+    before: [
       'org.omg.CORBA.DynArray'
     ],
-    consequent: [
+    after: [
       'org.omg.DynamicAny.DynArray'
     ]
   },
   {
-    condition: [
+    before: [
       'org.omg.CORBA.DynEnum'
     ],
-    consequent: [
+    after: [
       'org.omg.DynamicAny.DynEnum'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.CROSSHAIR_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.CROSSHAIR_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.DEFAULT_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.DEFAULT_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.E_RESIZE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.E_RESIZE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.HAND_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.HAND_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.MOVE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.MOVE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.N_RESIZE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.N_RESIZE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.NE_RESIZE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.NE_RESIZE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.NW_RESIZE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.NW_RESIZE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.S_RESIZE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.S_RESIZE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.SE_RESIZE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.SE_RESIZE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.SW_RESIZE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.SW_RESIZE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.TEXT_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.TEXT_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.W_RESIZE_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.W_RESIZE_CURSOR'
     ]
   },
   {
-    condition: [
+    before: [
       'java.awt.Frame.WAIT_CURSOR'
     ],
-    consequent: [
+    after: [
       'Cursor.WAIT_CURSOR'
     ]
   }

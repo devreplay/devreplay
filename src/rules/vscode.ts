@@ -1,57 +1,57 @@
 module.exports = [
     {
-      condition: [
+      before: [
         'show(${1:column}, ${2:preservalFocus})'
       ],
-      consequent: [
+      after: [
         'show(${2:preservalFocus})'
       ]
     },
     {
-      condition: [
+      before: [
         'editor.hide()'
       ],
-      consequent: [
+      after: [
         'workbench.action.closeActiveEditor()'
       ]
     },
     {
-      condition: [
+      before: [
         'editor.show(${1:column})'
       ],
-      consequent: [
+      after: [
         'window.showTextDocument()'
       ]
     },
     {
-      condition: [
+      before: [
         'MarkedString'
       ],
-      consequent: [
+      after: [
         'MarkdownString'
       ]
     },
     {
-      condition: [
+      before: [
         'withScmProgress'
       ],
-      consequent: [
+      after: [
         'withProgress'
       ]
     },
     {
-      condition: [
+      before: [
         'workspace.rootPath'
       ],
-      consequent: [
+      after: [
         'workspace.workspaceFolders![0].uri.path'
       ]
     },
     {
-      condition: [
+      before: [
         'scm.inputBox'
       ],
-      consequent: [
+      after: [
         'SourceControl.inputBox'
       ]
     }
