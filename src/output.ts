@@ -66,7 +66,7 @@ export function formatLintOut(matched: LintOut) {
 
 export function makeSeverity(severity?: string) {
     if (severity === undefined) {
-        return 'E';
+        return 'W';
     } if (severity.toUpperCase().startsWith('E')) {
         return 'E';
     } if (severity.toUpperCase().startsWith('W')) {
@@ -76,7 +76,7 @@ export function makeSeverity(severity?: string) {
     } if (severity.toUpperCase().startsWith('H')) {
         return 'H';
     } 
-    return 'E';
+    return 'W';
 }
 
 export function makeFullSeverity(severity?: string) {
@@ -90,7 +90,7 @@ export function makeFullSeverity(severity?: string) {
     } if (fixed_severity === 'H') {
         return chalk.gray('hint');
     }
-    return chalk.gray('error');
+    return chalk.gray('warning');
 }
 
 export function code2String(pattern: Pattern) {
