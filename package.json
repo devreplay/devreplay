@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -27,7 +27,6 @@
     "commander": "^6.2.0",
     "text-table": "0.2.0",
     "tslib": "^2.0.3",
-    "tsutils": "^3.17.1",
     "v8-compile-cache": "^2.2.0",
     "lodash": "^4.17.20",
     "simple-git": "2.21.0",
@@ -37,8 +36,8 @@
   "devDependencies": {
     "@types/node": "^14.14.6",
     "@types/rimraf": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.6.1",
-    "@typescript-eslint/parser": "^4.6.1",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
     "eslint": "^7.13.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsdoc": "^30.7.7",
