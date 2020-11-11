@@ -29,6 +29,9 @@ export function makeDiffObj(diff: string) {
             let previousType: parsediff.ChangeType = 'normal';
             for (const change of chunk.changes){
                 const line = change.content;
+                if (line === '\\ No newline at end of file') {
+                    continue;
+                }
                 if (change.type === 'normal') {
                     if (tmp_chunk.deleted.length > 0 || tmp_chunk.added.length > 0) {
                         tmp_chunk.type = getChunkType(tmp_chunk.added, tmp_chunk.deleted);
