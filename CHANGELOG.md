@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.8.4
+
+* Improve rule generating
+* Add init-detail command
+
 ## 1.7.0
 
 * Make init command
