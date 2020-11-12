@@ -95,7 +95,7 @@ const cli = {
                 logLength = Number(files[1]);
             }
 
-            const rules = await mineRules(dirName, logLength);
+            const rules = (await mineRules(dirName, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
             writePatternFile(rules, dirName);
 
             return 0;
@@ -113,7 +113,7 @@ const cli = {
                 logLength = Number(files[1]);
             }
 
-            const rules = await mineRulesDetail(dirName, logLength);
+            const rules = (await mineRulesDetail(dirName, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
             writePatternFile(rules, dirName);
 
             return 0;
