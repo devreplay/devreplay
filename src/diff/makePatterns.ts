@@ -2,10 +2,51 @@ import { tokenize, Token } from 'source-code-tokenizer';
 
 import { Pattern } from '../patterns';
 import { Chunk, makeDiffObj } from './diffparser';
+import { DetailedDiff } from './gitMiner';
 
 export interface Identifier {
     value: string;
     scope: string;
+}
+
+export async function makePatternsFromDetailedDiffs(logs: DetailedDiff[]) {
+    let allPatterns: Pattern[] = [];
+    for (const log of logs) {
+        let patterns = await makePatternsFromDiff(log.diff);
+        patterns = patterns
+        .filter(x => x.after.length < 3 && x.before.length < 3)
+        .map(pattern => {
+            pattern.author = log.log.author_name;
+            pattern.message = log.log.message;
+            pattern.ruleId = log.log.hash;
+            delete pattern.identifiers;
+            return pattern;
+        });
+
+        allPatterns = allPatterns.concat(patterns);
+    }
+    allPatterns = filterSameRules(allPatterns);
+
+    return allPatterns;
+}
+
+export async function makePatternsFromDiffs(diffs: string[]) {
+    let allPatterns: Pattern[] = [];
+    for (const diff of diffs) {
+        let patterns = await makePatternsFromDiff(diff);
+        patterns = patterns
+        .filter(x => x.after.length === 1 && x.before.length === 1)
+        .map(pattern => {
+            delete pattern.identifiers;
+            delete pattern.scopeName;
+            return pattern;
+        });
+
+        allPatterns = allPatterns.concat(patterns);
+    }
+    allPatterns = filterSameRules(allPatterns);
+
+    return allPatterns;
 }
 
 export async function makePatternsFromDiff(diff: string): Promise<Pattern[]> {
@@ -37,6 +78,21 @@ export async function makePatterns(deletedContents?: string, addedContents?: str
     }
 
     const identifiers: Identifier[] = collectCommonIdentifiers(beforeTokens.tokens, afterTokens.tokens);
+
+    if (identifiers.length > 0) {
+        const diffs = getSingleDiff(beforeTokens.tokens, afterTokens.tokens);
+        if (diffs.length === 1) {
+            if (isAbstractable(diffs[0].before)) {
+                return {
+                    before: [diffs[0].before.value],
+                    after: [diffs[0].after.value],
+                    scopeName: source
+                };
+            }
+            return undefined;
+        }
+    }
+
     const beforePatterns = makeAbstractedCode(beforeTokens.tokens, identifiers);
     const afterPatterns = makeAbstractedCode(afterTokens.tokens, identifiers);
 
@@ -45,25 +101,26 @@ export async function makePatterns(deletedContents?: string, addedContents?: str
     return {
         before: before,
         after: after,
-        identifiers: identifiers.map(identifier => { return identifier.value; })
+        scopeName: source
     };
 }
 
 function collectCommonIdentifiers(beforeTokens: Token[], afterTokens: Token[]) {
     const identifiers: Identifier[] = [];
     for (const beforeToken of beforeTokens) {
+        if (!(checkInIdentifiers(identifiers, beforeToken) === undefined &&
+            isAbstractable(beforeToken))) {
+            continue;
+        }
         const beforeScope = beforeToken.scopes[beforeToken.scopes.length - 1];
         for (const afterToken of afterTokens) {
             const afterScope = afterToken.scopes[afterToken.scopes.length - 1];
-            if (beforeToken.value === afterToken.value &&
-                beforeScope === afterScope && 
-                checkInIdentifiers(identifiers, beforeToken) === undefined &&
-                isAbstractable(beforeToken)){
-                    identifiers.push({
-                        value: beforeToken.value,
-                        scope: beforeScope
-                    });
-                }
+            if (beforeToken.value === afterToken.value && beforeScope === afterScope){
+                identifiers.push({
+                    value: beforeToken.value,
+                    scope: beforeScope
+                });
+            }
         }
     }
     return identifiers;
@@ -90,11 +147,12 @@ function makeAbstractedCode(tokens: Token[], identifiers: Identifier[]) {
         const spaceNum = token.columns.start - previousPosition;
         previousPosition = token.columns.end;
         const identIndex = checkInIdentifiers(identifiers, token);
-        const value = identIndex !== undefined
-                      ? `\${${identIndex}:${token.scopes[token.scopes.length - 1]}}`
-                      : token.value;
-
-        lineContents += ' '.repeat(spaceNum) + value;
+        if (identIndex !== undefined) {
+            const abstractedToken = token.scopes[token.scopes.length - 1].split('.')[0];
+            lineContents += ' '.repeat(spaceNum) + `\${${identIndex}:${abstractedToken}}`;
+        } else {
+            lineContents += ' '.repeat(spaceNum) + token.value;
+        }
     }
     patterns.push(lineContents);
     return patterns;
@@ -117,12 +175,41 @@ function checkInIdentifiers(identifiers: Identifier[], token: Token) {
 function isAbstractable(token: Token) {
     const scope = token.scopes[token.scopes.length - 1];
     const isAlphanumeric = token.value.match(/^([a-zA-Z][a-zA-Z0-9]*)|[0-9]+$/i);
-    return isAlphanumeric && !scope.includes('keyword') && !scope.includes('builtin') && !scope.includes('storage');
+    return isAlphanumeric && ['keyword', 'builtin', 'strage'].every(x => !scope.includes(x));
 }
 
 function isEmptyPattern(pattern: string[]) {
     return pattern.length === 1 && pattern[0] === '';
 }
+
+function getSingleDiff(beforeTokens: Token[], afterTokens: Token[]) {
+    const differentTokens: {before: Token, after: Token}[] = [];
+
+    for (let index = 0; index < Math.min(beforeTokens.length, afterTokens.length); index++) {
+        const beforeToken = beforeTokens[index];
+        const afterToken = afterTokens[index];
+        if (beforeToken.value !== afterToken.value) {
+            differentTokens.push({before: beforeToken, after: afterToken});
+        }
+    }
+
+    return differentTokens;
+}
+
+function filterSameRules(patterns: Pattern[]) {
+    const uniquePattern: Pattern[] = [];
+    for (const pattern of patterns) {
+        if (!uniquePattern.some(x => {
+            return (
+                x.after.join('\n') === pattern.after.join('\n') &&
+                x.before.join('\n') === pattern.before.join('\n'));       
+        })){
+            uniquePattern.push(pattern);
+        }
+    }
+    return uniquePattern;
+}
+
 
 function formatPatterns(before: string[], after: string[]) {
     const minSpace = Math.min(countSpace(before), countSpace(after));

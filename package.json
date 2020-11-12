@@ -16,6 +16,7 @@
     "test:dir": "node ./bin/devreplay --dir ./test test/rules/devreplay.json",
     "test:fix": "node ./bin/devreplay --fix test/files/test.py test/rules/devreplay.json",
     "test:init": "node ./bin/devreplay --init",
+    "test:initdetail": "node ./bin/devreplay --init-detail",
     "test:all": "yarn run test && yarn run test:dir && yarn run test:fix",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile"

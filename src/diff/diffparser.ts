@@ -20,7 +20,7 @@ export function makeDiffObj(diff: string) {
             continue;
         }
         const source = getFileSource(file.to);
-        if (source === undefined) {
+        if (source === undefined || source === 'source.json' || source === 'source.html') {
             continue;
         }
 

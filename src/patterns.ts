@@ -1,6 +1,7 @@
 export interface Pattern {
     before: string[];
     after: string[];
+    scopeName?: string;
     ruleId?: string;
     extends?: string[];
     number?: number;

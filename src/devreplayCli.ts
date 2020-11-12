@@ -1,13 +1,11 @@
 import commander = require('commander');
+import fs = require('fs');
+import path = require('path');
 
 import { fixFromFile, lintFromFile } from './lint';
 import { outputLintOuts } from './output';
 import { arrayify } from './utils';
-import path = require('path');
-import fs = require('fs');
-import { Project } from './diff/gitMiner';
-import { Pattern } from './patterns';
-import { makePatternsFromDiff } from './diff/makePatterns';
+import { mineRules, mineRulesDetail } from './addRules';
 import { writePatternFile } from './ruleManager';
 
 interface Argv {
@@ -15,12 +13,13 @@ interface Argv {
     init?: boolean;
     dir?: boolean;
     out?: string;
+    initDetail?: boolean;
 }
 
 interface Option {
     short?: string;
     // Commander will camelCase option names.
-    name: keyof Argv | 'fix' | 'init' | 'dir';
+    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail';
     type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
     message: string; // Long, used for `--help`
@@ -42,8 +41,14 @@ const options: Option[] = [
     {
         name: 'init',
         type: 'boolean',
-        describe: 'make pattern from two files',
-        message: 'make pattern from two files'
+        describe: 'make rules from recent git changes',
+        message: 'make rules from recent git changes'
+    },
+    {
+        name: 'init-detail',
+        type: 'boolean',
+        describe: 'make detailed rules from recent git changes',
+        message: 'make detailed rules from recent git changes'
     }
 ];
 
@@ -64,11 +69,12 @@ const cli = {
         if (parsed.unknown.length !== 0) {
             (commander.parseArgs as (args: string[], unknown: string[]) => void)([], parsed.unknown);
         }
-        const argv = commander.opts() as Argv;
+        const argv = (commander.opts() as any) as Argv;
 
         if (
             !(
                 argv.init !== undefined ||
+                argv.initDetail !== undefined ||
                 commander.args.length > 0
             )
         ) {
@@ -83,18 +89,32 @@ const cli = {
             if (files.length > 0) {
                 dirName = files[0];
             }
+
             let logLength = 10;
             if (files.length > 1 && !isNaN(Number(files[1]))) {
                 logLength = Number(files[1]);
             }
-            const project = new Project(dirName);
-            const diffs = await project.getDiff(logLength);
-            let allPatterns: Pattern[] = [];
-            for (const diff of diffs) {
-                const patterns = await makePatternsFromDiff(diff);
-                allPatterns = allPatterns.concat(patterns);
+
+            const rules = await mineRules(dirName, logLength);
+            writePatternFile(rules, dirName);
+
+            return 0;
+        }
+
+        if (argv.initDetail) {
+            const files = arrayify(commander.args);
+            let dirName = './';
+            if (files.length > 0) {
+                dirName = files[0];
             }
-            writePatternFile(allPatterns, dirName);
+
+            let logLength = 10;
+            if (files.length > 1 && !isNaN(Number(files[1]))) {
+                logLength = Number(files[1]);
+            }
+
+            const rules = await mineRulesDetail(dirName, logLength);
+            writePatternFile(rules, dirName);
 
             return 0;
         }
