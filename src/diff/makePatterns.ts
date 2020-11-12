@@ -14,7 +14,6 @@ export async function makePatternsFromDetailedDiffs(logs: DetailedDiff[]) {
     for (const log of logs) {
         let patterns = await makePatternsFromDiff(log.diff);
         patterns = patterns
-        .filter(x => x.after.length < 3 && x.before.length < 3)
         .map(pattern => {
             pattern.author = log.log.author_name;
             pattern.message = log.log.message;
@@ -35,7 +34,6 @@ export async function makePatternsFromDiffs(diffs: string[]) {
     for (const diff of diffs) {
         let patterns = await makePatternsFromDiff(diff);
         patterns = patterns
-        .filter(x => x.after.length === 1 && x.before.length === 1)
         .map(pattern => {
             delete pattern.identifiers;
             delete pattern.scopeName;
