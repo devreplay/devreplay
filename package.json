@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.8.6",
+  "version": "1.8.7",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -30,7 +30,7 @@
     "tslib": "^2.0.3",
     "v8-compile-cache": "^2.2.0",
     "lodash": "^4.17.20",
-    "simple-git": "2.21.0",
+    "simple-git": "2.22.0",
     "source-code-tokenizer": "^0.1.5",
     "parse-diff": "^0.7.1"
   },
