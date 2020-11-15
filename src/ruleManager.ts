@@ -5,14 +5,14 @@ import { extend as Extend, getInitPattern } from './extend';
 import { tryReadFile } from './file';
 import { Pattern } from './patterns';
 
-export function writePatternFile(patterns: Pattern[], dirPath: string) {
+export function writePatternFile(patterns: Pattern[], dirPath: string): void {
     const outPatterns = readCurrentPattern(dirPath).concat(patterns);
     const patternStr = JSON.stringify(outPatterns, undefined, 2);
     const filePath = join(dirPath, './devreplay.json');
     writeFileSync(filePath, patternStr);
 }
 
-export function readPatternFile(fileName: string, ruleFileName?: string) {
+export function readPatternFile(fileName: string, ruleFileName?: string): Pattern[] {
     let location;
     if (ruleFileName !== undefined && existsSync(ruleFileName)) {
         location = ruleFileName;

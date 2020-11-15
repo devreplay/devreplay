@@ -1,19 +1,19 @@
-import * as git from 'simple-git/promise';
-import { DefaultLogFields } from 'simple-git/src/lib/tasks/log';
-import { ListLogLine } from 'simple-git/typings/response';
+import simpleGit, {SimpleGit} from 'simple-git';
 
 export type DetailedDiff = {
-  log: (DefaultLogFields & ListLogLine),
+  log: {
+    author_name: string,
+    message: string,
+    hash: string
+  },
   diff: string
 }
 
 export class Project {
-  path: string
-  localGit: git.SimpleGit
+  localGit: SimpleGit
 
   constructor(path: string) {
-    this.path = path;
-    this.localGit = git(this.path);
+    this.localGit = simpleGit(path);
   }
   
   async getDiffs (logLength: number): Promise<string[]> {

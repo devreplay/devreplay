@@ -17,7 +17,7 @@ export interface LintOut {
     position: { start: Position; end: Position};
 }
 
-export function outputLintOuts(lintouts: LintOut[]) {
+export function outputLintOuts(lintouts: LintOut[]): string {
     const lintoutputs: string[][] = [];
     let errorCount = 0;
     let warningCount = 0;
@@ -57,14 +57,14 @@ export function outputLintOuts(lintouts: LintOut[]) {
     return output;
 }
 
-export function formatLintOut(matched: LintOut) {
+export function formatLintOut(matched: LintOut): string[] {
     const severity = makeFullSeverity(matched.pattern.severity);
     const position = `${matched.fileName}:${matched.position.start.line}:${matched.position.start.character}`;
     const message = `${code2String(matched.pattern)}`;
     return [position, severity, message];
 }
 
-export function makeSeverity(severity?: string) {
+export function makeSeverity(severity?: string): "W" | "E" | "I" | "H" {
     if (severity === undefined) {
         return 'W';
     } if (severity.toUpperCase().startsWith('E')) {
@@ -79,7 +79,7 @@ export function makeSeverity(severity?: string) {
     return 'W';
 }
 
-export function makeFullSeverity(severity?: string) {
+export function makeFullSeverity(severity?: string): string {
     const fixed_severity = makeSeverity(severity);
     if (fixed_severity === 'E') {
         return chalk.red('error');
@@ -93,7 +93,7 @@ export function makeFullSeverity(severity?: string) {
     return chalk.gray('warning');
 }
 
-export function code2String(pattern: Pattern) {
+export function code2String(pattern: Pattern): string {
     if (pattern.message !== undefined) {
         if (pattern.author !== undefined) {
             return `${pattern.message} by ${pattern.author}`;
