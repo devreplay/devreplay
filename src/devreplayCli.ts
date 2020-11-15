@@ -69,7 +69,7 @@ const cli = {
         if (parsed.unknown.length !== 0) {
             (commander.parseArgs as (args: string[], unknown: string[]) => void)([], parsed.unknown);
         }
-        const argv = (commander.opts() as any) as Argv;
+        const argv = commander.opts() as Argv;
 
         if (
             !(

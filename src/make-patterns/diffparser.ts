@@ -11,7 +11,7 @@ export interface Chunk {
     readonly added: string[];
 }
 
-export function makeDiffObj(diff: string) {
+export function makeDiffObj(diff: string): Chunk[] {
     const files: parsediff.File[] = parsediff(diff);
     const chunks: Chunk[] = [];
     for (const file of files) {

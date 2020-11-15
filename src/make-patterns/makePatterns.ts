@@ -9,7 +9,7 @@ export interface Identifier {
     scope: string;
 }
 
-export async function makePatternsFromDetailedDiffs(logs: DetailedDiff[]) {
+export async function makePatternsFromDetailedDiffs(logs: DetailedDiff[]): Promise<Pattern[]> {
     let allPatterns: Pattern[] = [];
     for (const log of logs) {
         let patterns = await makePatternsFromDiff(log.diff);
@@ -29,7 +29,7 @@ export async function makePatternsFromDetailedDiffs(logs: DetailedDiff[]) {
     return allPatterns;
 }
 
-export async function makePatternsFromDiffs(diffs: string[]) {
+export async function makePatternsFromDiffs(diffs: string[]): Promise<Pattern[]> {
     let allPatterns: Pattern[] = [];
     for (const diff of diffs) {
         let patterns = await makePatternsFromDiff(diff);
@@ -59,7 +59,7 @@ export async function makePatternsFromDiff(diff: string): Promise<Pattern[]> {
     return patterns;
 }
 
-export function makePatternsFromChunk(chunk: Chunk) {
+export function makePatternsFromChunk(chunk: Chunk): Promise<Pattern | undefined> {
     return makePatterns(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source); 
 }
 

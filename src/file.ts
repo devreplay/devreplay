@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-export function tryReadFile(filename: string) {
+export function tryReadFile(filename: string): string | undefined {
     if (!fs.existsSync(filename)) {
         throw new Error(`Unable to open file: ${filename}`);
     }

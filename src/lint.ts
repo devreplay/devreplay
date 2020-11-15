@@ -3,14 +3,14 @@ import { Pattern } from './patterns';
 import { readPatternFile } from './ruleManager';
 import { LintOut } from './output';
 
-export function lint(fileName: string, fileContents: string, ruleFileName?: string) {
+export function lint(fileName: string, fileContents: string, ruleFileName?: string): LintOut[] {
     const patterns = readPatternFile(fileName, ruleFileName);
     const adoptablePatterns = lintWithPattern(fileName, fileContents, patterns);
 
     return adoptablePatterns;
 }
 
-export function lintWithPattern(fileName: string, contents: string, patterns: Pattern[]) {
+export function lintWithPattern(fileName: string, contents: string, patterns: Pattern[]): LintOut[] {
     const matched: LintOut[] = [];
     for (const pattern of patterns) {
 
@@ -27,12 +27,12 @@ export function lintWithPattern(fileName: string, contents: string, patterns: Pa
     return matched;
 }
 
-export function fixWithPattern(fileContents: string, pattern: Pattern) {
+export function fixWithPattern(fileContents: string, pattern: Pattern): string | undefined {
     if (pattern.after.length === 0 || pattern.before.length === 0) {
         return '';
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let after = pattern.after.join('\n').replace(dollar, (_, y) => (`\$<token${(parseInt(y, 10) + 1)}>`));
+    let after = pattern.after.join('\n').replace(dollar, (_, y) => (`$<token${(parseInt(y, 10) + 1)}>`));
 
     if (pattern.regex) {
         after = pattern.after[0];
@@ -51,7 +51,7 @@ export function fixWithPattern(fileContents: string, pattern: Pattern) {
     return undefined;
 }
 
-export function lintFromFile(fileName: string, ruleFileName?: string) {
+export function lintFromFile(fileName: string, ruleFileName?: string): LintOut[] {
     const fileContents = tryReadFile(fileName);
     if (fileContents !== undefined) {
         return lint(fileName, fileContents, ruleFileName);
@@ -60,7 +60,7 @@ export function lintFromFile(fileName: string, ruleFileName?: string) {
     return [];
 }
 
-export function fixFromFile(fileName: string, ruleFileName?: string) {
+export function fixFromFile(fileName: string, ruleFileName?: string): string | undefined {
     const fileContents = tryReadFile(fileName);
     if (fileContents !== undefined) {
         const problems = lint(fileName, fileContents, ruleFileName);
@@ -78,8 +78,8 @@ function before2regex2(before: string[], regex?: boolean) {
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
     let joinedBefore = before.length < 2 ? before[0] : before.join('\n');
-    joinedBefore = joinedBefore.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    joinedBefore = joinedBefore.replace(/[<>*()?.\[\]]/g, '\\$&');
+    joinedBefore = joinedBefore.replace(dollar, (_, y) => (`$${(parseInt(y, 10) + 1)}`));
+    joinedBefore = joinedBefore.replace(/[<>*()?.[\]]/g, '\\$&');
 
     const tokenIndex: number[] = [];
     joinedBefore = joinedBefore.replace(dollar, (x) => {
@@ -89,7 +89,7 @@ function before2regex2(before: string[], regex?: boolean) {
         }
         tokenIndex.push(index);
 
-        return `(?<token${index}>[\\w\.]+)`;
+        return `(?<token${index}>[\\w.]+)`;
     });
     try {
         return new RegExp(joinedBefore, 'gm');
@@ -104,8 +104,8 @@ function before2regex(before: string[], regex?: boolean) {
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
     let joinedBefore = before.length < 2 ? before[0] : before.join('\n');
-    joinedBefore = joinedBefore.replace(dollar, (_, y) => (`\$${(parseInt(y, 10) + 1)}`));
-    joinedBefore = joinedBefore.replace(/[<>*()?.\[\]]/g, '\\$&');
+    joinedBefore = joinedBefore.replace(dollar, (_, y) => (`$${(parseInt(y, 10) + 1)}`));
+    joinedBefore = joinedBefore.replace(/[<>*()?.[\]]/g, '\\$&');
 
     const tokenIndex: number[] = [];
     joinedBefore = joinedBefore.replace(dollar, (x) => {
@@ -115,7 +115,7 @@ function before2regex(before: string[], regex?: boolean) {
         }
         tokenIndex.push(index);
 
-        return `(?<token${tokenIndex.indexOf(index) + 1}>[\\w\.]+)`;
+        return `(?<token${tokenIndex.indexOf(index) + 1}>[\\w.]+)`;
     });
     try {
         return new RegExp(joinedBefore, 'gm');

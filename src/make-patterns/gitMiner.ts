@@ -16,7 +16,7 @@ export class Project {
     this.localGit = git(this.path);
   }
   
-  async getDiffs (logLength: number) {
+  async getDiffs (logLength: number): Promise<string[]> {
     const diffs: string[] = [];
     const hashes = this.getHashes(logLength);
     for (const hash of await hashes) {
@@ -26,7 +26,7 @@ export class Project {
     return diffs;
   }
 
-  async getHashes(logLength: number) {
+  async getHashes(logLength: number): Promise<string[]> {
     const hashes: string[] = [];
     const log = await this.localGit.log({});
     for (let index = 0; index < Math.min(log.total, logLength); index++) {
@@ -36,7 +36,7 @@ export class Project {
     return hashes;
   }
 
-  async getDiffsDetail(logLength: number) {
+  async getDiffsDetail(logLength: number): Promise<DetailedDiff[]> {
     const diffs: DetailedDiff[] = [];
     const logs = await this.localGit.log({});
     for (let index = 0; index < Math.min(logs.total, logLength); index++) {

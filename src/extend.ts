@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Pattern } from './patterns';
 
 const android = require('./rules/android');
@@ -62,7 +63,7 @@ export const sources: Source = {
     typescript: ['.ts'],
 };
 
-export function getInitPattern(fileName: string) {
+export function getInitPattern(fileName: string): Pattern[] {
     for (const key of Object.keys(sources)) {
         if (sources[key].some((x) => fileName.endsWith(x))) {
             return extend[key];

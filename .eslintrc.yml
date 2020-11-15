@@ -1,0 +1,34 @@
+#############################
+#############################
+## JavaScript Linter rules ##
+#############################
+#############################
+
+############
+# Env Vars #
+############
+env:
+  browser: true
+  es2020: true
+
+###############
+# Global Vars #
+###############
+extends:
+  # - 'standard-with-typescript'
+  - 'eslint:recommended'
+  - 'plugin:@typescript-eslint/recommended'
+###############
+# Parser vars #
+###############
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaVersion: 11
+  sourceType: module
+
+###########
+# Plugins #
+###########
+plugins:
+  - '@typescript-eslint'
+  - 'jsdoc'
