@@ -1,6 +1,6 @@
 import { tokenize, Token } from 'source-code-tokenizer';
 
-import { Pattern } from '../patterns';
+import { Pattern } from './patterns';
 import { Chunk, makeDiffObj } from './diffparser';
 import { DetailedDiff } from './gitMiner';
 

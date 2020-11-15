@@ -1,5 +1,5 @@
-import { Project } from './make-patterns/gitMiner';
-import { makePatternsFromDetailedDiffs, makePatternsFromDiffs } from './make-patterns/makePatterns';
+import { Project } from './gitMiner';
+import { makePatternsFromDetailedDiffs, makePatternsFromDiffs } from './makePatterns';
 import { Pattern } from './patterns';
 
 export async function mineRules(dirName: string, logLength: number): Promise<Pattern[]> {
