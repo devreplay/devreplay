@@ -1,4 +1,4 @@
-const javascript = require('./javascript');
+import { patterns as javascript } from './javascript'
+import { Pattern } from '../patterns';
 
-module.exports = [
-].concat(javascript);
+export const patterns: Pattern[] = javascript;

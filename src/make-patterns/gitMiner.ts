@@ -48,33 +48,19 @@ export class Project {
     return diffs;
   }
 
-  // async getChangedFilesWithHEAD (length: number, length2?: number): Promise<string[]> {  
-  //   const diffLength = [];
-  //   if (length2 !== undefined) {
-  //     diffLength.push(`HEAD~${length2}..HEAD~${length}`);
-  //   } else {
-  //     diffLength.push(`HEAD~${length}`);
-  //   }
-  //   const diff = await this.localGit.diffSummary(diffLength);
-  //   return diff.files
-  //     .map(file => { return file.file; });
-  // }
-
-  // async getfiles(index: string): Promise<string>{
-  //   return await this.localGit.catFile(['-p', index]);
-  // }
-}
-
-export async function getChangedFilesWithHEAD (dirPath: string, length: number, length2?: number): Promise<string[]> {
-  const localGit: git.SimpleGit = git(dirPath);
-
-  const diffLength = [];
-  if (length2 !== undefined) {
-    diffLength.push(`HEAD~${length2}..HEAD~${length}`);
-  } else {
-    diffLength.push(`HEAD~${length}`);
+  async getChangedFilesWithHEAD (length: number, length2?: number): Promise<string[]> {  
+    const diffLength = [];
+    if (length2 !== undefined) {
+      diffLength.push(`HEAD~${length2}..HEAD~${length}`);
+    } else {
+      diffLength.push(`HEAD~${length}`);
+    }
+    const diff = await this.localGit.diffSummary(diffLength);
+    return diff.files
+      .map(file => { return file.file; });
   }
-  const diff = await localGit.diffSummary(diffLength);
-  return diff.files
-    .map(file => { return file.file; });
+
+  async getfiles(index: string): Promise<string>{
+    return await this.localGit.catFile(['-p', index]);
+  }
 }

@@ -1,5 +1,7 @@
-const c = require('./c');
-module.exports = [
+import { patterns as c } from './c'
+import { Pattern } from '../patterns';
+
+export const patterns: Pattern[] = [
     {
         before: ['std::rand() % $1'],
         after: ['std::uniform_int_distribution<int> distribution(0, $1)'],

@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Pattern } from './patterns';
 
-const android = require('./rules/android');
-const angular = require('./rules/angular');
-const c = require('./rules/c');
-const chainer2pytouch = require('./rules/chainer2pytouch');
-const cpp = require('./rules/cpp');
-const cobol = require('./rules/cobol');
-const dart = require('./rules/dart');
-const java = require('./rules/java');
-const javascript = require('./rules/javascript');
-const php = require('./rules/php');
-const python = require('./rules/python');
-const rails = require('./rules/rails');
-const react = require('./rules/react');
-const ruby = require('./rules/ruby');
-const typescript = require('./rules/typescript');
-const tensorflow = require('./rules/tensorflow');
-const vscode = require('./rules/vscode');
-const vue = require('./rules/vue');
+import { patterns as android } from './rules/android'
+import { patterns as angular } from './rules/angular'
+import { patterns as c } from './rules/c'
+import { patterns as chainer2pytouch } from './rules/chainer2pytouch'
+import { patterns as cpp } from './rules/cpp'
+import { patterns as cobol } from './rules/cobol'
+import { patterns as dart } from './rules/dart'
+import { patterns as java } from './rules/java'
+import { patterns as javascript } from './rules/javascript'
+import { patterns as php } from './rules/php'
+import { patterns as python } from './rules/python'
+import { patterns as rails } from './rules/rails'
+import { patterns as react } from './rules/react'
+import { patterns as ruby } from './rules/ruby'
+import { patterns as typescript } from './rules/typescript'
+import { patterns as tensorflow } from './rules/tensorflow'
+import { patterns as vscode } from './rules/vscode'
+import { patterns as vue } from './rules/vue'
 
 interface Extends {
     [key: string]: Pattern[];

@@ -1,4 +1,6 @@
-module.exports = [
+import { Pattern } from '../patterns';
+
+export const patterns: Pattern[] = [
     {
       before: [
         '<template slot'

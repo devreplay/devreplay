@@ -1,4 +1,6 @@
-module.exports = [
+import { Pattern } from '../patterns';
+
+export const patterns: Pattern[] = [
     {
         before: ['elseif'],
         after: ['else if'],
@@ -11,8 +13,8 @@ module.exports = [
         message: 'Perl compatible regular expressions (PCRE, preg_ functions) should be used in preference to their POSIX counterparts',
     },
     {
-        before: ['<?= \$$1 ?>'],
-        after: ['<?php echo "\$$1"; ?>'],
+        before: ['<?= $1 ?>'],
+        after: ['<?php echo "$1"; ?>'],
         message: 'Never use shorthand PHP start tags. Always use full PHP tags',
     }
 ];

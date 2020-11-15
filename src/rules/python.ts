@@ -1,4 +1,6 @@
-module.exports = [
+import { Pattern } from '../patterns';
+
+export const patterns: Pattern[] = [
     {
       before: [
         '$3 = $1',
@@ -223,10 +225,10 @@ module.exports = [
     },
     {
       before: [
-        '$1[:$3] == \"$2\":',
+        '$1[:$3] == "$2":',
       ],
       after: [
-        '$1.startswith(\"$2\"):',
+        '$1.startswith("$2"):',
       ],
     },
     {
@@ -239,10 +241,10 @@ module.exports = [
     },
     {
       before: [
-        '$1[$3:] == \"$2\":',
+        '$1[$3:] == "$2":',
       ],
       after: [
-        '$1.endswith(\"$2\"):',
+        '$1.endswith("$2"):',
       ],
     },
     {

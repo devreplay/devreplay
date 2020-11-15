@@ -1,4 +1,6 @@
-module.exports = [
+import { Pattern } from '../patterns';
+
+export const patterns: Pattern[] = [
   {
     before: ['if (${1:val1} = ${2:val2})'],
     after: ['if (${1:val1} == ${2:val2})'],
