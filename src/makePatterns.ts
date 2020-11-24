@@ -172,7 +172,7 @@ function checkInIdentifiers(identifiers: Identifier[], token: Token) {
 
 function isAbstractable(token: Token) {
     const scope = token.scopes[token.scopes.length - 1];
-    const isAlphanumeric = token.value.match(/^([a-zA-Z][a-zA-Z0-9]*)|[0-9]+$/i);
+    const isAlphanumeric = /^([a-zA-Z][a-zA-Z0-9]*)|[0-9]+$/i.exec(token.value);
     return isAlphanumeric && ['keyword', 'builtin', 'strage'].every(x => !scope.includes(x));
 }
 

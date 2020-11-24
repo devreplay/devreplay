@@ -28,26 +28,3 @@ export function arrayify<T>(arg?: T | T[]): T[] {
 
     return [];
 }
-
-/**
- * Removes leading indents from a template string without removing all leading whitespace
- */
-export function dedent(strings: TemplateStringsArray, ...values: any[]) {
-    let fullString = strings.reduce(
-        (accumulator, str, i) => `${accumulator}${values[i - 1]}${str}`,
-    );
-
-    // Match all leading spaces/tabs at the start of each line
-    const match = fullString.match(/^[ \t]*(?=\S)/gm);
-    if (match === null) {
-        // E.g. if the string is empty or all whitespace.
-        return fullString;
-    }
-
-    // Find the smallest indent, we don't want to remove all leading whitespace
-    const indent = Math.min(...match.map((el) => el.length));
-    const regexp = new RegExp(`^[ \\t]{${indent}}`, 'gm');
-    fullString = indent > 0 ? fullString.replace(regexp, '') : fullString;
-
-    return fullString;
-}
