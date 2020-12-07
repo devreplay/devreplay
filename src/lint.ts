@@ -2,9 +2,13 @@ import { tryReadFile } from './file';
 import { Pattern } from './patterns';
 import { readPatternFile } from './ruleManager';
 import { LintOut } from './output';
+import { getInitPattern } from './extend';
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string): LintOut[] {
-    const patterns = readPatternFile(fileName, ruleFileName);
+    let patterns = readPatternFile(ruleFileName);
+    if (patterns === []) {
+        patterns = getInitPattern(fileName)
+    }
     const adoptablePatterns = lintWithPattern(fileName, fileContents, patterns);
 
     return adoptablePatterns;

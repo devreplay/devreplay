@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -16,6 +16,7 @@
     "test:dir": "node ./bin/devreplay --dir ./test test/rules/devreplay.json",
     "test:fix": "node ./bin/devreplay --fix test/files/test.py test/rules/devreplay.json",
     "test:init": "node ./bin/devreplay --init",
+    "test:patch": "node ./bin/devreplay --init-patch test/files/test.patch",
     "test:initdetail": "node ./bin/devreplay --init-detail",
     "test:all": "yarn run test && yarn run test:dir && yarn run test:fix",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
@@ -30,23 +31,23 @@
     "tslib": "^2.0.3",
     "v8-compile-cache": "^2.2.0",
     "lodash": "^4.17.20",
-    "simple-git": "2.22.0",
+    "simple-git": "2.24.0",
     "source-code-tokenizer": "^0.1.5",
     "parse-diff": "^0.7.1"
   },
   "devDependencies": {
-    "@types/node": "^14.14.7",
+    "@types/node": "^14.14.10",
     "@types/rimraf": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.8.2",
-    "@typescript-eslint/parser": "^4.8.2",
-    "eslint": "^7.14.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^7.15.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsdoc": "^30.7.8",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "typescript": "^4.0.5"
+    "typescript": "^4.1.2"
   },
   "engines": {
     "node": ">=12.0.0"

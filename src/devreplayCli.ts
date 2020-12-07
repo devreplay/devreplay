@@ -7,6 +7,7 @@ import { outputLintOuts } from './output';
 import { arrayify } from './utils';
 import { mineRules, mineRulesDetail } from './addRules';
 import { writePatternFile } from './ruleManager';
+import { makePatternsFromDiff } from './makePatterns';
 
 interface Argv {
     fix?: boolean;
@@ -14,12 +15,13 @@ interface Argv {
     dir?: boolean;
     out?: string;
     initDetail?: boolean;
+    initPatch?: boolean;
 }
 
 interface Option {
     short?: string;
     // Commander will camelCase option names.
-    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail';
+    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail' | 'init-patch' | 'overwrite';
     type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
     message: string; // Long, used for `--help`
@@ -49,6 +51,12 @@ const options: Option[] = [
         type: 'boolean',
         describe: 'make detailed rules from recent git changes',
         message: 'make detailed rules from recent git changes'
+    },
+    {
+        name: 'init-patch',
+        type: 'boolean',
+        describe: 'use patch file to generate pattern',
+        message: 'use patch file to generate pattern'
     }
 ];
 
@@ -78,12 +86,12 @@ const cli = {
                 commander.args.length > 0
             )
         ) {
-            console.error('No files specified. Use --project to lint a project folder.');
+            console.error('No files specified.');
             return 2;
         }
 
         let ruleFileName: string | undefined;
-        if (argv.init) {
+        if (argv.init || argv.initDetail) {
             const files = arrayify(commander.args);
             let dirName = './';
             if (files.length > 0) {
@@ -94,37 +102,41 @@ const cli = {
             if (files.length > 1 && !isNaN(Number(files[1]))) {
                 logLength = Number(files[1]);
             }
-
-            const rules = (await mineRules(dirName, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
-            writePatternFile(rules, dirName);
+            if (argv.initDetail) {
+                const rules = (await mineRulesDetail(dirName, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
+                writePatternFile(rules, dirName);
+            } else{
+                const rules = (await mineRules(dirName, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
+                writePatternFile(rules, dirName);
+            }
 
             return 0;
         }
 
-        if (argv.initDetail) {
+        if (argv.initPatch) {
             const files = arrayify(commander.args);
-            let dirName = './';
-            if (files.length > 0) {
-                dirName = files[0];
+            if (files.length < 1) {
+                return 1;
             }
-
-            let logLength = 10;
-            if (files.length > 1 && !isNaN(Number(files[1]))) {
-                logLength = Number(files[1]);
+            const patchPath = files[0];
+            if (!fs.existsSync(patchPath)) {
+                return 1;
             }
+            const patchContent = fs.readFileSync(patchPath).toString();
+            const patterns = await makePatternsFromDiff(patchContent)
 
-            const rules = (await mineRulesDetail(dirName, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
-            writePatternFile(rules, dirName);
+            const dirName = path.dirname(patchPath)
+            writePatternFile(patterns, dirName);
 
             return 0;
         }
 
         if (argv.dir) {
             const files = arrayify(commander.args);
-            const dirName = files[0];
             if (files.length >= 2) {
                 ruleFileName = files[1];
             }
+            const dirName = files[0];
             const fileNames = getAllFiles(dirName);
             let results_length = 0;
 
@@ -140,24 +152,22 @@ const cli = {
                 }
             }
             return results_length === 0 ? 0 : 1;
-        } else{
-            const files = arrayify(commander.args);
-            const fileName = files[0];
-            if (files.length >= 2) {
-                ruleFileName = files[1];
-            }
-            let results_length = 0;
+        }
+        
+        const files = arrayify(commander.args);
+        const fileName = files[0];
+        if (files.length >= 2) {
+            ruleFileName = files[1];
+        }
 
-            if (argv.fix === true) {
-                const results = fixFromFile(fileName, ruleFileName);
-                console.log(results);
-                return 0;
-            } else {
-                const results = lintFromFile(fileName, ruleFileName);
-                console.log(outputLintOuts(results));
-                results_length += results.length;
-            }
-            return results_length === 0 ? 0 : 1;
+        if (argv.fix === true) {
+            const results = fixFromFile(fileName, ruleFileName);
+            console.log(results);
+            return 0;
+        } else {
+            const results = lintFromFile(fileName, ruleFileName);
+            console.log(outputLintOuts(results));
+            return results.length === 0 ? 0 : 1;
         }
     }
 };

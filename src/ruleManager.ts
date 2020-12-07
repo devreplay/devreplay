@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
-import { extend as Extend, getInitPattern } from './extend';
+import { extend as Extend } from './extend';
 import { tryReadFile } from './file';
 import { Pattern } from './patterns';
 
@@ -12,14 +12,14 @@ export function writePatternFile(patterns: Pattern[], dirPath: string): void {
     writeFileSync(filePath, patternStr);
 }
 
-export function readPatternFile(fileName: string, ruleFileName?: string): Pattern[] {
+export function readPatternFile(ruleFileName?: string): Pattern[] {
     let location;
     if (ruleFileName !== undefined && existsSync(ruleFileName)) {
         location = ruleFileName;
     } else if ((existsSync('./devreplay.json'))) {
         location = 'devreplay.json';
     } else {
-        return getInitPattern(fileName);
+        return [];
     }
     const patternContent = readFileSync(location).toString();
     try {
