@@ -25,42 +25,23 @@ export function makeDiffObj(diff: string): Chunk[] {
         }
 
         for (const chunk of file.chunks) {
-            let tmp_chunk: Chunk = { source: source, deleted: [], added: [], type: 'nothing' };
-            let previousType: parsediff.ChangeType = 'normal';
+            const tmp_chunk: Chunk = { source: source, deleted: [], added: [], type: 'nothing' };
+            // let previousType: parsediff.ChangeType = 'normal';
             for (const change of chunk.changes){
                 const line = change.content;
+                // tmp_chunk = { source: source, deleted: [], added: [], type: 'nothing' };
                 if (line === '\\ No newline at end of file') {
                     continue;
                 }
+                const content = line.slice(1);
                 if (change.type === 'normal') {
-                    if (tmp_chunk.deleted.length > 0 || tmp_chunk.added.length > 0) {
-                        tmp_chunk.type = getChunkType(tmp_chunk.added, tmp_chunk.deleted);
-                        chunks.push(tmp_chunk);
-                        tmp_chunk = { source: source, deleted: [], added: [], type: 'nothing' };
-                    }
-                }
-                else if (change.type === 'del') {
-                    const content = line.slice(1);
-                    if (previousType === 'del') {
-                        tmp_chunk.deleted.push(content);
-                    } else if (tmp_chunk.deleted.length > 0 || tmp_chunk.added.length > 0) {
-                        tmp_chunk.type = getChunkType(tmp_chunk.added, tmp_chunk.deleted);
-                        chunks.push(tmp_chunk);
-                        tmp_chunk = { source: source, deleted: [], added: [], type: 'nothing' };
-                        tmp_chunk.deleted.push(content);
-                    } else {
-                        tmp_chunk.deleted.push(content);
-                    }
-
-                }
-                else if (change.type === 'add'){
-                    const content = line.slice(1);
-                    if (tmp_chunk.deleted === []){
-                        continue;
-                    }
+                    tmp_chunk.deleted.push(content);
+                    tmp_chunk.added.push(content);
+                } else if (change.type === 'del') {
+                    tmp_chunk.deleted.push(content);
+                } else if (change.type === 'add'){
                     tmp_chunk.added.push(content);
                 }
-                previousType = change.type;
             }
             if (tmp_chunk.deleted.length > 0 || tmp_chunk.added.length > 0) {
                 tmp_chunk.type = getChunkType(tmp_chunk.added, tmp_chunk.deleted);

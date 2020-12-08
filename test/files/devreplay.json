@@ -1,0 +1,14 @@
+[
+  {
+    "before": [
+      "false"
+    ],
+    "after": [
+      "true"
+    ],
+    "scopeName": "source.java",
+    "author": "yuki",
+    "message": "bugfix",
+    "ruleId": "xxx"
+  }
+]

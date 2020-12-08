@@ -1,22 +1,13 @@
-diff --git a/modules/activiti-form-engine/src/main/java/org/activiti/form/engine/impl/cmd/GetRuntimeFormDefinitionCmd.java b/modules/activiti-form-engine/src/main/java/org/activiti/form/engine/impl/cmd/GetRuntimeFormDefinitionCmd.java
-index a71cd4c..93a8693 100644
---- a/modules/activiti-form-engine/src/main/java/org/activiti/form/engine/impl/cmd/GetRuntimeFormDefinitionCmd.java
-+++ b/modules/activiti-form-engine/src/main/java/org/activiti/form/engine/impl/cmd/GetRuntimeFormDefinitionCmd.java
-@@ -181,7 +181,7 @@
-       for (SubmittedForm otherForm : submittedForms) {
-         try {
-           JsonNode submittedNode = formEngineConfiguration.getObjectMapper().readTree(otherForm.getFormValueBytes());
--          if (submittedNode == null || submittedNode.get("values") != null) {
-+          if (submittedNode == null || submittedNode.get("values") == null) {
-             continue;
-           }
-          
-@@ -221,7 +221,7 @@
-         try {
-           if (StringUtils.isNotEmpty(fieldValue)) {
-             LocalDate dateValue = LocalDate.parse(fieldValue);
--            variables.put(field.getId(), dateValue);
-+            variables.put(field.getId(), dateValue.toString("yyyy-M-d"));
-           }
-         } catch (Exception e) {
-           logger.error("Error parsing form date value for process instance " + processInstanceId + " with value " + fieldValue, e);
+diff --git a/src/com/mobeta/android/dslv/DragSortListView.java b/src/com/mobeta/android/dslv/DragSortListView.java
+index d561fda..2a731d2 100644
+--- a/src/com/mobeta/android/dslv/DragSortListView.java
++++ b/src/com/mobeta/android/dslv/DragSortListView.java
+@@ -451,7 +451,7 @@
+ 
+             boolean useDefault \u003d a.getBoolean(
+                     R.styleable.DragSortListView_use_default_controller,
+-                    false);
++                    true);
+ 
+             if (useDefault) {
+                 boolean removeEnabled \u003d a.getBoolean(",
