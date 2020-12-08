@@ -7,7 +7,9 @@ import { outputLintOuts } from './output';
 import { arrayify } from './utils';
 import { mineRules, mineRulesDetail } from './addRules';
 import { writePatternFile } from './ruleManager';
-import { makePatternsFromDiff } from './makePatterns';
+import { makePatternsFromDetailedDiffs, makePatternsFromDiffs } from './makePatterns';
+import { DetailedDiff } from './gitMiner';
+import { Pattern } from './patterns';
 
 interface Argv {
     fix?: boolean;
@@ -16,12 +18,13 @@ interface Argv {
     out?: string;
     initDetail?: boolean;
     initPatch?: boolean;
+    initPatchDetail?: boolean;
 }
 
 interface Option {
     short?: string;
     // Commander will camelCase option names.
-    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail' | 'init-patch' | 'overwrite';
+    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail' | 'init-patch' | 'init-patch-detail';
     type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
     message: string; // Long, used for `--help`
@@ -54,6 +57,12 @@ const options: Option[] = [
     },
     {
         name: 'init-patch',
+        type: 'boolean',
+        describe: 'use patch file to generate pattern',
+        message: 'use patch file to generate pattern'
+    },
+    {
+        name: 'init-patch-detail',
         type: 'boolean',
         describe: 'use patch file to generate pattern',
         message: 'use patch file to generate pattern'
@@ -113,7 +122,7 @@ const cli = {
             return 0;
         }
 
-        if (argv.initPatch) {
+        if (argv.initPatch || argv.initPatchDetail) {
             const files = arrayify(commander.args);
             if (files.length < 1) {
                 return 1;
@@ -123,11 +132,23 @@ const cli = {
                 return 1;
             }
             const patchContent = fs.readFileSync(patchPath).toString();
-            const patterns = await makePatternsFromDiff(patchContent)
-
+            
+            let patterns: Pattern[];
+            if (argv.initPatchDetail) {
+                const detailedDiff: DetailedDiff = {
+                    diff: patchContent,
+                    log: {
+                        author_name: files[1],
+                        message: files[2],
+                        hash: files[3],
+                    }
+                }
+                patterns = await makePatternsFromDetailedDiffs([detailedDiff])
+            } else {
+                patterns = await makePatternsFromDiffs([patchContent])
+            }
             const dirName = path.dirname(patchPath)
             writePatternFile(patterns, dirName);
-
             return 0;
         }
 
