@@ -87,7 +87,6 @@ export async function makePatterns(deletedContents?: string, addedContents?: str
                     scopeName: source
                 };
             }
-            return undefined;
         }
     }
 
