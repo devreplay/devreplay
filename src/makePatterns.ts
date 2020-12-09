@@ -75,6 +75,8 @@ export async function makePatterns(deletedContents?: string, addedContents?: str
         return undefined;
     }
 
+
+    // 1 token changep pattern
     const identifiers: Identifier[] = collectCommonIdentifiers(beforeTokens.tokens, afterTokens.tokens);
 
     if (identifiers.length > 0) {
@@ -90,6 +92,17 @@ export async function makePatterns(deletedContents?: string, addedContents?: str
         }
     }
 
+    // 1 line change pattern
+    const deletedLines = deletedContents.split('\n')
+    const addedLines = addedContents.split('\n')
+    if (deletedLines.length !== 1 && addedLines.length !== 1){
+        const lineDiffs = getSingleLineDiff(deletedLines, addedLines);
+        if (lineDiffs.length === 1) {
+            return makePatterns(lineDiffs[0].before, lineDiffs[0].after, source);
+        }
+    }
+
+    // Multi line change pattern
     const beforePatterns = makeAbstractedCode(beforeTokens.tokens, identifiers);
     const afterPatterns = makeAbstractedCode(afterTokens.tokens, identifiers);
 
@@ -186,6 +199,20 @@ function getSingleDiff(beforeTokens: Token[], afterTokens: Token[]) {
         const beforeToken = beforeTokens[index];
         const afterToken = afterTokens[index];
         if (beforeToken.value !== afterToken.value) {
+            differentTokens.push({before: beforeToken, after: afterToken});
+        }
+    }
+
+    return differentTokens;
+}
+
+function getSingleLineDiff(beforeTokens: string[], afterTokens: string[]) {
+    const differentTokens: {before: string, after: string}[] = [];
+
+    for (let index = 0; index < Math.min(beforeTokens.length, afterTokens.length); index++) {
+        const beforeToken = beforeTokens[index];
+        const afterToken = afterTokens[index];
+        if (beforeToken !== afterToken) {
             differentTokens.push({before: beforeToken, after: afterToken});
         }
     }

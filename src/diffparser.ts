@@ -25,10 +25,15 @@ export function makeDiffObj(diff: string): Chunk[] {
         }
 
         for (const chunk of file.chunks) {
-            const tmp_chunk: Chunk = { source: source, deleted: [], added: [], type: 'nothing' };
+            let tmp_chunk: Chunk = { source: source, deleted: [], added: [], type: 'nothing' };
             // let previousType: parsediff.ChangeType = 'normal';
+            let addCount = 0;
+            let delCount = 0;
+            let prevChangetype = 'nothing';
+
             for (const change of chunk.changes){
                 const line = change.content;
+                let normalchunk: string[] = []
                 // tmp_chunk = { source: source, deleted: [], added: [], type: 'nothing' };
                 if (line === '\\ No newline at end of file') {
                     continue;
@@ -37,11 +42,35 @@ export function makeDiffObj(diff: string): Chunk[] {
                 if (change.type === 'normal') {
                     tmp_chunk.deleted.push(content);
                     tmp_chunk.added.push(content);
+                    normalchunk.push(content)
                 } else if (change.type === 'del') {
+                    if (prevChangetype === 'normal') {
+                        if (addCount !== 0 || delCount !== 0) {
+                            tmp_chunk.type = getChunkType(tmp_chunk.added, tmp_chunk.deleted);
+                            chunks.push(tmp_chunk);
+                            tmp_chunk = { source: source, deleted: Object.assign([], normalchunk), added: Object.assign([], normalchunk), type: 'nothing' };
+                            addCount = 0;
+                            delCount = 0;
+                        }
+                    }
                     tmp_chunk.deleted.push(content);
+                    normalchunk = []
+                    delCount += 1
                 } else if (change.type === 'add'){
+                    if (prevChangetype === 'normal') {
+                        if (addCount !== 0 || delCount !== 0) {
+                            tmp_chunk.type = getChunkType(tmp_chunk.added, tmp_chunk.deleted);
+                            chunks.push(tmp_chunk);
+                            tmp_chunk = { source: source, deleted: Object.assign([], normalchunk), added: Object.assign([], normalchunk), type: 'nothing' };
+                            addCount = 0;
+                            delCount = 0;
+                        }
+                    }
                     tmp_chunk.added.push(content);
+                    normalchunk = []
+                    addCount += 1;
                 }
+                prevChangetype = change.type;
             }
             if (tmp_chunk.deleted.length > 0 || tmp_chunk.added.length > 0) {
                 tmp_chunk.type = getChunkType(tmp_chunk.added, tmp_chunk.deleted);
