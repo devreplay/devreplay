@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.9.7",
+  "version": "1.9.8",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
