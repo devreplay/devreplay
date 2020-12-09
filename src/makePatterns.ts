@@ -19,6 +19,7 @@ export async function makePatternsFromDetailedDiffs(logs: DetailedDiff[]): Promi
             pattern.message = log.log.message;
             pattern.ruleId = log.log.hash;
             delete pattern.identifiers;
+            delete pattern.scopeName;
             return pattern;
         });
 
@@ -254,7 +255,7 @@ function countSpace(patternLines: string[]) {
         if (patternLine === '') { continue; } 
         let spaceNum = 0;
         for (const character of patternLine) {
-            if (character === ' ') {
+            if (character === ' ' || character === '\t') {
                 spaceNum++;
             } else {
                 break;
