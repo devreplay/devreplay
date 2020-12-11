@@ -15,3 +15,8 @@ if a % b != 0:
 tmp = a
 a = b
 b = tmp
+
+tmp = a
+a = b
+b = tmp
+

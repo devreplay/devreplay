@@ -19,12 +19,12 @@ export function lintWithPattern(fileName: string, contents: string, patterns: Pa
     for (const pattern of patterns) {
 
         if (!verifyPattern(pattern)) { continue; }
-        const result = makeSnippetRegex(pattern.before, contents, pattern.regex);
-        if (result !== undefined) {
+        const matchedResult = makeSnippetRegex(pattern.before, contents, pattern.regex);
+        for (const result of matchedResult) {
             matched.push({pattern,
-                          snippet: result[0],
-                          fileName,
-                          position: makePatternPosition(result)});
+                snippet: result[0],
+                fileName,
+                position: makePatternPosition(result)});
         }
     }
 
@@ -131,15 +131,15 @@ function before2regex(before: string[], regex?: boolean) {
 function makeSnippetRegex(before: string[], contents: string, regex?: boolean) {
     const reBefore = before2regex(before, regex);
     if (reBefore !== undefined) {
-        const matchedStr = reBefore.exec(contents);
-        if (matchedStr !== null) {
-            return matchedStr;
+        let match: RegExpExecArray | null;
+        const matches: RegExpExecArray[] = []
+        while ((match = reBefore.exec(contents)) !== null) {
+            matches.push(match);
         }
-
-        return undefined;
+        return matches
     }
 
-    return undefined;
+    return [];
 }
 
 function verifyPattern(pattern: Pattern) {
