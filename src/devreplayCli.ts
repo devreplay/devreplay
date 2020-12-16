@@ -5,7 +5,7 @@ import path = require('path');
 import { fixFromFile, lintFromFile } from './lint';
 import { outputLintOuts } from './output';
 import { arrayify } from './utils';
-import { mineRules, mineRulesDetail } from './rule-maker/addRules';
+import { mineRules, mineRulesDetail } from './rule-maker/mineProjectRules';
 import { writeRuleFile } from './ruleManager';
 import { makeRulesFromDetailedDiffs, makeRulesFromDiffs } from './rule-maker/makeRules';
 import { DetailedDiff } from './rule-maker/gitMiner';

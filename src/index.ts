@@ -6,7 +6,7 @@ import { Rule } from './rule-maker/rule';
 import { makeDiffObj } from './rule-maker/diffparser';
 
 import { makeRules, makeRulesFromChunk, makeRulesFromDiff, makeRulesFromDetailedDiffs, Identifier } from './rule-maker/makeRules';
-import { mineRules, mineRulesDetail } from './rule-maker/addRules';
+import { mineRules, mineRulesDetail } from './rule-maker/mineProjectRules';
 
 export { code2String, extend, fixFromFile, fixWithRule as fixWithPattern,
          LintOut, lint, lintFromFile, lintWithRules as lintWithPattern, makeSeverity, makeFullSeverity,
