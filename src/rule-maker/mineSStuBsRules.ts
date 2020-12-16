@@ -20,6 +20,7 @@ export async function mineSStuBsRules(sstubs_path: string): Promise<Rule[]> {
             rule.author = sstub.projectName;
             if (sstub.bugType !== undefined) {
                 rule.message = sstub.bugType;
+                rule.ruleId = sstub.fixCommitSHA1;
             }
             rules.push(rule);
         }
