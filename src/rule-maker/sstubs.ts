@@ -1,5 +1,5 @@
 export interface SStuB {
-    bugType: string;
+    bugType?: string;
     fixCommitSHA1: string;
     fixCommitParentSHA1: string,
     bugFilePath: string,

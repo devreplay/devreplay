@@ -57,7 +57,7 @@ export function formatLintOut(matched: LintOut): string[] {
     return [position, severity, message];
 }
 
-export function makeSeverity(severity?: string): "W" | "E" | "I" | "H" {
+export function makeSeverity(severity?: string): 'W' | 'E' | 'I' | 'H' {
     if (severity === undefined) {
         return 'W';
     } if (severity.toUpperCase().startsWith('E')) {

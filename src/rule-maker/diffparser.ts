@@ -33,7 +33,7 @@ export function makeDiffObj(diff: string): Chunk[] {
 
             for (const change of chunk.changes){
                 const line = change.content;
-                let normalchunk: string[] = []
+                let normalchunk: string[] = [];
                 // tmp_chunk = { source: source, deleted: [], added: [], type: 'nothing' };
                 if (line === '\\ No newline at end of file') {
                     continue;
@@ -42,7 +42,7 @@ export function makeDiffObj(diff: string): Chunk[] {
                 if (change.type === 'normal') {
                     tmp_chunk.deleted.push(content);
                     tmp_chunk.added.push(content);
-                    normalchunk.push(content)
+                    normalchunk.push(content);
                 } else if (change.type === 'del') {
                     if (prevChangetype === 'normal') {
                         if (addCount !== 0 || delCount !== 0) {
@@ -54,8 +54,8 @@ export function makeDiffObj(diff: string): Chunk[] {
                         }
                     }
                     tmp_chunk.deleted.push(content);
-                    normalchunk = []
-                    delCount += 1
+                    normalchunk = [];
+                    delCount += 1;
                 } else if (change.type === 'add'){
                     if (prevChangetype === 'normal') {
                         if (addCount !== 0 || delCount !== 0) {
@@ -67,7 +67,7 @@ export function makeDiffObj(diff: string): Chunk[] {
                         }
                     }
                     tmp_chunk.added.push(content);
-                    normalchunk = []
+                    normalchunk = [];
                     addCount += 1;
                 }
                 prevChangetype = change.type;

@@ -5,7 +5,7 @@ import path = require('path');
 import { fixFromFile, lintFromFile } from './lint';
 import { outputLintOuts } from './output';
 import { arrayify } from './utils';
-import { mineRules, mineRulesDetail } from './rule-maker/mineProjectRules';
+import { mineProjectRules, mineProjectRulesDetail } from './rule-maker/mineProjectRules';
 import { writeRuleFile } from './ruleManager';
 import { makeRulesFromDetailedDiffs, makeRulesFromDiffs } from './rule-maker/makeRules';
 import { DetailedDiff } from './rule-maker/gitMiner';
@@ -119,10 +119,10 @@ const cli = {
                 logLength = Number(files[1]);
             }
             if (argv.initDetail) {
-                const rules = (await mineRulesDetail(dirName, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
+                const rules = (await mineProjectRulesDetail(dirName, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
                 writeRuleFile(rules, dirName);
             } else{
-                const rules = (await mineRules(dirName, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
+                const rules = (await mineProjectRules(dirName, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
                 writeRuleFile(rules, dirName);
             }
 
@@ -149,12 +149,12 @@ const cli = {
                         message: files[2],
                         hash: files[3],
                     }
-                }
-                rules = await makeRulesFromDetailedDiffs([detailedDiff])
+                };
+                rules = await makeRulesFromDetailedDiffs([detailedDiff]);
             } else {
-                rules = await makeRulesFromDiffs([patchContent])
+                rules = await makeRulesFromDiffs([patchContent]);
             }
-            const dirName = path.dirname(patchPath)
+            const dirName = path.dirname(patchPath);
             writeRuleFile(rules, dirName);
             return 0;
         }

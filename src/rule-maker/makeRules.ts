@@ -97,8 +97,8 @@ export async function makeRules(deletedContents?: string, addedContents?: string
     
 
     // 1 line change rule
-    const deletedLines = deletedContents.split('\n')
-    const addedLines = addedContents.split('\n')
+    const deletedLines = deletedContents.split('\n');
+    const addedLines = addedContents.split('\n');
     if (deletedLines.length !== 1 && addedLines.length !== 1){
         const lineDiffs = getSingleLineDiff(deletedLines, addedLines);
         if (lineDiffs.length === 1) {

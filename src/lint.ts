@@ -1,13 +1,13 @@
 import { tryReadFile } from './file';
 import { Rule } from './rule-maker/rule';
-import { readRuleFile as readRuleFile } from './ruleManager';
+import { readRuleFile } from './ruleManager';
 import { LintOut } from './output';
 import { getInitRules } from './extend';
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string): LintOut[] {
     let rules = readRuleFile(ruleFileName);
     if (rules === []) {
-        rules = getInitRules(fileName)
+        rules = getInitRules(fileName);
     }
     const adoptablePatterns = lintWithRules(fileName, fileContents, rules);
 
@@ -132,11 +132,11 @@ function makeSnippetRegex(before: string[], contents: string, regex?: boolean) {
     const reBefore = before2regex(before, regex);
     if (reBefore !== undefined) {
         let match: RegExpExecArray | null;
-        const matches: RegExpExecArray[] = []
+        const matches: RegExpExecArray[] = [];
         while ((match = reBefore.exec(contents)) !== null) {
             matches.push(match);
         }
-        return matches
+        return matches;
     }
 
     return [];
