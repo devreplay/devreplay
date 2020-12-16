@@ -1,27 +1,27 @@
 import { tryReadFile } from './file';
-import { Pattern } from './patterns';
-import { readPatternFile } from './ruleManager';
+import { Rule } from './rule-maker/rule';
+import { readRuleFile as readRuleFile } from './ruleManager';
 import { LintOut } from './output';
-import { getInitPattern } from './extend';
+import { getInitRules } from './extend';
 
 export function lint(fileName: string, fileContents: string, ruleFileName?: string): LintOut[] {
-    let patterns = readPatternFile(ruleFileName);
-    if (patterns === []) {
-        patterns = getInitPattern(fileName)
+    let rules = readRuleFile(ruleFileName);
+    if (rules === []) {
+        rules = getInitRules(fileName)
     }
-    const adoptablePatterns = lintWithPattern(fileName, fileContents, patterns);
+    const adoptablePatterns = lintWithRules(fileName, fileContents, rules);
 
     return adoptablePatterns;
 }
 
-export function lintWithPattern(fileName: string, contents: string, patterns: Pattern[]): LintOut[] {
+export function lintWithRules(fileName: string, contents: string, rules: Rule[]): LintOut[] {
     const matched: LintOut[] = [];
-    for (const pattern of patterns) {
+    for (const rule of rules) {
 
-        if (!verifyPattern(pattern)) { continue; }
-        const matchedResult = makeSnippetRegex(pattern.before, contents, pattern.regex);
+        if (!verifyPattern(rule)) { continue; }
+        const matchedResult = makeSnippetRegex(rule.before, contents, rule.regex);
         for (const result of matchedResult) {
-            matched.push({pattern,
+            matched.push({rule: rule,
                 snippet: result[0],
                 fileName,
                 position: makePatternPosition(result)});
@@ -31,17 +31,17 @@ export function lintWithPattern(fileName: string, contents: string, patterns: Pa
     return matched;
 }
 
-export function fixWithPattern(fileContents: string, pattern: Pattern): string | undefined {
-    if (pattern.after.length === 0 || pattern.before.length === 0) {
+export function fixWithRule(fileContents: string, rule: Rule): string | undefined {
+    if (rule.after.length === 0 || rule.before.length === 0) {
         return '';
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let after = pattern.after.join('\n').replace(dollar, (_, y) => (`$<token${(parseInt(y, 10) + 1)}>`));
+    let after = rule.after.join('\n').replace(dollar, (_, y) => (`$<token${(parseInt(y, 10) + 1)}>`));
 
-    if (pattern.regex) {
-        after = pattern.after[0];
+    if (rule.regex) {
+        after = rule.after[0];
     }
-    const reBefore = before2regex2(pattern.before, pattern.regex);
+    const reBefore = before2regex2(rule.before, rule.regex);
 
     if (reBefore !== undefined) {
         const matchedStr = reBefore.exec(fileContents);
@@ -69,7 +69,7 @@ export function fixFromFile(fileName: string, ruleFileName?: string): string | u
     if (fileContents !== undefined) {
         const problems = lint(fileName, fileContents, ruleFileName);
         if (problems.length !== 0) {
-            return fixWithPattern(fileContents, problems[0].pattern);
+            return fixWithRule(fileContents, problems[0].rule);
         }
     }
 
@@ -142,8 +142,27 @@ function makeSnippetRegex(before: string[], contents: string, regex?: boolean) {
     return [];
 }
 
-function verifyPattern(pattern: Pattern) {
-    return Array.isArray(pattern.before) && Array.isArray(pattern.after);
+// function findMatchecContents(before: string[], contents: string, regex?: boolean) {
+//     // コンテンツをtext mate化する
+
+//     // トークンの並びで評価
+    
+//     const reBefore = before2regex(before, regex);
+//     if (reBefore !== undefined) {
+//         let match: RegExpExecArray | null;
+//         const matches: RegExpExecArray[] = []
+//         while ((match = reBefore.exec(contents)) !== null) {
+//             matches.push(match);
+//         }
+//         return matches
+//     }
+
+//     return [];
+// }
+
+
+function verifyPattern(rule: Rule) {
+    return Array.isArray(rule.before) && Array.isArray(rule.after);
 }
 
 function makePatternPosition(result: RegExpExecArray) {

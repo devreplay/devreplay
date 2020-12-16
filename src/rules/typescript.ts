@@ -1,4 +1,4 @@
-import { patterns as javascript } from './javascript'
-import { Pattern } from '../patterns';
+import { rules as javascript } from './javascript'
+import { Rule } from '../rule-maker/rule';
 
-export const patterns: Pattern[] = javascript;
+export const rules: Rule[] = javascript;

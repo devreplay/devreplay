@@ -1,4 +1,4 @@
-export interface Pattern {
+export interface Rule {
     before: string[];
     after: string[];
     scopeName?: string;

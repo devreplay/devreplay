@@ -1,17 +1,10 @@
 import * as chalk from 'chalk';
 import * as table from 'text-table';
-import { Pattern } from './patterns';
+import { Rule } from './rule-maker/rule';
 import { Position } from './position';
 
 export interface LintOut {
-    pattern: Pattern;
-    snippet: string;
-    fileName: string;
-    position: { start: Position; end: Position};
-}
-
-export interface LintOut {
-    pattern: Pattern;
+    rule: Rule;
     snippet: string;
     fileName: string;
     position: { start: Position; end: Position};
@@ -24,7 +17,7 @@ export function outputLintOuts(lintouts: LintOut[]): string {
     let informationCount = 0;
     let hintCount = 0;
     for (const lintout of lintouts) {
-        const severity = makeSeverity(lintout.pattern.severity);
+        const severity = makeSeverity(lintout.rule.severity);
         lintoutputs.push(formatLintOut(lintout));
         if (severity === 'E') {
             errorCount += 1;
@@ -58,9 +51,9 @@ export function outputLintOuts(lintouts: LintOut[]): string {
 }
 
 export function formatLintOut(matched: LintOut): string[] {
-    const severity = makeFullSeverity(matched.pattern.severity);
+    const severity = makeFullSeverity(matched.rule.severity);
     const position = `${matched.fileName}:${matched.position.start.line}:${matched.position.start.character}`;
-    const message = `${code2String(matched.pattern)}`;
+    const message = `${code2String(matched.rule)}`;
     return [position, severity, message];
 }
 
@@ -93,18 +86,18 @@ export function makeFullSeverity(severity?: string): string {
     return chalk.gray('warning');
 }
 
-export function code2String(pattern: Pattern): string {
-    if (pattern.message !== undefined) {
-        if (pattern.author !== undefined) {
-            return `${pattern.message} by ${pattern.author}`;
+export function code2String(rule: Rule): string {
+    if (rule.message !== undefined) {
+        if (rule.author !== undefined) {
+            return `${rule.message} by ${rule.author}`;
         }
 
-        return pattern.message;
+        return rule.message;
     }
-    const message = `${pattern.before.join('')} should be ${pattern.after.join('')}`;
+    const message = `${rule.before.join('')} should be ${rule.after.join('')}`;
 
-    if (pattern.author !== undefined) {
-        return `${message} by ${pattern.author}`;
+    if (rule.author !== undefined) {
+        return `${message} by ${rule.author}`;
     }
 
     return message;

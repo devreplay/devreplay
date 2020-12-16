@@ -1,6 +1,6 @@
 # Devreplay
 
-Devreplay is static analysis tool based on your own programming pattern.
+Devreplay is static analysis tool based on your own programming rule.
 
 * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
 * [Other Editor Support (Language Server)](https://www.npmjs.com/package/devreplay-server)
@@ -17,7 +17,7 @@ $ npm install devreplay
 $ yarn global add 
 ```
 
-2. Put your own programming pattern(`devreplay.json`) on the project like bellow
+2. Put your own programming rule(`devreplay.json`) on the project like bellow
 
 ```json
 [
@@ -53,7 +53,7 @@ The target source code file will be
 + a, b = b, a
 ```
 
-* **Step up**: Make the pattern message and severity. Also `after` can be more abstract
+* **Step up**: Make the rule message and severity. Also `after` can be more abstract
 
 ```json
 [
@@ -73,13 +73,13 @@ The target source code file will be
 ]
 ```
 
-* **Recommend**: Also you can generate pattern file automatically by following command on your git repository
+* **Recommend**: Also you can generate rule file automatically by following command on your git repository
 
 ```sh
 devreplay --init
 ```
 
-* `severity` means how this pattern is important
+* `severity` means how this rule is important
     * `E`: **E**rror
     * `W`: **W**arning
     * `I`: **I**nformation
@@ -101,7 +101,7 @@ Also, you can use default rules by extends some rules such as
 ]
 ```
 
-## Make patterns by using Regular Expression
+## Make rules by using Regular Expression
 
 ```json
 {

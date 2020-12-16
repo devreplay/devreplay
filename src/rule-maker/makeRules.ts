@@ -1,6 +1,6 @@
 import { tokenize, Token } from 'source-code-tokenizer';
 
-import { Pattern } from './patterns';
+import { Rule } from './rule';
 import { Chunk, makeDiffObj } from './diffparser';
 import { DetailedDiff } from './gitMiner';
 
@@ -9,62 +9,61 @@ export interface Identifier {
     scope: string;
 }
 
-export async function makePatternsFromDetailedDiffs(logs: DetailedDiff[]): Promise<Pattern[]> {
-    let allPatterns: Pattern[] = [];
+export async function makeRulesFromDetailedDiffs(logs: DetailedDiff[]): Promise<Rule[]> {
+    let allRules: Rule[] = [];
     for (const log of logs) {
-        let patterns = await makePatternsFromDiff(log.diff);
-        patterns = patterns
-        .map(pattern => {
-            pattern.author = log.log.author_name;
-            pattern.message = log.log.message;
-            pattern.ruleId = log.log.hash;
-            delete pattern.identifiers;
-            delete pattern.scopeName;
-            return pattern;
+        let rules = await makeRulesFromDiff(log.diff);
+        rules = rules.map(rule => {
+            rule.author = log.log.author_name;
+            rule.message = log.log.message;
+            rule.ruleId = log.log.hash;
+            delete rule.identifiers;
+            delete rule.scopeName;
+            return rule;
         });
 
-        allPatterns = allPatterns.concat(patterns);
+        allRules = allRules.concat(rules);
     }
-    allPatterns = filterSameRules(allPatterns);
+    allRules = filterSameRules(allRules);
 
-    return allPatterns;
+    return allRules;
 }
 
-export async function makePatternsFromDiffs(diffs: string[]): Promise<Pattern[]> {
-    let allPatterns: Pattern[] = [];
+export async function makeRulesFromDiffs(diffs: string[]): Promise<Rule[]> {
+    let allRules: Rule[] = [];
     for (const diff of diffs) {
-        let patterns = await makePatternsFromDiff(diff);
-        patterns = patterns
-        .map(pattern => {
-            delete pattern.identifiers;
-            delete pattern.scopeName;
-            return pattern;
+        let rules = await makeRulesFromDiff(diff);
+        rules = rules
+        .map(rule => {
+            delete rule.identifiers;
+            delete rule.scopeName;
+            return rule;
         });
 
-        allPatterns = allPatterns.concat(patterns);
+        allRules = allRules.concat(rules);
     }
-    allPatterns = filterSameRules(allPatterns);
+    allRules = filterSameRules(allRules);
 
-    return allPatterns;
+    return allRules;
 }
 
-export async function makePatternsFromDiff(diff: string): Promise<Pattern[]> {
+export async function makeRulesFromDiff(diff: string): Promise<Rule[]> {
     const chunks = makeDiffObj(diff);
-    const patterns: Pattern[] = [];
+    const rules: Rule[] = [];
     for (const chunk of chunks) {
-        const pattern = await makePatternsFromChunk(chunk);
-        if (pattern !== undefined && !isEmptyPattern(pattern.before) && !isEmptyPattern(pattern.after)) {
-            patterns.push(pattern);
+        const rule = await makeRulesFromChunk(chunk);
+        if (rule !== undefined && !isEmptyRule(rule.before) && !isEmptyRule(rule.after)) {
+            rules.push(rule);
         }
     }
-    return patterns;
+    return rules;
 }
 
-export function makePatternsFromChunk(chunk: Chunk): Promise<Pattern | undefined> {
-    return makePatterns(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source); 
+export function makeRulesFromChunk(chunk: Chunk): Promise<Rule | undefined> {
+    return makeRules(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source); 
 }
 
-export async function makePatterns(deletedContents?: string, addedContents?: string, source?: string): Promise<Pattern|undefined> {
+export async function makeRules(deletedContents?: string, addedContents?: string, source?: string): Promise<Rule|undefined> {
     if (deletedContents === undefined || addedContents === undefined || source === undefined) {
         return undefined;
     }
@@ -76,8 +75,9 @@ export async function makePatterns(deletedContents?: string, addedContents?: str
         return undefined;
     }
 
+    // MEMO Remove comment token and lines
 
-    // 1 token changep pattern
+    // 1 token changep rule
     const identifiers: Identifier[] = collectCommonIdentifiers(beforeTokens.tokens, afterTokens.tokens);
 
     if (identifiers.length > 0) {
@@ -93,21 +93,24 @@ export async function makePatterns(deletedContents?: string, addedContents?: str
         }
     }
 
-    // 1 line change pattern
+    // MEMO Minimum AST change rule
+    
+
+    // 1 line change rule
     const deletedLines = deletedContents.split('\n')
     const addedLines = addedContents.split('\n')
     if (deletedLines.length !== 1 && addedLines.length !== 1){
         const lineDiffs = getSingleLineDiff(deletedLines, addedLines);
         if (lineDiffs.length === 1) {
-            return makePatterns(lineDiffs[0].before, lineDiffs[0].after, source);
+            return makeRules(lineDiffs[0].before, lineDiffs[0].after, source);
         }
     }
 
-    // Multi line change pattern
-    const beforePatterns = makeAbstractedCode(beforeTokens.tokens, identifiers);
-    const afterPatterns = makeAbstractedCode(afterTokens.tokens, identifiers);
+    // Multi line change rule
+    const beforeRules = makeAbstractedCode(beforeTokens.tokens, identifiers);
+    const afterRules = makeAbstractedCode(afterTokens.tokens, identifiers);
 
-    const { before, after } = formatPatterns(beforePatterns, afterPatterns);
+    const { before, after } = formatRules(beforeRules, afterRules);
 
     return {
         before: before,
@@ -139,7 +142,7 @@ function collectCommonIdentifiers(beforeTokens: Token[], afterTokens: Token[]) {
 
 
 function makeAbstractedCode(tokens: Token[], identifiers: Identifier[]) {
-    const patterns: string[] = [];
+    const rules: string[] = [];
     let previousPosition = 1;
     let previousLine = 0;
     let lineContents = '';
@@ -149,7 +152,7 @@ function makeAbstractedCode(tokens: Token[], identifiers: Identifier[]) {
         }
 
         if (token.line !== previousLine) {
-            patterns.push(lineContents);
+            rules.push(lineContents);
             previousPosition = 1;
             previousLine = token.line;
             lineContents = '';
@@ -165,8 +168,8 @@ function makeAbstractedCode(tokens: Token[], identifiers: Identifier[]) {
             lineContents += ' '.repeat(spaceNum) + token.value;
         }
     }
-    patterns.push(lineContents);
-    return patterns;
+    rules.push(lineContents);
+    return rules;
 }
 
 
@@ -189,8 +192,8 @@ function isAbstractable(token: Token) {
     return isAlphanumeric && ['keyword', 'builtin', 'strage'].every(x => !scope.includes(x));
 }
 
-function isEmptyPattern(pattern: string[]) {
-    return pattern.length === 1 && pattern[0] === '';
+function isEmptyRule(rule: string[]) {
+    return rule.length === 1 && rule[0] === '';
 }
 
 function getSingleDiff(beforeTokens: Token[], afterTokens: Token[]) {
@@ -221,22 +224,22 @@ function getSingleLineDiff(beforeTokens: string[], afterTokens: string[]) {
     return differentTokens;
 }
 
-function filterSameRules(patterns: Pattern[]) {
-    const uniquePattern: Pattern[] = [];
-    for (const pattern of patterns) {
-        if (!uniquePattern.some(x => {
+function filterSameRules(rules: Rule[]) {
+    const uniqueRules: Rule[] = [];
+    for (const rule of rules) {
+        if (!uniqueRules.some(x => {
             return (
-                x.after.join('\n') === pattern.after.join('\n') &&
-                x.before.join('\n') === pattern.before.join('\n'));       
+                x.after.join('\n') === rule.after.join('\n') &&
+                x.before.join('\n') === rule.before.join('\n'));       
         })){
-            uniquePattern.push(pattern);
+            uniqueRules.push(rule);
         }
     }
-    return uniquePattern;
+    return uniqueRules;
 }
 
 
-function formatPatterns(before: string[], after: string[]) {
+function formatRules(before: string[], after: string[]) {
     const minSpace = Math.min(countSpace(before), countSpace(after));
     const formatBefore = [];
     for (const line of before) {
@@ -249,12 +252,12 @@ function formatPatterns(before: string[], after: string[]) {
     return {before: formatBefore, after: formatAfter};
 }
 
-function countSpace(patternLines: string[]) {
+function countSpace(ruleLines: string[]) {
     const spaces: number[] = [];
-    for (const patternLine of patternLines) {
-        if (patternLine === '') { continue; } 
+    for (const ruleLine of ruleLines) {
+        if (ruleLine === '') { continue; } 
         let spaceNum = 0;
-        for (const character of patternLine) {
+        for (const character of ruleLine) {
             if (character === ' ' || character === '\t') {
                 spaceNum++;
             } else {

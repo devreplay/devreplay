@@ -3,16 +3,16 @@ import { join } from 'path';
 
 import { extend as Extend } from './extend';
 import { tryReadFile } from './file';
-import { Pattern } from './patterns';
+import { Rule } from './rule-maker/rule';
 
-export function writePatternFile(patterns: Pattern[], dirPath: string): void {
-    const outPatterns = readCurrentPattern(dirPath).concat(patterns);
-    const patternStr = JSON.stringify(outPatterns, undefined, 2);
+export function writeRuleFile(rules: Rule[], dirPath: string): void {
+    const outRules = readCurrentRules(dirPath).concat(rules);
+    const ruleStr = JSON.stringify(outRules, undefined, 2);
     const filePath = join(dirPath, './devreplay.json');
-    writeFileSync(filePath, patternStr);
+    writeFileSync(filePath, ruleStr);
 }
 
-export function readPatternFile(ruleFileName?: string): Pattern[] {
+export function readRuleFile(ruleFileName?: string): Rule[] {
     let location;
     if (ruleFileName !== undefined && existsSync(ruleFileName)) {
         location = ruleFileName;
@@ -21,21 +21,21 @@ export function readPatternFile(ruleFileName?: string): Pattern[] {
     } else {
         return [];
     }
-    const patternContent = readFileSync(location).toString();
+    const ruleContent = readFileSync(location).toString();
     try {
-        const patternJson = JSON.parse(patternContent) as Pattern[];
-        let patterns: Pattern[] = [];
-        for (const pattern of patternJson) {
-            if (pattern.extends === undefined) {
-                patterns.push(pattern);
+        const ruleJson = JSON.parse(ruleContent) as Rule[];
+        let rules: Rule[] = [];
+        for (const rule of ruleJson) {
+            if (rule.extends === undefined) {
+                rules.push(rule);
             } else {
-                for (const extend of pattern.extends) {
-                    patterns = patterns.concat(readExtends(extend));
+                for (const extend of rule.extends) {
+                    rules = rules.concat(readExtends(extend));
                 }
             }
         }
 
-        return patterns;
+        return rules;
     } catch (error) {
         console.log(error);
         console.log('usage: devreplay [target_file] [adopt_rule.json]');
@@ -44,21 +44,21 @@ export function readPatternFile(ruleFileName?: string): Pattern[] {
     }
 }
 
-function readCurrentPattern(dirPath: string): Pattern[] {
-    const patternPath = join(dirPath, 'devreplay.json');
+function readCurrentRules(dirPath: string): Rule[] {
+    const rulePath = join(dirPath, 'devreplay.json');
     let fileContents = undefined;
     try{
-        fileContents =  tryReadFile(patternPath);
+        fileContents =  tryReadFile(rulePath);
     } catch {
         return [];
     }
     if (fileContents === undefined) {
         return [];
     }
-    return JSON.parse(fileContents) as Pattern[];
+    return JSON.parse(fileContents) as Rule[];
 }
 
-function readExtends(extend: string): Pattern[] {
+function readExtends(extend: string): Rule[] {
     let location;
     if (Extend[extend] !== undefined) {
         return Extend[extend];
@@ -68,17 +68,17 @@ function readExtends(extend: string): Pattern[] {
     } else {
         return [];
     }
-    const patternContent = readFileSync(location).toString();
+    const ruleContent = readFileSync(location).toString();
     try {
-        const patternJson = JSON.parse(patternContent) as Pattern[];
-        const patterns: Pattern[] = [];
-        for (const pattern of patternJson) {
-            if (pattern.extends === undefined) {
-                patterns.push(pattern);
+        const ruleJson = JSON.parse(ruleContent) as Rule[];
+        const rules: Rule[] = [];
+        for (const rule of ruleJson) {
+            if (rule.extends === undefined) {
+                rules.push(rule);
             }
         }
 
-        return patterns;
+        return rules;
     } catch (error) {
         console.log(error);
         console.log('usage: devreplay [target_file] [adopt_rule.json]');

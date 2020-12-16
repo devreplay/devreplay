@@ -5,11 +5,11 @@ import path = require('path');
 import { fixFromFile, lintFromFile } from './lint';
 import { outputLintOuts } from './output';
 import { arrayify } from './utils';
-import { mineRules, mineRulesDetail } from './addRules';
-import { writePatternFile } from './ruleManager';
-import { makePatternsFromDetailedDiffs, makePatternsFromDiffs } from './makePatterns';
-import { DetailedDiff } from './gitMiner';
-import { Pattern } from './patterns';
+import { mineRules, mineRulesDetail } from './rule-maker/addRules';
+import { writeRuleFile } from './ruleManager';
+import { makeRulesFromDetailedDiffs, makeRulesFromDiffs } from './rule-maker/makeRules';
+import { DetailedDiff } from './rule-maker/gitMiner';
+import { Rule } from './rule-maker/rule';
 
 interface Argv {
     fix?: boolean;
@@ -19,12 +19,13 @@ interface Argv {
     initDetail?: boolean;
     initPatch?: boolean;
     initPatchDetail?: boolean;
+    initSstubs?: boolean;
 }
 
 interface Option {
     short?: string;
     // Commander will camelCase option names.
-    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail' | 'init-patch' | 'init-patch-detail';
+    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail' | 'init-patch' | 'init-patch-detail'| 'init-sstubs';
     type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
     message: string; // Long, used for `--help`
@@ -58,14 +59,20 @@ const options: Option[] = [
     {
         name: 'init-patch',
         type: 'boolean',
-        describe: 'use patch file to generate pattern',
-        message: 'use patch file to generate pattern'
+        describe: 'use patch file to generate rules',
+        message: 'use patch file to generate rules'
     },
     {
         name: 'init-patch-detail',
         type: 'boolean',
-        describe: 'use patch file to generate pattern',
-        message: 'use patch file to generate pattern'
+        describe: 'use patch file to generate rules',
+        message: 'use patch file to generate rules'
+    },
+    {
+        name: 'init-sstubs',
+        type: 'boolean',
+        describe: 'use patch file to generate rules',
+        message: 'use patch file to generate rules'
     }
 ];
 
@@ -113,10 +120,10 @@ const cli = {
             }
             if (argv.initDetail) {
                 const rules = (await mineRulesDetail(dirName, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
-                writePatternFile(rules, dirName);
+                writeRuleFile(rules, dirName);
             } else{
                 const rules = (await mineRules(dirName, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
-                writePatternFile(rules, dirName);
+                writeRuleFile(rules, dirName);
             }
 
             return 0;
@@ -133,7 +140,7 @@ const cli = {
             }
             const patchContent = fs.readFileSync(patchPath).toString();
             
-            let patterns: Pattern[];
+            let rules: Rule[];
             if (argv.initPatchDetail) {
                 const detailedDiff: DetailedDiff = {
                     diff: patchContent,
@@ -143,12 +150,12 @@ const cli = {
                         hash: files[3],
                     }
                 }
-                patterns = await makePatternsFromDetailedDiffs([detailedDiff])
+                rules = await makeRulesFromDetailedDiffs([detailedDiff])
             } else {
-                patterns = await makePatternsFromDiffs([patchContent])
+                rules = await makeRulesFromDiffs([patchContent])
             }
             const dirName = path.dirname(patchPath)
-            writePatternFile(patterns, dirName);
+            writeRuleFile(rules, dirName);
             return 0;
         }
 

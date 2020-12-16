@@ -1,6 +1,6 @@
-import { Pattern } from '../patterns';
+import { Rule } from '../rule-maker/rule';
 
-export const patterns: Pattern[] = [
+export const rules: Rule[] = [
     {
       before: [
         'read_attribute(:${1:attribute})'

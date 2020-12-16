@@ -1,6 +1,6 @@
-import { Pattern } from '../patterns';
+import { Rule } from '../rule-maker/rule';
 
-export const patterns: Pattern[] = [
+export const rules: Rule[] = [
   {
     before: ['if (${1:val1} = ${2:val2})'],
     after: ['if (${1:val1} == ${2:val2})'],

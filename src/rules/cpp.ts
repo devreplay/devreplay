@@ -1,7 +1,7 @@
-import { patterns as c } from './c'
-import { Pattern } from '../patterns';
+import { rules as c } from './c'
+import { Rule } from '../rule-maker/rule';
 
-export const patterns: Pattern[] = [
+export const rules: Rule[] = [
     {
         before: ['std::rand() % $1'],
         after: ['std::uniform_int_distribution<int> distribution(0, $1)'],
