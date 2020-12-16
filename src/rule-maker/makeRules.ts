@@ -224,7 +224,7 @@ function getSingleLineDiff(beforeTokens: string[], afterTokens: string[]) {
     return differentTokens;
 }
 
-function filterSameRules(rules: Rule[]) {
+export function filterSameRules(rules: Rule[]): Rule[] {
     const uniqueRules: Rule[] = [];
     for (const rule of rules) {
         if (!uniqueRules.some(x => {

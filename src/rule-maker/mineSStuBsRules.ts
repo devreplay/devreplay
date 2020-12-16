@@ -1,21 +1,31 @@
 import { Rule } from './rule';
 import { SStuB } from './sstubs';
 import { existsSync, readFileSync } from 'fs';
-import { makeRules } from './makeRules';
+import { makeRules, filterSameRules } from './makeRules';
+import { getFileSource } from 'source-code-tokenizer';
 
 export async function mineSStuBsRules(sstubs_path: string): Promise<Rule[]> {
-    // Jsonファイルを読み込む
     const sstubs = readSStuBs(sstubs_path);
     const rules: Rule[] = [];
+    const unavailableBugs = ['CHANGE_MODIFIER', 'DELETE_THROWS_EXCEPTION', 'ADD_THROWS_EXCEPTION'];
 
     for (const sstub of sstubs) {
-        const rule = await makeRules(sstub.sourceBeforeFix, sstub.sourceAfterFix);
+        if (sstub.bugType !== undefined && unavailableBugs.includes(sstub.bugType)) {
+            continue;
+        }
+        
+        const source = getFileSource(sstub.bugFilePath);
+        const rule = await makeRules(sstub.sourceBeforeFix, sstub.sourceAfterFix, source);
         if (rule !== undefined){
+            rule.author = sstub.projectName;
+            if (sstub.bugType !== undefined) {
+                rule.message = sstub.bugType;
+            }
             rules.push(rule);
         }
     }
 
-    return rules;
+    return filterSameRules(rules);
 }
 
 function readSStuBs(sstubs_path: string): SStuB[] {

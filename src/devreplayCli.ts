@@ -10,6 +10,7 @@ import { writeRuleFile } from './ruleManager';
 import { makeRulesFromDetailedDiffs, makeRulesFromDiffs } from './rule-maker/makeRules';
 import { DetailedDiff } from './rule-maker/gitMiner';
 import { Rule } from './rule-maker/rule';
+import { mineSStuBsRules } from './rule-maker/mineSStuBsRules';
 
 interface Argv {
     fix?: boolean;
@@ -157,6 +158,20 @@ const cli = {
             const dirName = path.dirname(patchPath);
             writeRuleFile(rules, dirName);
             return 0;
+        }
+
+        if (argv.initSstubs) {
+            const files = arrayify(commander.args);
+            if (files.length < 1) {
+                return 1;
+            }
+            const sstubPath = files[0];
+            if (!fs.existsSync(sstubPath)) {
+                return 1;
+            }
+            const rules = await mineSStuBsRules(sstubPath);
+            const dirName = path.dirname(sstubPath);
+            writeRuleFile(rules, dirName);
         }
 
         if (argv.dir) {
