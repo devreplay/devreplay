@@ -11,6 +11,7 @@ import { makeRulesFromDetailedDiffs, makeRulesFromDiffs } from './rule-maker/mak
 import { DetailedDiff } from './rule-maker/gitMiner';
 import { Rule } from './rule-maker/rule';
 import { mineSStuBsRules } from './rule-maker/mineSStuBsRules';
+import { makeEditScript } from './rule-maker/code-parser';
 
 interface Argv {
     fix?: boolean;
@@ -21,12 +22,13 @@ interface Argv {
     initPatch?: boolean;
     initPatchDetail?: boolean;
     initSstubs?: boolean;
+    regex?: boolean;
 }
 
 interface Option {
     short?: string;
     // Commander will camelCase option names.
-    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail' | 'init-patch' | 'init-patch-detail'| 'init-sstubs';
+    name: keyof Argv | 'fix' | 'init' | 'dir' | 'init-detail' | 'init-patch' | 'init-patch-detail'| 'init-sstubs' | 'regex';
     type: 'string' | 'boolean' | 'array';
     describe: string; // Short, used for usage message
     message: string; // Long, used for `--help`
@@ -74,6 +76,12 @@ const options: Option[] = [
         type: 'boolean',
         describe: 'use patch file to generate rules',
         message: 'use patch file to generate rules'
+    },
+    {
+        name: 'regex',
+        type: 'boolean',
+        describe: 'learn by using regular expression',
+        message: 'learn by using regular expression'
     }
 ];
 
@@ -95,7 +103,10 @@ const cli = {
             (commander.parseArgs as (args: string[], unknown: string[]) => void)([], parsed.unknown);
         }
         const argv = commander.opts() as Argv;
-
+        if (argv.regex) {
+            await makeEditScript();
+            return 0;
+        }
         if (
             !(
                 argv.init !== undefined ||
