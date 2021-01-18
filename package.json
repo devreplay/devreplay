@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "create": "npm run build && npm run test",
-    "compile": "yarn clean && tsc -b",
+    "compile": "tsc -b tsconfig.json",
     "publish:local": "sh ./scripts/npmPublish.sh",
     "test": "jest",
     "test:dir": "node ./bin/devreplay --dir ./test test/rules/devreplay.json",
@@ -24,6 +24,11 @@
     "test:regex": "node ./bin/devreplay --regex",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^#/(.+)": "<rootDir>/src/$1"
+    }
   },
   "dependencies": {
     "@babel/code-frame": "^7.10.4",

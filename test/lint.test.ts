@@ -1,5 +1,5 @@
-import { Rule } from '../rule-maker/rule';
-import { fixWithRule } from '../lint';
+import { Rule } from '../src/rule-maker/rule';
+import { fixWithRule } from '../src/lint';
 
 const rule: Rule = {
     before: ['foo'],

@@ -15,7 +15,11 @@
       "sourceMap": false,
       "target": "es6",
       "lib": ["es6"],
-      "outDir": "../lib",
+      "baseUrl": "./src",
+      "paths": {
+        "#/*": ["*"]
+      },  
+      "outDir": "lib",
       "resolveJsonModule": true
   },
   "include": [

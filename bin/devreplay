@@ -79,5 +79,5 @@ ${message}`);
     process.on('unhandledRejection', onFatalError);
 
     // Otherwise, call the CLI.
-    process.exitCode = await require('../lib/devreplayCli').execute();
+    process.exitCode = await require('../lib/src/devreplayCli').execute();
 }()).catch(onFatalError);
