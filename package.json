@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "create": "npm run build && npm run test",
-    "compile": "tsc -b tsconfig.json",
+    "compile": "npm run clean && tsc -b tsconfig.json",
     "publish:local": "sh ./scripts/npmPublish.sh",
     "test": "jest",
     "test:dir": "node ./bin/devreplay --dir ./test test/rules/devreplay.json",
