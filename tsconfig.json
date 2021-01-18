@@ -15,10 +15,7 @@
       "sourceMap": false,
       "target": "es6",
       "lib": ["es6"],
-      "baseUrl": "./src",
-      "paths": {
-        "#/*": ["*"]
-      },  
+      "rootDir": "./src",
       "outDir": "lib",
       "resolveJsonModule": true
   },
@@ -27,6 +24,6 @@
   ],
   "exclude": [
     "node_modules",
-    "**/*.d.ts"
+    "**/test/*.test.ts",
   ]
 }

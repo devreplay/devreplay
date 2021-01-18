@@ -25,11 +25,6 @@
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile"
   },
-  "jest": {
-    "moduleNameMapper": {
-      "^#/(.+)": "<rootDir>/src/$1"
-    }
-  },
   "dependencies": {
     "@babel/code-frame": "^7.10.4",
     "@types/text-table": "^0.2.1",
