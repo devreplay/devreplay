@@ -1,3 +1,5 @@
+![CI](https://github.com/devreplay/devreplay/workflows/CI/badge.svg)
+
 # Devreplay
 
 Devreplay is static analysis tool based on your own programming rule.
