@@ -9,6 +9,7 @@
   "typings": "./lib/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
+    "build:wasm": "tree-sitter build-wasm node_modules/tree-sitter-javascript && mv tree-sitter-javascript.wasm src/",
     "create": "npm run build && npm run test",
     "compile": "npm run clean && tsc -b tsconfig.json",
     "publish:local": "sh ./scripts/npmPublish.sh",
