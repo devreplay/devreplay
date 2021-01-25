@@ -12,6 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Create tag
+        id: autotagger
         uses: butlerlogic/action-autotag@stable
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
