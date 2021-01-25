@@ -49,12 +49,12 @@ const cli = {
             return 0;
         }
 
-        let fileNames = []
-        const lstat = fs.lstatSync(targetPath)
+        let fileNames = [];
+        const lstat = fs.lstatSync(targetPath);
         if (lstat.isDirectory()) {
             fileNames = getAllFiles(targetPath);
         } else if (lstat.isFile()) {
-            fileNames = [targetPath]
+            fileNames = [targetPath];
         } else {
             throw new Error(`${targetPath} should be directory path or file path`);
         }
