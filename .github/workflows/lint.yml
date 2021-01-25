@@ -10,7 +10,6 @@ jobs:
           node-version: "14.x"
       - run: npm install
       - run: npm run lint
-          shell: bash
   devreplay:
     runs-on: ubuntu-latest
     steps:
