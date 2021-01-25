@@ -3,26 +3,23 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { fixFromFile, lintFromFile } from './lib/lint';
-import { outputLintOuts } from './lib/output';
+import { LintOut, outputLintOuts } from './lib/output';
 import { mineProjectRules } from './lib/rule-maker/mineProjectRules';
 import { writeRuleFile } from './lib/ruleManager';
-import { strDiff2treeDiff } from './lib/rule-maker/code-parser';
 
 interface Argv {
     fix?: boolean;
     init?: boolean;
-    regex?: boolean;
 }
 
 const cli = {
     async execute() {
         const program = new commander.Command();
         program
-            .version('1.9.12')
+            .version('1.9.22')
             .description('A linter that replay your coding style')
-            .option('--fix　', 'Fix the file')
+            .option('--fix', 'Fix the file')
             .option('--init', 'Make rules from recent git changes')
-            .option('--regex', 'Learn by using regular expression')
             .helpOption(true)
             .parse(process.argv);
         program.parse(process.argv);
@@ -30,36 +27,39 @@ const cli = {
         const args = program.args;
         const argv = program.opts() as Argv;
 
-        if (argv.regex) {
-            const sourceCode = 'if (a == 0)';        
-            const newSourceCode = 'if (a == 0 && b == 1)';
-            const change = strDiff2treeDiff(sourceCode, newSourceCode, 'Java');
-            console.log(change);
-            return 0;
-        }
-
         let ruleFileName: string | undefined;
         const files = args;
-        let dirName = './';
+        let targetPath = './';
         if (files.length > 0) {
-            dirName = files[0];
+            targetPath = files[0];
         }
         if (files.length >= 2) {
             ruleFileName = files[1];
         }
 
+        // Init
         if (argv.init) {
             let logLength = 10;
             if (files.length > 1 && !isNaN(Number(files[1]))) {
                 logLength = Number(files[1]);
             }
-            const rules = (await mineProjectRules(dirName, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
-            writeRuleFile(rules, dirName);
+            const rules = (await mineProjectRules(targetPath, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
+            writeRuleFile(rules, targetPath);
 
             return 0;
         }
 
-        const fileNames = getAllFiles(dirName);
+        let fileNames = []
+        const lstat = fs.lstatSync(targetPath)
+        if (lstat.isDirectory()) {
+            fileNames = getAllFiles(targetPath);
+        } else if (lstat.isFile()) {
+            fileNames = [targetPath]
+        } else {
+            throw new Error(`${targetPath} should be directory path or file path`);
+        }
+
+        // Fix
         if (argv.fix === true) {
             for (const fileName of fileNames) {
                 const results = fixFromFile(fileName, ruleFileName);
@@ -68,14 +68,22 @@ const cli = {
             }
             return 0;
         }
-        // Just lint
+
+        // Lint
         let results_length = 0;
+        const allResults: LintOut[] = [];
         for (const fileName of fileNames) {
             const results = lintFromFile(fileName, ruleFileName);
-            console.log(outputLintOuts(results));
-            results_length += results.length;
+            allResults.push(...results);
         }
-        return results_length === 0 ? 0 : 1;
+        results_length += allResults.length;
+        if (results_length === 0) {
+            return 0;
+        } else{
+            console.log(outputLintOuts(allResults));
+            return 1;
+        }
+
     }
 };
 
@@ -91,6 +99,5 @@ function getAllFiles(dirName: string) {
     }
     return filesNames;
 }
-
 
 module.exports = cli;
