@@ -1,0 +1,30 @@
+name: release
+
+# runs when a tag v* is pushed
+# releases the extension to GitHub and the vscode marketplace
+
+on:
+  push:
+    tags: ["version*"]
+
+jobs:
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: "artifacts/"
+      - name: Get version from tag
+        id: get_version
+        run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\/v/}
+      - name: Create release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          files: "artifacts/*/*"
+          prerelease: false
+          draft: false
