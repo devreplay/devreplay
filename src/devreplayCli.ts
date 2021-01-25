@@ -2,11 +2,11 @@ import * as commander from 'commander';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { fixFromFile, lintFromFile } from './lint';
-import { outputLintOuts } from './output';
-import { mineProjectRules } from './rule-maker/mineProjectRules';
-import { writeRuleFile } from './ruleManager';
-import { makeEditScript } from './rule-maker/code-parser';
+import { fixFromFile, lintFromFile } from './lib/lint';
+import { outputLintOuts } from './lib/output';
+import { mineProjectRules } from './lib/rule-maker/mineProjectRules';
+import { writeRuleFile } from './lib/ruleManager';
+import { strDiff2treeDiff } from './lib/rule-maker/code-parser';
 
 interface Argv {
     fix?: boolean;
@@ -31,9 +31,10 @@ const cli = {
         const argv = program.opts() as Argv;
 
         if (argv.regex) {
-            const sourceCode = 'let x = 1; console.log(x);';        
-            const newSourceCode = 'const x = 1; console.log(x);';
-            await makeEditScript(sourceCode, newSourceCode);
+            const sourceCode = 'if (a == 0)';        
+            const newSourceCode = 'if (a == 0 && b == 1)';
+            const change = strDiff2treeDiff(sourceCode, newSourceCode, 'Java');
+            console.log(change);
             return 0;
         }
 

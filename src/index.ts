@@ -1,12 +1,12 @@
-import { extend } from './extend';
+import { extend } from './lib/extend';
 import { fixFromFile, fixWithRule,
-         lint, lintFromFile, lintWithRules } from './lint';
-import { LintOut, code2String, makeSeverity, makeFullSeverity } from './output';
-import { Rule } from './rule-maker/rule';
-import { makeDiffObj } from './rule-maker/diffparser';
+         lint, lintFromFile, lintWithRules } from './lib/lint';
+import { LintOut, code2String, makeSeverity, makeFullSeverity } from './lib/output';
+import { Rule } from './lib/rule-maker/rule';
+import { makeDiffObj } from './lib/rule-maker/diffparser';
 
-import { makeRules, makeRulesFromChunk, makeRulesFromDiff, makeRulesFromDetailedDiffs, Identifier } from './rule-maker/makeRules';
-import { mineProjectRules, mineProjectRulesDetail } from './rule-maker/mineProjectRules';
+import { makeRules, makeRulesFromChunk, makeRulesFromDiff, makeRulesFromDetailedDiffs, Identifier } from './lib/rule-maker/makeRules';
+import { mineProjectRules, mineProjectRulesDetail } from './lib/rule-maker/mineProjectRules';
 
 export { code2String, extend, fixFromFile, fixWithRule as fixWithPattern,
          LintOut, lint, lintFromFile, lintWithRules as lintWithPattern, makeSeverity, makeFullSeverity,
