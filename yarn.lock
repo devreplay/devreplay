@@ -1279,7 +1279,7 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^6.2.0:
+commander@^6.2.0, commander@^6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
   integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
@@ -1483,6 +1483,23 @@ detect-newline@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
+
+devreplay@1.9.12:
+  version "1.9.12"
+  resolved "https://registry.yarnpkg.com/devreplay/-/devreplay-1.9.12.tgz#5b64919e5365fa4f1164debc2559850eb13bce4e"
+  integrity sha512-vyQHJ3tLq7+hFsDT/H3llxzpk4YnqXxYi1oLrvld85uaeVqIUxM6FeQlIqTqQDvoY2BLXx5hz5yf3IGvNK/mrQ==
+  dependencies:
+    "@babel/code-frame" "^7.10.4"
+    "@types/text-table" "^0.2.1"
+    chalk "4.1.0"
+    commander "^6.2.1"
+    lodash "^4.17.20"
+    parse-diff "^0.7.1"
+    simple-git "2.29.0"
+    source-code-tokenizer "^0.1.5"
+    text-table "0.2.0"
+    tslib "^2.0.3"
+    v8-compile-cache "^2.2.0"
 
 diff-sequences@^26.6.2:
   version "26.6.2"
@@ -4254,6 +4271,15 @@ simple-get@^3.0.3:
     decompress-response "^4.2.0"
     once "^1.3.1"
     simple-concat "^1.0.0"
+
+simple-git@2.29.0:
+  version "2.29.0"
+  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.29.0.tgz#552b7c4a9b02831194274c64aa941cb1e0132167"
+  integrity sha512-Pbh4bIxrIvqX3Tl3j/xvLxE5r00qYp9J8gUiihD8VjNn6piGh2H/hw0YHnNjxG3jvvKYNAAjm+Uze0mRJSeKqA==
+  dependencies:
+    "@kwsites/file-exists" "^1.1.1"
+    "@kwsites/promise-deferred" "^1.1.1"
+    debug "^4.3.1"
 
 simple-git@2.31.0:
   version "2.31.0"
