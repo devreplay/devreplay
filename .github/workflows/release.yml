@@ -5,7 +5,7 @@ name: release
 
 on:
   push:
-    tags: ["version*"]
+    tags: ["v*"]
 
 jobs:
   release:
