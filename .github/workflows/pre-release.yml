@@ -1,0 +1,19 @@
+name: Pre-Release
+
+on:
+  push:
+    branches: ["master"]
+    
+jobs:
+  pre-release:
+    name: Pre-Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update tag
+        uses: richardsimko/update-tag@v1
+        with:
+          tag_name: latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

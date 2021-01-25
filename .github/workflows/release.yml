@@ -1,4 +1,4 @@
-name: release
+name: Release
 
 # runs when a tag v* is pushed
 # releases the extension to GitHub and the vscode marketplace
