@@ -78,10 +78,18 @@ function editTree(before: string, after: string, tree: Parser.Tree) {
 function langName2Parser(langName: string) {
     const lowerLang = langName.toLowerCase();
     switch (lowerLang) {
-        case 'javascript':
-            return require('tree-sitter-javascript');
+        case 'c':
+            return require('tree-sitter-c');
+        case 'cpp':
+            return require('tree-sitter-cpp');
         case 'java':
-            return require('tree-sitter-java');  
+            return require('tree-sitter-java');
+        case 'javascript':
+        return require('tree-sitter-javascript');
+        case 'python':
+            return require('tree-sitter-python');
+        case 'typescript':
+        return require('tree-sitter-typescript');
         default:
             throw new Error(`Language "${langName}" is unavailable`);
     }

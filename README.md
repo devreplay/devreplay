@@ -1,4 +1,5 @@
 ![CI](https://github.com/devreplay/devreplay/workflows/CI/badge.svg)
+![Lint](https://github.com/devreplay/devreplay/workflows/Lint/badge.svg)
 
 # Devreplay
 

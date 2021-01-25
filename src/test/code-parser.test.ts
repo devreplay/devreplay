@@ -1,3 +1,5 @@
+// Frequently failed due to the illegal invocation
+// Link: https://github.com/tree-sitter/node-tree-sitter/issues/53
 import { strDiff2treeDiff, Change } from '../lib/rule-maker/code-parser';
 
 test('Test javascript if statement', () => {
@@ -11,7 +13,7 @@ test('Test javascript if statement', () => {
 });
 
 
-test('Test java plus statement', () => {
+test('Test java plus statement', () => { 
     const sourceCode = 'abcdefg + hij';        
     const newSourceCode = 'abc + defg + hij';
     const expectedChange = {

@@ -3387,7 +3387,7 @@ ms@2.1.2:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-nan@^2.12.1, nan@^2.14.0:
+nan@^2.10.0, nan@^2.12.1, nan@^2.14.0:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
@@ -4740,10 +4740,19 @@ tr46@^2.0.2:
   dependencies:
     punycode "^2.1.1"
 
-tree-sitter-cli@0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/tree-sitter-cli/-/tree-sitter-cli-0.18.0.tgz#15ef38d17ceccc69fbfb2ffe4e2082421afe3a27"
-  integrity sha512-84cxdTVXpVZrfXTvr4wtjG4zLWcUoaRLhgzDinW/84FHEv12mtVfRndV3QV7omTzdzWWDvpfshPfkCOOZWEdog==
+tree-sitter-c@0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/tree-sitter-c/-/tree-sitter-c-0.16.1.tgz#ca955744866b13e76daeacd600ac3d2dcc92e501"
+  integrity sha512-tuJCt+hgPIRt/zikjEOYr3zQ4HSYzt1mfHA8k0uXwYjjEjxyvm9IVN41f6HGyrwN+K5AVTFspen94iDg1cHeSw==
+  dependencies:
+    nan "^2.10.0"
+
+tree-sitter-cpp@0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/tree-sitter-cpp/-/tree-sitter-cpp-0.16.0.tgz#31f7d13f74d43163793ec2dfef8a77e09338ff0e"
+  integrity sha512-Rua2kKSx2U4Ell4PcBwWp2CM6yxWN8+EpXEp5f1Dt483qk3Ll2JrePwWuoJjWpfk5C/s9cGqjRMjbaSI3posFg==
+  dependencies:
+    nan "^2.14.0"
 
 tree-sitter-java@0.16.0:
   version "0.16.0"
@@ -4759,10 +4768,19 @@ tree-sitter-javascript@0.16.0:
   dependencies:
     nan "^2.12.1"
 
-tree-sitter-wasm-prebuilt@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/tree-sitter-wasm-prebuilt/-/tree-sitter-wasm-prebuilt-0.0.3.tgz#95f68303951d99c23d77123d1711b56d9ad56c6f"
-  integrity sha512-asou3mPlm0FqSzXmarzvy9lr4OhokT7shJMfNzmYoLCHHo9xjvWuAtXca0h7b/q6NAREPaC0N6n1VNUzlnO3eA==
+tree-sitter-python@0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/tree-sitter-python/-/tree-sitter-python-0.17.1.tgz#69e19599478fdc4288102adf82d24dc214ca1479"
+  integrity sha512-T4vvjAzd7piW66zKbJ/+4YgGk5wOtqNI25FGVsr947+EeZqdSAfwPsgSD1/I2NAVe3mdpOh/EQbfvq+EOfAiJA==
+  dependencies:
+    nan "^2.14.0"
+
+tree-sitter-typescript@0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/tree-sitter-typescript/-/tree-sitter-typescript-0.16.1.tgz#3066e1b5f15aea4b789eab3505c656a002c6ed1f"
+  integrity sha512-jyU5yl4W6JPn66v2YbzaO1ClDcdDnj+7YQNZz3STgEiUooSjpWI1Ucgw+S/qEGbf0fMXsC0fucpP+/M1uc9ubw==
+  dependencies:
+    nan "^2.14.0"
 
 tree-sitter@0.17.1:
   version "0.17.1"
