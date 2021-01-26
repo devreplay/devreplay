@@ -20,4 +20,4 @@ jobs:
           node-version: "14.x"
       - run: npm install
       - name: Run devreplay
-        run: ./node_modules/.bin/devreplay --dir ./src devreplay.json
+        run: ./node_modules/.bin/devreplay ./src devreplay.json

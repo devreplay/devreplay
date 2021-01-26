@@ -1279,7 +1279,7 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^6.2.0, commander@^6.2.1:
+commander@^6.2.0:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
   integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
@@ -1484,22 +1484,29 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-devreplay@1.9.12:
-  version "1.9.12"
-  resolved "https://registry.yarnpkg.com/devreplay/-/devreplay-1.9.12.tgz#5b64919e5365fa4f1164debc2559850eb13bce4e"
-  integrity sha512-vyQHJ3tLq7+hFsDT/H3llxzpk4YnqXxYi1oLrvld85uaeVqIUxM6FeQlIqTqQDvoY2BLXx5hz5yf3IGvNK/mrQ==
+devreplay@1.9.23:
+  version "1.9.23"
+  resolved "https://registry.yarnpkg.com/devreplay/-/devreplay-1.9.23.tgz#2eb66eed4232e326d873e6a4417d2f831ca58381"
+  integrity sha512-mugsT71Hfq4WPCnoEtHtc32oCngWCJ0Gwc3ikXTg8TE5qUWraPLHofHWIBDiWynDEL81Pyas2sofpROMCQx29A==
   dependencies:
-    "@babel/code-frame" "^7.10.4"
+    "@babel/code-frame" "^7.12.11"
     "@types/text-table" "^0.2.1"
     chalk "4.1.0"
-    commander "^6.2.1"
+    commander "^7.0.0"
+    diff "5.0.0"
     lodash "^4.17.20"
     parse-diff "^0.7.1"
-    simple-git "2.29.0"
+    simple-git "2.31.0"
     source-code-tokenizer "^0.1.5"
     text-table "0.2.0"
-    tslib "^2.0.3"
+    tree-sitter "0.17.1"
+    tree-sitter-java "0.16.0"
+    tree-sitter-javascript "0.16.0"
+    tree-sitter-wasm-prebuilt "^0.0.3"
+    ts-jest "^26.4.4"
+    tslib "^2.1.0"
     v8-compile-cache "^2.2.0"
+    web-tree-sitter "0.18.0"
 
 diff-sequences@^26.6.2:
   version "26.6.2"
@@ -1680,10 +1687,10 @@ eslint-plugin-jest@24.1.3:
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.0.1"
 
-eslint-plugin-jsdoc@^31.0.8:
-  version "31.3.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-31.3.2.tgz#ca8e31bf97fc9a4c0038a39cdd1fb921b9e640a2"
-  integrity sha512-MsrQ5+ah4dMez6Z2cLeg9HrUkdeDWzmaebmTKozlHue7o+mANQxSKhn52KclrFz7EkNa/pUIPi4VE3TnseRxuA==
+eslint-plugin-jsdoc@^31.3.3:
+  version "31.3.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-31.3.3.tgz#e4ca6d37162f91b0430e4fe036dc096513dba99c"
+  integrity sha512-7kmYu7qQpwe4gCLTBGSpwkiCzmsDlQui7HNlEArUE6Jbqb6ddWpn4Q4X26bOpcByRsyAwm+0xwZtWmJVSue+kw==
   dependencies:
     comment-parser "1.1.1"
     debug "^4.3.1"
@@ -4272,15 +4279,6 @@ simple-get@^3.0.3:
     once "^1.3.1"
     simple-concat "^1.0.0"
 
-simple-git@2.29.0:
-  version "2.29.0"
-  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.29.0.tgz#552b7c4a9b02831194274c64aa941cb1e0132167"
-  integrity sha512-Pbh4bIxrIvqX3Tl3j/xvLxE5r00qYp9J8gUiihD8VjNn6piGh2H/hw0YHnNjxG3jvvKYNAAjm+Uze0mRJSeKqA==
-  dependencies:
-    "@kwsites/file-exists" "^1.1.1"
-    "@kwsites/promise-deferred" "^1.1.1"
-    debug "^4.3.1"
-
 simple-git@2.31.0:
   version "2.31.0"
   resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.31.0.tgz#3e5954c1e36c76fb382c08eaa2749a206db9f613"
@@ -4781,6 +4779,11 @@ tree-sitter-typescript@0.16.1:
   integrity sha512-jyU5yl4W6JPn66v2YbzaO1ClDcdDnj+7YQNZz3STgEiUooSjpWI1Ucgw+S/qEGbf0fMXsC0fucpP+/M1uc9ubw==
   dependencies:
     nan "^2.14.0"
+
+tree-sitter-wasm-prebuilt@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/tree-sitter-wasm-prebuilt/-/tree-sitter-wasm-prebuilt-0.0.3.tgz#95f68303951d99c23d77123d1711b56d9ad56c6f"
+  integrity sha512-asou3mPlm0FqSzXmarzvy9lr4OhokT7shJMfNzmYoLCHHo9xjvWuAtXca0h7b/q6NAREPaC0N6n1VNUzlnO3eA==
 
 tree-sitter@0.17.1:
   version "0.17.1"

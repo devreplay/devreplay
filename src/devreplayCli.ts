@@ -2,8 +2,8 @@ import * as commander from 'commander';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { fixFromFile, lintFromFile } from './lib/lint';
-import { LintOut, outputLintOuts } from './lib/output';
+import { lint, fix } from './lib/lint';
+import { outputLintOuts } from './lib/output';
 import { mineProjectRules } from './lib/rule-maker/mineProjectRules';
 import { writeRuleFile } from './lib/ruleManager';
 
@@ -22,7 +22,6 @@ const cli = {
             .option('--init', 'Make rules from recent git changes')
             .helpOption(true)
             .parse(process.argv);
-        program.parse(process.argv);
         
         const args = program.args;
         const argv = program.opts() as Argv;
@@ -49,8 +48,21 @@ const cli = {
             return 0;
         }
 
-        let fileNames = [];
         const lstat = fs.lstatSync(targetPath);
+
+        // Fix
+        if (argv.fix === true) {
+            if (!lstat.isFile()) {
+                throw new Error(`${targetPath} should be directory path or file path`);
+            }
+            const fileName = targetPath;
+            const results = fix(fileName, ruleFileName);
+            console.log(results);
+            return 0;
+        }
+
+        // Lint
+        let fileNames = [];
         if (lstat.isDirectory()) {
             fileNames = getAllFiles(targetPath);
         } else if (lstat.isFile()) {
@@ -58,24 +70,8 @@ const cli = {
         } else {
             throw new Error(`${targetPath} should be directory path or file path`);
         }
-
-        // Fix
-        if (argv.fix === true) {
-            for (const fileName of fileNames) {
-                const results = fixFromFile(fileName, ruleFileName);
-                console.log(results);
-                return 0;
-            }
-            return 0;
-        }
-
-        // Lint
         let results_length = 0;
-        const allResults: LintOut[] = [];
-        for (const fileName of fileNames) {
-            const results = lintFromFile(fileName, ruleFileName);
-            allResults.push(...results);
-        }
+        const allResults = lint(fileNames, ruleFileName);
         results_length += allResults.length;
         if (results_length === 0) {
             return 0;

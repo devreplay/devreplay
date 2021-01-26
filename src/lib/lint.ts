@@ -4,14 +4,27 @@ import { readRuleFile } from './ruleManager';
 import { LintOut } from './output';
 import { getInitRules } from './extend';
 
-export function lint(fileName: string, fileContents: string, ruleFileName?: string): LintOut[] {
+export function lint(fileNames: string[], ruleFileName?: string): LintOut[] {
     let rules = readRuleFile(ruleFileName);
     if (rules === []) {
-        rules = getInitRules(fileName);
+        if (fileNames.length > 0) {
+            rules = getInitRules(fileNames[0]);
+        } else{
+            return [];
+        }
     }
-    const adoptablePatterns = lintWithRules(fileName, fileContents, rules);
 
-    return adoptablePatterns;
+    const out: LintOut[] = [];
+    for (const fileName of fileNames) {
+        const fileContents = tryReadFile(fileName);
+        if (fileContents === undefined) {
+            continue;
+        }
+        const lintResult = lintWithRules(fileName, fileContents, rules);
+        out.push(...lintResult);
+    }
+
+    return out;
 }
 
 export function lintWithRules(fileName: string, contents: string, rules: Rule[]): LintOut[] {
@@ -31,9 +44,29 @@ export function lintWithRules(fileName: string, contents: string, rules: Rule[])
     return matched;
 }
 
-export function fixWithRule(fileContents: string, rule: Rule): string | undefined {
+export function fix(fileName: string, ruleFileName?: string): string {
+    let rules = readRuleFile(ruleFileName);
+    if (rules === []) {
+        rules = getInitRules(fileName);
+    }
+
+    const fileContents = tryReadFile(fileName);
+    if (fileContents === undefined) {
+        throw new Error(`Failed to read ${fileName}`);
+    }
+    const lintResult = lintWithRules(fileName, fileContents, rules);
+    const detectedRules = lintResult.map(x => { return x.rule; });
+    let fixedContents = fileContents;
+    for (const rule of detectedRules) {
+        fixedContents = fixWithRule(fixedContents, rule);
+    }
+
+    return fixedContents;
+}
+
+export function fixWithRule(fileContents: string, rule: Rule): string {
     if (rule.after.length === 0 || rule.before.length === 0) {
-        return '';
+        return fileContents;
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
     let after = rule.after.join('\n').replace(dollar, (_, y) => (`$<token${(parseInt(y, 10) + 1)}>`));
@@ -49,31 +82,10 @@ export function fixWithRule(fileContents: string, rule: Rule): string | undefine
             return fileContents.replace(reBefore, after);
         }
 
-        return undefined;
+        return fileContents;
     }
 
-    return undefined;
-}
-
-export function lintFromFile(fileName: string, ruleFileName?: string): LintOut[] {
-    const fileContents = tryReadFile(fileName);
-    if (fileContents !== undefined) {
-        return lint(fileName, fileContents, ruleFileName);
-    }
-
-    return [];
-}
-
-export function fixFromFile(fileName: string, ruleFileName?: string): string | undefined {
-    const fileContents = tryReadFile(fileName);
-    if (fileContents !== undefined) {
-        const problems = lint(fileName, fileContents, ruleFileName);
-        if (problems.length !== 0) {
-            return fixWithRule(fileContents, problems[0].rule);
-        }
-    }
-
-    return '';
+    return fileContents;
 }
 
 function before2regex2(before: string[], regex?: boolean) {
