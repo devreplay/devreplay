@@ -16,7 +16,7 @@ const cli = {
     async execute() {
         const program = new commander.Command();
         program
-            .version('1.9.23')
+            .version('1.9.24')
             .description('A linter that replay your coding style')
             .option('--fix', 'Fix the file')
             .option('--init', 'Make rules from recent git changes')
