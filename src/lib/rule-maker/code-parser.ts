@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as Parser from 'tree-sitter';
 import { diffChars } from 'diff';
+const c = require('tree-sitter-c');
+const cpp = require('tree-sitter-cpp');
+const java = require('tree-sitter-java');
+const javascript = require('tree-sitter-javascript');
+const python = require('tree-sitter-python');
+// const typescript = require('tree-sitter-typescript');
 
 export type Change = {
     before: string;
@@ -79,17 +86,29 @@ function langName2Parser(langName: string) {
     const lowerLang = langName.toLowerCase();
     switch (lowerLang) {
         case 'c':
-            return require('tree-sitter-c');
+            return c;
+        case 'source.c':
+            return c;
         case 'cpp':
-            return require('tree-sitter-cpp');
+            return cpp;
+        case 'source.cpp':
+            return cpp;
         case 'java':
-            return require('tree-sitter-java');
+            return java;
+        case 'source.java':
+            return java;
         case 'javascript':
-        return require('tree-sitter-javascript');
+            return javascript;
+        case 'source.js':
+            return javascript;
         case 'python':
-            return require('tree-sitter-python');
+            return python;
+        case 'source.python':
+            return python;
         case 'typescript':
-        return require('tree-sitter-typescript');
+            return javascript;
+        case 'source.ts':
+            return javascript;
         default:
             throw new Error(`Language "${langName}" is unavailable`);
     }
