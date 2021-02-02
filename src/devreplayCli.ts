@@ -42,7 +42,7 @@ const cli = {
             if (files.length > 1 && !isNaN(Number(files[1]))) {
                 logLength = Number(files[1]);
             }
-            const rules = (await mineProjectRules(targetPath, logLength)).filter(x => x.after.length === 1 && x.before.length === 1);
+            const rules = (await mineProjectRules(targetPath, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
             writeRuleFile(rules, targetPath);
 
             return 0;

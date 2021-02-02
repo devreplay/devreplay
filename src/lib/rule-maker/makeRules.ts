@@ -60,20 +60,25 @@ export function makeRulesFromDiff(diff: string): Rule[] {
     return rules;
 }
 
-export function makeRulesFromChunk(chunk: Chunk): Rule {
+export function makeRulesFromChunk(chunk: Chunk): Rule | undefined {
     const change = strDiff2treeDiff(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source);
     let rule: Rule = {
         before: chunk.deleted,
         after: chunk.added
     };
     if (change === undefined) {
-        return rule;
+        return;
     }
     rule = {
-        before: [change.before],
-        after: [change.after]
+        before: change.before.split('\n'),
+        after: change.after.split('\n')
     };
-    return rule;
+    const { before, after } = formatRules(rule.before, rule.after);
+
+    return {
+        before: before,
+        after: after
+    };
     // return makeRules(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source); 
 }
 
@@ -257,11 +262,19 @@ function formatRules(before: string[], after: string[]) {
     const minSpace = Math.min(countSpace(before), countSpace(after));
     const formatBefore = [];
     for (const line of before) {
-        formatBefore.push(line.slice(minSpace));
+        const slicedLine = line.slice(minSpace);
+        if (line.length === 0 || /^\s*$/.test(line)) {
+            continue;
+        }
+        formatBefore.push(slicedLine);
     }
     const formatAfter = [];
     for (const line of after) {
-        formatAfter.push(line.slice(minSpace));
+        const slicedLine = line.slice(minSpace);
+        if (line.length === 0 || /^\s*$/.test(line)) {
+            continue;
+        }
+        formatAfter.push(slicedLine);
     }
     return {before: formatBefore, after: formatAfter};
 }
@@ -269,7 +282,7 @@ function formatRules(before: string[], after: string[]) {
 function countSpace(ruleLines: string[]) {
     const spaces: number[] = [];
     for (const ruleLine of ruleLines) {
-        if (ruleLine === '') { continue; } 
+        if (ruleLine.length === 0) { continue; } 
         let spaceNum = 0;
         for (const character of ruleLine) {
             if (character === ' ' || character === '\t') {

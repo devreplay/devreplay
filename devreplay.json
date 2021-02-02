@@ -1,5 +1,74 @@
-[{
+[
+  {
     "extends": [
-        "TypeScript"
+      "TypeScript"
     ]
-}]
+  },
+  {
+    "before": [
+      "await makeRulesFromDiff(log.diff)"
+    ],
+    "after": [
+      "makeRulesFromDiff(log.diff)"
+    ]
+  },
+  {
+    "before": [
+      "await makeRulesFromDiff(diff)"
+    ],
+    "after": [
+      "makeRulesFromDiff(diff)"
+    ]
+  },
+  {
+    "before": [
+      "await makeRulesFromChunk(chunk)"
+    ],
+    "after": [
+      "makeRulesFromChunk(chunk)"
+    ]
+  },
+  {
+    "before": [
+      "program.parse(process.argv);"
+    ],
+    "after": []
+  },
+  {
+    "before": [
+      "fixFromFile, lintFromF"
+    ],
+    "after": [
+      ", fix"
+    ]
+  },
+  {
+    "before": [
+      "import { strDiff2treeDiff } from './lib/rule-maker/code-parser';"
+    ],
+    "after": []
+  },
+  {
+    "before": [
+      "option('--regex', 'Learn by using regular expression')",
+      "            .helpOption"
+    ],
+    "after": [
+      "helpOption"
+    ]
+  },
+  {
+    "before": [
+      "dirName = './'"
+    ],
+    "after": [
+      "targetPath = './'"
+    ]
+  },
+  {
+    "before": [
+      "return results_length === 0 ? 0 : 1;"
+    ],
+    "after": []
+  }
+]
