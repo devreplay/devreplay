@@ -8,7 +8,7 @@ const cpp = require('tree-sitter-cpp');
 const java = require('tree-sitter-java');
 const javascript = require('tree-sitter-javascript');
 const python = require('tree-sitter-python');
-// const typescript = require('tree-sitter-typescript');
+const typescript = require('tree-sitter-typescript/typescript');
 
 export type Change = {
     before: string;
@@ -106,9 +106,9 @@ function langName2Parser(langName: string) {
         case 'source.python':
             return python;
         case 'typescript':
-            return javascript;
+            return typescript;
         case 'source.ts':
-            return javascript;
+            return typescript;
         default:
             throw new Error(`Language "${langName}" is unavailable`);
     }
