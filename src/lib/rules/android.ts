@@ -3,12 +3,13 @@ import { Rule } from '../rule-maker/rule';
 export const rules: Rule[] = [
     {
       before: [
-        'if (${1:before})',
-        '  ${1:func}()'
+        'if ((.+))',
+        '  (.+)()'
       ],
       after: [
-        'if (${1:before}) ${1:func}()'
+        'if ($1) $2()'
       ],
+      isRegex: true,
       message: 'Use standard brace style (https://source.android.com/setup/contribute/code-style#use-standard-brace-style)'
     },
     {

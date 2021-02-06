@@ -10,5 +10,8 @@ export interface Rule {
     message?: string;
     helpUri?: string;
     identifiers?: string[];
-    regex?: boolean;
+    isRegex?: boolean;
+    wholeWord?: boolean;
+    matchCase?: boolean;
+    preserveCase?: boolean;
 }

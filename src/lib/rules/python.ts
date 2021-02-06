@@ -3,13 +3,14 @@ import { Rule } from '../rule-maker/rule';
 export const rules: Rule[] = [
     {
       before: [
-        '$3 = $1',
-        '$1 = $2',
-        '$2 = $3',
+        '(?<tmp>.+)\\s*=\\s*(?<a>.+)',
+        '\\k<a>\\s*=\\s*(?<b>.+)',
+        '\\k<b>\\s*=\\s*\\k<tmp>',
       ],
       after: [
-        '$2, $1 = $1, $2',
+        '$2, $3 = $3, $2',
       ],
+      isRegex: true,
       message: 'Value exchanging can be one line',
     },
     {
