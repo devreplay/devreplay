@@ -1,5 +1,5 @@
 import { tryReadFile } from './file';
-import { Rule } from './rule-maker/rule';
+import { Rule, ruleJoin } from './rule-maker/rule';
 import { readRuleFile } from './ruleManager';
 import { LintOut } from './output';
 import { getInitRules } from './extend';
@@ -69,7 +69,7 @@ export function fixWithRule(fileContents: string, rule: Rule): string {
         return fileContents;
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let after = rule.after.join('\n').replace(dollar, (_, y) => (`$<token${(parseInt(y, 10) + 1)}>`));
+    let after = ruleJoin(rule.after).replace(dollar, (_, y) => (`$<token${(parseInt(y, 10) + 1)}>`));
 
     if (rule.isRegex) {
         after = rule.after[0];
@@ -89,8 +89,8 @@ export function fixWithRule(fileContents: string, rule: Rule): string {
 }
 
 export function getReplaceString(content: string, rule: Rule): string {
-    let search = rule.before.join('\n');
-    const replace = rule.after.join('\n');
+    let search = ruleJoin(rule.before);
+    const replace = ruleJoin(rule.after);
     if (!rule.isRegex) {
         search = escapeRegExpCharacters(search);
     }
@@ -104,12 +104,12 @@ export function getReplaceString(content: string, rule: Rule): string {
 }
 
 
-function before2regex2(before: string[], regex?: boolean) {
+function before2regex2(before: string[] | string, regex?: boolean) {
     if (regex) {
         return new RegExp(before[0], 'gm');
     }
     const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let joinedBefore = before.length < 2 ? before[0] : before.join('\n');
+    let joinedBefore = ruleJoin(before);
     joinedBefore = joinedBefore.replace(dollar, (_, y) => (`$${(parseInt(y, 10) + 1)}`));
     joinedBefore = joinedBefore.replace(/[<>*()?.[\]]/g, '\\$&');
 
@@ -130,8 +130,8 @@ function before2regex2(before: string[], regex?: boolean) {
     }
 }
 
-function makeSnippetRegex(before: string[], contents: string, regex?: boolean) {
-    let search = before.join('\n');
+function makeSnippetRegex(before: string[] | string, contents: string, regex?: boolean) {
+    let search = ruleJoin(before);
     if (!regex) {
         search = escapeRegExpCharacters(search);
     }
@@ -252,7 +252,7 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
 }
 
 export function createRegExp(rule: Rule): RegExp {
-    let searchString = rule.before.join('\n');
+    let searchString = ruleJoin(rule.before);
 	if (!searchString) {
 		throw new Error('Cannot create regex from empty string');
 	}

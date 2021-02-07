@@ -1,7 +1,7 @@
 import { rules as c } from './c';
 import { Rule } from '../rule-maker/rule';
 
-export const rules: Rule[] = [
+const cppRules: Rule[] = [
     {
         before: ['std::rand() % $1'],
         after: ['std::uniform_int_distribution<int> distribution(0, $1)'],
@@ -11,4 +11,6 @@ export const rules: Rule[] = [
         before: ['std::time'],
         after: ['std::random_device']
     }
-].concat(c);
+];
+
+export const rules = cppRules.concat(c);

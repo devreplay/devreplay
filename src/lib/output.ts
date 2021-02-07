@@ -1,6 +1,6 @@
 import * as chalk from 'chalk';
 import * as table from 'text-table';
-import { Rule } from './rule-maker/rule';
+import { Rule, ruleJoin } from './rule-maker/rule';
 import { Position } from './position';
 
 export interface LintOut {
@@ -94,7 +94,7 @@ export function code2String(rule: Rule): string {
 
         return rule.message;
     }
-    const message = `${rule.before.join('')} should be ${rule.after.join('')}`;
+    const message = `${ruleJoin(rule.before)} should be ${ruleJoin(rule.after)}`;
 
     if (rule.author !== undefined) {
         return `${message} by ${rule.author}`;

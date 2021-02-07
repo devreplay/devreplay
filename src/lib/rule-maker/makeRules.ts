@@ -1,6 +1,6 @@
 import { tokenize, Token } from 'source-code-tokenizer';
 
-import { Rule } from './rule';
+import { Rule, isEmptyRule, ruleJoin } from './rule';
 import { Chunk, makeDiffObj } from './diffparser';
 import { DetailedDiff } from './gitMiner';
 import { strDiff2treeDiff } from './code-parser';
@@ -19,7 +19,6 @@ export function makeRulesFromDetailedDiffs(logs: DetailedDiff[]): Rule[] {
             rule.message = log.log.message;
             rule.ruleId = log.log.hash;
             delete rule.identifiers;
-            delete rule.scopeName;
             return rule;
         });
 
@@ -37,7 +36,6 @@ export function makeRulesFromDiffs(diffs: string[]): Rule[] {
         rules = rules
         .map(rule => {
             delete rule.identifiers;
-            delete rule.scopeName;
             return rule;
         });
 
@@ -53,7 +51,10 @@ export function makeRulesFromDiff(diff: string): Rule[] {
     const rules: Rule[] = [];
     for (const chunk of chunks) {
         const rule = makeRulesFromChunk(chunk);
-        if (rule !== undefined && !isEmptyRule(rule.before) && !isEmptyRule(rule.after)) {
+        if (rule === undefined) {
+            continue;
+        }
+        if (!isEmptyRule(rule.before) && !isEmptyRule(rule.after)) {
             rules.push(rule);
         }
     }
@@ -62,7 +63,7 @@ export function makeRulesFromDiff(diff: string): Rule[] {
 
 export function makeRulesFromChunk(chunk: Chunk): Rule | undefined {
     const change = strDiff2treeDiff(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source);
-    let rule: Rule = {
+    let rule = {
         before: chunk.deleted,
         after: chunk.added
     };
@@ -105,8 +106,7 @@ export async function makeRules(deletedContents?: string, addedContents?: string
             if (isAbstractable(diffs[0].before)) {
                 return {
                     before: [diffs[0].before.value],
-                    after: [diffs[0].after.value],
-                    scopeName: source
+                    after: [diffs[0].after.value]
                 };
             }
         }
@@ -133,8 +133,7 @@ export async function makeRules(deletedContents?: string, addedContents?: string
 
     return {
         before: before,
-        after: after,
-        scopeName: source
+        after: after
     };
 }
 
@@ -211,10 +210,6 @@ function isAbstractable(token: Token) {
     return isAlphanumeric && ['keyword', 'builtin', 'strage'].every(x => !scope.includes(x));
 }
 
-function isEmptyRule(rule: string[]) {
-    return rule.length === 1 && rule[0] === '';
-}
-
 function getSingleDiff(beforeTokens: Token[], afterTokens: Token[]) {
     const differentTokens: {before: Token, after: Token}[] = [];
 
@@ -248,8 +243,8 @@ export function filterSameRules(rules: Rule[]): Rule[] {
     for (const rule of rules) {
         if (!uniqueRules.some(x => {
             return (
-                x.after.join('\n') === rule.after.join('\n') &&
-                x.before.join('\n') === rule.before.join('\n'));       
+                ruleJoin(x.after) === ruleJoin(rule.after) &&
+                ruleJoin(x.before) === ruleJoin(rule.before));       
         })){
             uniqueRules.push(rule);
         }

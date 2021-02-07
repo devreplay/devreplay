@@ -37,3 +37,17 @@ const rule3: Rule = {
 test('Fix foo to bar', () => {
     expect(getReplaceString('h = b\nb = c\nc = h', rule3)).toBe('b, c = c, b');
 });
+
+const rule4: Rule = {
+    before: [
+      '([a-z]+)-([a-z]+)'
+    ],
+    after: [
+        '$1 $2'
+    ],
+    isRegex: true
+};
+
+test('Fix by regex', () => {
+    expect(getReplaceString('print("hello-world")', rule4)).toBe('print("hello world")');
+});

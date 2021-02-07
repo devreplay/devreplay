@@ -114,7 +114,7 @@ Also, you can use default rules by extends some rules such as
   "after": [
       "$1 $2"
   ],
-  "regex": true
+  "isRegex": true
 }
 ```
 
