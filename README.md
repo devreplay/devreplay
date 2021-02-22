@@ -6,9 +6,9 @@
 Devreplay is static analysis tool based on your own programming rule.
 
 * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
-* [Other Editor Support (Language Server)](https://www.npmjs.com/package/devreplay-server)
 * [GitHub Application](https://github.com/marketplace/dev-replay)
-* [Pattern generator](https://github.com/devreplay/devreplay-pattern-generator)
+
+* [Other Editor Support (Language Server)](https://www.npmjs.com/package/devreplay-server)
 
 ## How to use
 
@@ -160,4 +160,4 @@ DevReplay is supported by 2019 Exploratory IT Human Resources Project [The MITOU
 
 ## License
 
-[MIT](LICENSE) © 2019 Yuki Ueda <ueda.yuki.un7@is.naist.jp> (ikuyadeu.github.io)
+[MIT](LICENSE) © 2019 Yuki Ueda <ikuyadeu0513@gmail.com> (ikuyadeu.github.io)
