@@ -14,6 +14,7 @@ interface Argv {
 
 const cli = {
     async execute() {
+        // define commandline
         const program = new commander.Command();
         program
             .version('1.9.24')
@@ -48,6 +49,7 @@ const cli = {
             return 0;
         }
 
+        // get file list by ls
         const lstat = fs.lstatSync(targetPath);
 
         // Fix
@@ -83,11 +85,18 @@ const cli = {
     }
 };
 
-function getAllFiles(dirName: string) {
+
+/**
+ * 
+ * @param dirName target dictionaly name
+ * @returns The file pathes that are included in the `dirName`
+ */
+function getAllFiles(dirName: string): string[] {
     const dirents = fs.readdirSync(dirName, { withFileTypes: true });
     const filesNames: string[] = [];
     for (const files of dirents) {
         if (files.isDirectory()){
+            // 
             filesNames.push(...getAllFiles(path.join(dirName, files.name)));
         } else {
             filesNames.push(path.join(dirName, files.name));

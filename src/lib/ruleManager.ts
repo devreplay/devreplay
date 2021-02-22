@@ -12,6 +12,11 @@ export function writeRuleFile(rules: Rule[], dirPath: string): void {
     writeFileSync(filePath, ruleStr);
 }
 
+/**
+ * Read the rules from the defined rule file
+ * @param ruleFileName 
+ * @return Rule list that are included `devreplay.json`
+ */
 export function readRuleFile(ruleFileName?: string): Rule[] {
     let location;
     if (ruleFileName !== undefined && existsSync(ruleFileName)) {
@@ -44,6 +49,11 @@ export function readRuleFile(ruleFileName?: string): Rule[] {
     }
 }
 
+/**
+ * Read the rules from the directory `devreplay.json` file
+ * @param dirPath The target directory that has devreplay.json
+ * @return Rule list that are defined in the rule file
+ */
 function readCurrentRules(dirPath: string): Rule[] {
     const rulePath = join(dirPath, 'devreplay.json');
     let fileContents = undefined;
@@ -58,6 +68,11 @@ function readCurrentRules(dirPath: string): Rule[] {
     return JSON.parse(fileContents) as Rule[];
 }
 
+/**
+ * Find the rules that are predefined in DevReplay implementation
+ * @param extend rule definition
+ * @return Rule list that are defined by `extend`
+ */
 function readExtends(extend: string): Rule[] {
     let location;
     if (Extend[extend] !== undefined) {
