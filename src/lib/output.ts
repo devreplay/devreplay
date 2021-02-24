@@ -10,6 +10,12 @@ export interface LintOut {
     position: { start: Position; end: Position};
 }
 
+/**
+ * Generate the formated strings from lint results that has
+ * * error message
+ * * number of total problems
+ * @param lintouts results of linting by devreplay
+ */
 export function outputLintOuts(lintouts: LintOut[]): string {
     const lintoutputs: string[][] = [];
     let errorCount = 0;
@@ -50,6 +56,10 @@ export function outputLintOuts(lintouts: LintOut[]): string {
     return output;
 }
 
+/**
+ * Generate connected full lint message from a lint warning
+ * @param matched A lint warning
+ */
 export function formatLintOut(matched: LintOut): string[] {
     const severity = makeFullSeverity(matched.rule.severity);
     const position = `${matched.fileName}:${matched.position.start.line}:${matched.position.start.character}`;
@@ -57,6 +67,15 @@ export function formatLintOut(matched: LintOut): string[] {
     return [position, severity, message];
 }
 
+/**
+ * Make the code severity from the severity string initial
+ * Severities are
+ * * `E`rror
+ * * `W`arning
+ * * `I`nformation`
+ * * `H`int
+ * @param severity code severity message
+ */
 export function makeSeverity(severity?: string): 'W' | 'E' | 'I' | 'H' {
     if (severity === undefined) {
         return 'W';
@@ -72,6 +91,10 @@ export function makeSeverity(severity?: string): 'W' | 'E' | 'I' | 'H' {
     return 'W';
 }
 
+/**
+ * Generate colored severity from severity
+ * @param severity severity string
+ */
 export function makeFullSeverity(severity?: string): string {
     const fixed_severity = makeSeverity(severity);
     if (fixed_severity === 'E') {
@@ -86,6 +109,10 @@ export function makeFullSeverity(severity?: string): string {
     return chalk.gray('warning');
 }
 
+/**
+ * Generate lint message from a rule
+ * @param rule warned rule
+ */
 export function code2String(rule: Rule): string {
     if (rule.message !== undefined) {
         if (rule.author !== undefined) {

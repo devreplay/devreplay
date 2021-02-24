@@ -1,5 +1,9 @@
 import * as fs from 'fs';
 
+/**
+ * Read file and return file content
+ * @param filename Target file path
+ */
 export function tryReadFile(filename: string): string | undefined {
     if (!fs.existsSync(filename)) {
         throw new Error(`Unable to open file: ${filename}`);
