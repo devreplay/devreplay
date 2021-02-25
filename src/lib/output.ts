@@ -1,13 +1,13 @@
 import * as chalk from 'chalk';
 import * as table from 'text-table';
 import { Rule, ruleJoin } from './rule-maker/rule';
-import { Position } from './position';
+import { Range } from './position';
 
 export interface LintOut {
     rule: Rule;
     snippet: string;
     fileName: string;
-    position: { start: Position; end: Position};
+    position: Range;
 }
 
 /**

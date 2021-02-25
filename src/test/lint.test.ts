@@ -1,5 +1,5 @@
 import { Rule } from '../lib/rule-maker/rule';
-import { getReplaceString } from '../lib/lint';
+import { fixWithRule } from '../lib/lint';
 
 const rule: Rule = {
     before: ['foo'],
@@ -8,7 +8,7 @@ const rule: Rule = {
 };
 
 test('Fix foo to bar', () => {
-    expect(getReplaceString('console.log("foo")', rule)).toBe('console.log("bar")');
+    expect(fixWithRule('console.log("foo")', rule)).toBe('console.log("bar")');
 });
 
 
@@ -18,7 +18,7 @@ const rule2: Rule = {
     isRegex: true
 };
 test('Fix foo to bar', () => {
-    expect(getReplaceString('let something = require(\'fs\')', rule2)).toBe('import * as fs from \'something\';');
+    expect(fixWithRule('let something = require(\'fs\')', rule2)).toBe('import * as fs from \'something\';');
 });
 
 const rule3: Rule = {
@@ -35,7 +35,7 @@ const rule3: Rule = {
 };
 
 test('Fix foo to bar', () => {
-    expect(getReplaceString('h = b\nb = c\nc = h', rule3)).toBe('b, c = c, b');
+    expect(fixWithRule('h = b\nb = c\nc = h', rule3)).toBe('b, c = c, b');
 });
 
 const rule4: Rule = {
@@ -49,5 +49,5 @@ const rule4: Rule = {
 };
 
 test('Fix by regex', () => {
-    expect(getReplaceString('print("hello-world")', rule4)).toBe('print("hello world")');
+    expect(fixWithRule('print("hello-world")', rule4)).toBe('print("hello world")');
 });
