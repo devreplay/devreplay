@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.9.26
+
+* Refactor whole of code
+* Fix the rule matching algorhythm
 ## 1.8.4
 
 * Improve rule generating
