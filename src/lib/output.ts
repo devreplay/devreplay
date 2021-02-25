@@ -3,6 +3,7 @@ import * as table from 'text-table';
 import { Rule, ruleJoin } from './rule-maker/rule';
 import { Range } from './position';
 
+/** DevReplay linting result */
 export interface LintOut {
     rule: Rule;
     snippet: string;

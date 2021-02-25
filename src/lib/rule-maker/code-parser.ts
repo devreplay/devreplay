@@ -15,6 +15,12 @@ export type Change = {
     after: string; 
 }
 
+/**
+ * Make the code diff from two code contents
+ * @param before Prechanged source code
+ * @param after Changed source code
+ * @param langName Target programming language name
+ */
 export function strDiff2treeDiff(before: string, after: string, langName: string): Change | undefined {
     const parser = new Parser();
     const language = langName2Parser(langName);
@@ -49,6 +55,12 @@ export function strDiff2treeDiff(before: string, after: string, langName: string
     return;
 }
 
+/**
+ * Editing abstracted syntax tree based on code changes
+ * @param before Prechanged source code
+ * @param after Changed source code
+ * @param tree Target tree
+ */
 function editTree(before: string, after: string, tree: Parser.Tree) {
     const changes = diffChars(before, after);
     let oldIndex = 0;
@@ -82,6 +94,10 @@ function editTree(before: string, after: string, tree: Parser.Tree) {
     return tree;
 }
 
+/**
+ * Choose the parser from language names
+ * @param langName programming language name or scope
+ */
 function langName2Parser(langName: string) {
     const lowerLang = langName.toLowerCase();
     switch (lowerLang) {

@@ -3,7 +3,6 @@ import { getFileSource } from 'source-code-tokenizer';
 
 type ChunkState = 'added' | 'deleted' | 'changed' | 'nothing'
 
-
 export interface Chunk {
     source: string;
     type: ChunkState;
@@ -11,6 +10,10 @@ export interface Chunk {
     readonly added: string[];
 }
 
+/**
+ * Make diff object from git diff output
+ * @param diff Git diff string
+ */
 export function makeDiffObj(diff: string): Chunk[] {
     const files: parsediff.File[] = parsediff(diff);
     const chunks: Chunk[] = [];
@@ -73,7 +76,7 @@ export function makeDiffObj(diff: string): Chunk[] {
                 prevChangetype = change.type;
             }
             if (tmp_chunk.deleted.length > 0 || tmp_chunk.added.length > 0) {
-                tmp_chunk.type = getChunkType(tmp_chunk.added, tmp_chunk.deleted);
+                tmp_chunk.type = getChunkType(tmp_chunk.deleted, tmp_chunk.added);
                 chunks.push(tmp_chunk);
             }
         }
@@ -81,9 +84,14 @@ export function makeDiffObj(diff: string): Chunk[] {
     return chunks;
 }
 
-function getChunkType (add: string[], deleted: string[]): ChunkState {
-    const add_len = add.length;
-    const del_len = deleted.length;
+/**
+ * Compare the two string and catecorize the change type
+ * @param before Prechanged code
+ * @param after Changed code
+ */
+function getChunkType (before: string[], after: string[]): ChunkState {
+    const add_len = after.length;
+    const del_len = before.length;
     if (add_len > 0 && del_len > 0) {
         return 'changed';
     }

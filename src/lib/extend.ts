@@ -24,6 +24,9 @@ interface Extends {
     [key: string]: Rule[];
 }
 
+/**
+ * List of rule extends
+ */
 export const extend: Extends = {
     android,
     angular,
