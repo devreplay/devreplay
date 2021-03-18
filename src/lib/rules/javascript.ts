@@ -59,13 +59,14 @@ export const rules: Rule[] = [
     matchCase: true
   },
   {
-    before:'for (let $3 = 0;i < $1.length;i++) $2($1[$3])',
+    before: 'for \\(let (?<i>.+) = 0;\\k<i> < (?<arr>.+).length;\\k<i>\\+\\+\\) (.*)\\(\\k<arr>\\[\\k<i>\\]\\)',
     after: [
-      'for (let $3 = 0;i < $1.length;i++) {',
-      '    $2($1[$3])',
+      'for (let $1 = 0;$1 < $2.length;i++) {',
+      '    $3($2[$1])',
       '}'
     ],
-    matchCase: true
+    isRegex: true,
+    message: 'One line for should use paren'
   },
   {
     before:'const $1 = new Array()',
@@ -102,10 +103,10 @@ export const rules: Rule[] = [
     matchCase: true
   },
   {
-    before:'new $1;',
+    before: 'new \\(.*\\);',
     after: 'new $1();',
-    message: 'Never invoke a constructor in a new statement without using parentheses',
-    matchCase: true
+    isRegex: true,
+    message: 'Never invoke a constructor in a new statement without using parentheses'
   },
   {
     before:'@code',
