@@ -18,7 +18,8 @@ export const rules: Rule[] = [
       ],
       after: [
         'XmlHttpRequest'
-      ]
+      ],
+      matchCase: true
     },
     {
       before: [
@@ -26,7 +27,8 @@ export const rules: Rule[] = [
       ],
       after: [
         'getCustomerId'
-      ]
+      ],
+      matchCase: true
     },
     {
       before: [
@@ -34,7 +36,8 @@ export const rules: Rule[] = [
       ],
       after: [
         'class Html'
-      ]
+      ],
+      matchCase: true
     },
     {
       before: [
@@ -42,7 +45,8 @@ export const rules: Rule[] = [
       ],
       after: [
         'String url'
-      ]
+      ],
+      matchCase: true
     },
     {
       before: [
@@ -50,7 +54,8 @@ export const rules: Rule[] = [
       ],
       after: [
         'long id'
-      ]
+      ],
+      matchCase: true
     },
     {
       before: [
