@@ -1,9 +1,5 @@
 [
-  {
-    "extends": [
-      "TypeScript"
-    ]
-  },
+  "typescript",
   {
     "before": [
       "await makeRulesFromDiff(log.diff)"

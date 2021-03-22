@@ -5,33 +5,38 @@ import { extend as Extend } from './extend';
 import { tryReadFile } from './file';
 import { Rule } from './rule-maker/rule';
 
+type ReadableRule = Rule | string
+
 export function writeRuleFile(rules: Rule[], dirPath: string): void {
     const outRules = readCurrentRules(dirPath).concat(rules);
     const ruleStr = JSON.stringify(outRules, undefined, 2);
-    const filePath = join(dirPath, './devreplay.json');
+    const filePath = join(dirPath, './.devreplay.json');
     writeFileSync(filePath, ruleStr);
 }
 
+/**
+ * Read the rules from the defined rule file
+ * @param ruleFileName 
+ * @return Rule list that are included `.devreplay.json`
+ */
 export function readRuleFile(ruleFileName?: string): Rule[] {
     let location;
     if (ruleFileName !== undefined && existsSync(ruleFileName)) {
         location = ruleFileName;
-    } else if ((existsSync('./devreplay.json'))) {
-        location = 'devreplay.json';
+    } else if ((existsSync('./.devreplay.json'))) {
+        location = '.devreplay.json';
     } else {
         return [];
     }
     const ruleContent = readFileSync(location).toString();
     try {
-        const ruleJson = JSON.parse(ruleContent) as Rule[];
+        const ruleJson = JSON.parse(ruleContent) as ReadableRule[];
         let rules: Rule[] = [];
         for (const rule of ruleJson) {
-            if (rule.extends === undefined) {
-                rules.push(rule);
+            if (typeof rule === 'string') {
+                rules = rules.concat(readExtends(rule));
             } else {
-                for (const extend of rule.extends) {
-                    rules = rules.concat(readExtends(extend));
-                }
+                rules.push(rule);
             }
         }
 
@@ -44,8 +49,13 @@ export function readRuleFile(ruleFileName?: string): Rule[] {
     }
 }
 
+/**
+ * Read the rules from the directory `.devreplay.json` file
+ * @param dirPath The target directory that has .devreplay.json
+ * @return Rule list that are defined in the rule file
+ */
 function readCurrentRules(dirPath: string): Rule[] {
-    const rulePath = join(dirPath, 'devreplay.json');
+    const rulePath = join(dirPath, '.devreplay.json');
     let fileContents = undefined;
     try{
         fileContents =  tryReadFile(rulePath);
@@ -58,7 +68,12 @@ function readCurrentRules(dirPath: string): Rule[] {
     return JSON.parse(fileContents) as Rule[];
 }
 
-function readExtends(extend: string): Rule[] {
+/**
+ * Find the rules that are predefined in DevReplay implementation
+ * @param extend rule definition
+ * @return Rule list that are defined by `extend`
+ */
+export function readExtends(extend: string): Rule[] {
     let location;
     if (Extend[extend] !== undefined) {
         return Extend[extend];
@@ -73,7 +88,7 @@ function readExtends(extend: string): Rule[] {
         const ruleJson = JSON.parse(ruleContent) as Rule[];
         const rules: Rule[] = [];
         for (const rule of ruleJson) {
-            if (rule.extends === undefined) {
+            if (typeof rule !== 'string') {
                 rules.push(rule);
             }
         }

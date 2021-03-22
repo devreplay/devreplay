@@ -5,11 +5,18 @@ import { Chunk, makeDiffObj } from './diffparser';
 import { DetailedDiff } from './gitMiner';
 import { strDiff2treeDiff } from './code-parser';
 
+/** Token identifier */
 export interface Identifier {
+    /** Concrete element value */
     value: string;
+    /** Element category in the abstracted syntax tree */
     scope: string;
 }
 
+/**
+ * Generate rule from git diff information
+ * @param logs git diff log
+ */
 export function makeRulesFromDetailedDiffs(logs: DetailedDiff[]): Rule[] {
     let allRules: Rule[] = [];
     for (const log of logs) {
@@ -29,6 +36,10 @@ export function makeRulesFromDetailedDiffs(logs: DetailedDiff[]): Rule[] {
     return allRules;
 }
 
+/**
+ * Generate rules from concrate diff
+ * @param diffs diffs in the one changes
+ */
 export function makeRulesFromDiffs(diffs: string[]): Rule[] {
     let allRules: Rule[] = [];
     for (const diff of diffs) {
@@ -46,6 +57,10 @@ export function makeRulesFromDiffs(diffs: string[]): Rule[] {
     return allRules;
 }
 
+/**
+ * Make rules from diff contnt
+ * @param diff Git diff
+ */
 export function makeRulesFromDiff(diff: string): Rule[] {
     const chunks = makeDiffObj(diff);
     const rules: Rule[] = [];
@@ -61,6 +76,10 @@ export function makeRulesFromDiff(diff: string): Rule[] {
     return rules;
 }
 
+/**
+ * Generate rules from source code diff chunk
+ * @param chunk Code chunk that has before and after changed code
+ */
 export function makeRulesFromChunk(chunk: Chunk): Rule | undefined {
     const change = strDiff2treeDiff(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source);
     let rule = {
@@ -83,6 +102,12 @@ export function makeRulesFromChunk(chunk: Chunk): Rule | undefined {
     // return makeRules(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source); 
 }
 
+/**
+ * Make rules from changed content
+ * @param deletedContents Deleted source code string
+ * @param addedContents Added source code string
+ * @param source Source code language
+ */
 export async function makeRules(deletedContents?: string, addedContents?: string, source?: string): Promise<Rule|undefined> {
     if (deletedContents === undefined || addedContents === undefined || source === undefined) {
         return undefined;
@@ -159,6 +184,11 @@ function collectCommonIdentifiers(beforeTokens: Token[], afterTokens: Token[]) {
 }
 
 
+/**
+ * Generate original string list from tokens.
+ * @param tokens Original string tokens
+ * @param identifiers Identifiers that are included in tokens
+ */
 function makeAbstractedCode(tokens: Token[], identifiers: Identifier[]) {
     const rules: string[] = [];
     let previousPosition = 1;
@@ -224,6 +254,11 @@ function getSingleDiff(beforeTokens: Token[], afterTokens: Token[]) {
     return differentTokens;
 }
 
+/**
+ * Collecting different tokens from single line code tokens
+ * @param beforeTokens Prechanged code tokens
+ * @param afterTokens Changed code tokens
+ */
 function getSingleLineDiff(beforeTokens: string[], afterTokens: string[]) {
     const differentTokens: {before: string, after: string}[] = [];
 
@@ -238,6 +273,10 @@ function getSingleLineDiff(beforeTokens: string[], afterTokens: string[]) {
     return differentTokens;
 }
 
+/**
+ * Make the unique rules from rule list
+ * @param rules rule list
+ */
 export function filterSameRules(rules: Rule[]): Rule[] {
     const uniqueRules: Rule[] = [];
     for (const rule of rules) {
@@ -253,6 +292,11 @@ export function filterSameRules(rules: Rule[]): Rule[] {
 }
 
 
+/**
+ * Remove redundant rule spaces
+ * @param before Search code
+ * @param after Replace code
+ */
 function formatRules(before: string[], after: string[]) {
     const minSpace = Math.min(countSpace(before), countSpace(after));
     const formatBefore = [];
@@ -274,6 +318,10 @@ function formatRules(before: string[], after: string[]) {
     return {before: formatBefore, after: formatAfter};
 }
 
+/**
+ * Counting minimize spaces from code lines
+ * @param ruleLines Rule code lines
+ */
 function countSpace(ruleLines: string[]) {
     const spaces: number[] = [];
     for (const ruleLine of ruleLines) {

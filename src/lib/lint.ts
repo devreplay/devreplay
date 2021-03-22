@@ -2,8 +2,14 @@ import { tryReadFile } from './file';
 import { Rule, ruleJoin } from './rule-maker/rule';
 import { readRuleFile } from './ruleManager';
 import { LintOut } from './output';
+import { Range } from './position';
 import { getInitRules } from './extend';
 
+/**
+ * Linting files by the rule and output warnings
+ * @param fileNames Validate target file pathes
+ * @param ruleFileName DevReplay rule file path
+ */
 export function lint(fileNames: string[], ruleFileName?: string): LintOut[] {
     let rules = readRuleFile(ruleFileName);
     if (rules === []) {
@@ -27,128 +33,68 @@ export function lint(fileNames: string[], ruleFileName?: string): LintOut[] {
     return out;
 }
 
+/**
+ * Linting source code content with the defined rules
+ * @param fileName Target file name for generate output string
+ * @param contents Target file contents for linting
+ * @param rules Target rules from rule files or implemented rules
+ */
 export function lintWithRules(fileName: string, contents: string, rules: Rule[]): LintOut[] {
-    const matched: LintOut[] = [];
+    const lintOut: LintOut[] = [];
     for (const rule of rules) {
-
-        if (!verifyPattern(rule)) { continue; }
-        const matchedResult = makeSnippetRegex(rule.before, contents, rule.isRegex);
-        for (const result of matchedResult) {
-            matched.push({rule: rule,
-                snippet: result[0],
+        const regExp = createRegExp(rule);
+        let match: RegExpExecArray | null;
+        while ((match = regExp.exec(contents)) !== null) {
+            lintOut.push({
+                rule: rule,
+                snippet: match[0],
                 fileName,
-                position: makePatternPosition(result)});
+                position: makeMatchedRange(match)
+            });
         }
     }
 
-    return matched;
+    return lintOut;
 }
 
+/**
+ * Generate fixed source code file content
+ * @param fileName Target be fixed file path
+ * @param ruleFileName Target DevReplay rule file path
+ */
 export function fix(fileName: string, ruleFileName?: string): string {
-    let rules = readRuleFile(ruleFileName);
-    if (rules === []) {
-        rules = getInitRules(fileName);
-    }
-
     const fileContents = tryReadFile(fileName);
     if (fileContents === undefined) {
         throw new Error(`Failed to read ${fileName}`);
     }
-    const lintResult = lintWithRules(fileName, fileContents, rules);
-    const detectedRules = lintResult.map(x => { return x.rule; });
-    let fixedContents = fileContents;
-    for (const rule of detectedRules) {
-        fixedContents = getReplaceString(fixedContents, rule);
-    }
+    const lintResult = lint([fileName], ruleFileName);
+    const warnedRules = lintResult.map(x => { return x.rule; });
 
-    return fixedContents;
+    return fixWithRules(fileContents, warnedRules);
 }
 
-export function fixWithRule(fileContents: string, rule: Rule): string {
-    if (rule.after.length === 0 || rule.before.length === 0) {
-        return fileContents;
-    }
-    const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let after = ruleJoin(rule.after).replace(dollar, (_, y) => (`$<token${(parseInt(y, 10) + 1)}>`));
-
-    if (rule.isRegex) {
-        after = rule.after[0];
-    }
-    const reBefore = before2regex2(rule.before, rule.isRegex);
-
-    if (reBefore !== undefined) {
-        const matchedStr = reBefore.exec(fileContents);
-        if (matchedStr !== null) {
-            return fileContents.replace(reBefore, after);
+/**
+ * Generate fixed string by using rule regular expression
+ * @param content Prefixed content
+ * @param rules Rules that has regular expression
+ */
+export function fixWithRules(content: string, rules: Rule[]): string {
+    for (const rule of rules) {
+        const replace = ruleJoin(rule.after);
+        const regExp = createRegExp(rule);
+        if (regExp.exec(content)) {
+            content = replaceWithCaseOperations(content, regExp, replace);
+            continue;
         }
-
-        return fileContents;
-    }
-
-    return fileContents;
-}
-
-export function getReplaceString(content: string, rule: Rule): string {
-    let search = ruleJoin(rule.before);
-    const replace = ruleJoin(rule.after);
-    if (!rule.isRegex) {
-        search = escapeRegExpCharacters(search);
-    }
-    const regExp = new RegExp(search, 'g');
-    const match = regExp.exec(content);
-    if (match) {
-        const replaceString = replaceWithCaseOperations(content, regExp, replace);
-        return replaceString;
     }
     return content;
 }
 
-
-function before2regex2(before: string[] | string, regex?: boolean) {
-    if (regex) {
-        return new RegExp(before[0], 'gm');
-    }
-    const dollar = /\${?(\d+)(:[a-zA-Z0-9_.]+})?/gm;
-    let joinedBefore = ruleJoin(before);
-    joinedBefore = joinedBefore.replace(dollar, (_, y) => (`$${(parseInt(y, 10) + 1)}`));
-    joinedBefore = joinedBefore.replace(/[<>*()?.[\]]/g, '\\$&');
-
-    const tokenIndex: number[] = [];
-    joinedBefore = joinedBefore.replace(dollar, (x) => {
-        const index = parseInt(x[1], 10);
-        if (tokenIndex.includes(index)) {
-            return `(\\k<token${index}>)`;
-        }
-        tokenIndex.push(index);
-
-        return `(?<token${index}>[\\w.]+)`;
-    });
-    try {
-        return new RegExp(joinedBefore, 'gm');
-    } catch (error) {
-        return undefined;
-    }
-}
-
-function makeSnippetRegex(before: string[] | string, contents: string, regex?: boolean) {
-    let search = ruleJoin(before);
-    if (!regex) {
-        search = escapeRegExpCharacters(search);
-    }
-    const regExp = new RegExp(search, 'g');
-    let match: RegExpExecArray | null;
-    const matches: RegExpExecArray[] = [];
-    while ((match = regExp.exec(contents)) !== null) {
-        matches.push(match);
-    }
-    return matches;
-}
-
-function verifyPattern(rule: Rule) {
-    return Array.isArray(rule.before) && Array.isArray(rule.after);
-}
-
-function makePatternPosition(result: RegExpExecArray) {
+/**
+ * Make the matched range from Regular expression result
+ * @param result 
+ */
+function makeMatchedRange(result: RegExpExecArray): Range {
     const startIndex = result.index;
     const headSlice = result.input.slice(undefined, startIndex).split(/\r\n|\r|\n/);
     const startLine = headSlice.length;
@@ -251,7 +197,11 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
     return text.replace(regex, newReplaceString);
 }
 
-export function createRegExp(rule: Rule): RegExp {
+/**
+ * Create search regex from rule
+ * @param rule Target rule
+ */
+function createRegExp(rule: Rule): RegExp {
     let searchString = ruleJoin(rule.before);
 	if (!searchString) {
 		throw new Error('Cannot create regex from empty string');
@@ -281,6 +231,6 @@ export function createRegExp(rule: Rule): RegExp {
 /**
  * Escapes regular expression characters in a given string
  */
-export function escapeRegExpCharacters(value: string): string {
+function escapeRegExpCharacters(value: string): string {
 	return value.replace(/[\\{}*+?|^$.[\]()]/g, '\\$&');
 }

@@ -24,6 +24,9 @@ interface Extends {
     [key: string]: Rule[];
 }
 
+/**
+ * List of rule extends
+ */
 export const extend: Extends = {
     android,
     angular,
@@ -63,6 +66,10 @@ export const sources: Source = {
     typescript: ['.ts'],
 };
 
+/**
+ * Imitate matched rules from file extension
+ * @param fileName Validate target file
+ */
 export function getInitRules(fileName: string): Rule[] {
     for (const key of Object.keys(sources)) {
         if (sources[key].some((x) => fileName.endsWith(x))) {

@@ -1,9 +1,29 @@
 import { Rule } from './rule';
-import { SStuB } from './sstubs';
 import { existsSync, readFileSync } from 'fs';
 import { makeRules, filterSameRules } from './makeRules';
 import { getFileSource } from 'source-code-tokenizer';
 
+export interface SStuB {
+    bugType?: string;
+    fixCommitSHA1: string;
+    fixCommitParentSHA1: string,
+    bugFilePath: string,
+    fixPatch: string,
+    projectName: string,
+    bugLineNum: number,
+    bugNodeStartChar: number,
+    bugNodeLength: number,
+    fixLineNum: number,
+    fixNodeStartChar: number,
+    fixNodeLength: number,
+    sourceBeforeFix: string,
+    sourceAfterFix: string 
+}
+
+/**
+ * Make rules from single statement bugs (SStuBs) dataset https://github.com/mast-group/mineSStuBs
+ * @param sstubs_path Path of SStuBs json file
+ */
 export async function mineSStuBsRules(sstubs_path: string): Promise<Rule[]> {
     const sstubs = readSStuBs(sstubs_path);
     const rules: Rule[] = [];
@@ -29,6 +49,10 @@ export async function mineSStuBsRules(sstubs_path: string): Promise<Rule[]> {
     return filterSameRules(rules);
 }
 
+/**
+ * Read SStuBs file
+ * @param sstubs_path Path of SStuBs json file
+ */
 function readSStuBs(sstubs_path: string): SStuB[] {
     if (!existsSync(sstubs_path)) {
         return [];
