@@ -17,10 +17,10 @@ export interface Identifier {
  * Generate rule from git diff information
  * @param logs git diff log
  */
-export function makeRulesFromDetailedDiffs(logs: DetailedDiff[]): Rule[] {
+export async function makeRulesFromDetailedDiffs(logs: DetailedDiff[]): Promise<Rule[]> {
     let allRules: Rule[] = [];
     for (const log of logs) {
-        let rules = makeRulesFromDiff(log.diff);
+        let rules = await makeRulesFromDiff(log.diff);
         rules = rules.map(rule => {
             rule.author = log.log.author_name;
             rule.message = log.log.message;
@@ -40,10 +40,10 @@ export function makeRulesFromDetailedDiffs(logs: DetailedDiff[]): Rule[] {
  * Generate rules from concrate diff
  * @param diffs diffs in the one changes
  */
-export function makeRulesFromDiffs(diffs: string[]): Rule[] {
+export async function makeRulesFromDiffs(diffs: string[]): Promise<Rule[]> {
     let allRules: Rule[] = [];
     for (const diff of diffs) {
-        let rules = makeRulesFromDiff(diff);
+        let rules = await makeRulesFromDiff(diff);
         rules = rules
         .map(rule => {
             delete rule.identifiers;
@@ -61,11 +61,11 @@ export function makeRulesFromDiffs(diffs: string[]): Rule[] {
  * Make rules from diff contnt
  * @param diff Git diff
  */
-export function makeRulesFromDiff(diff: string): Rule[] {
+export async function makeRulesFromDiff(diff: string): Promise<Rule[]> {
     const chunks = makeDiffObj(diff);
     const rules: Rule[] = [];
     for (const chunk of chunks) {
-        const rule = makeRulesFromChunk(chunk);
+        const rule = await makeRulesFromChunk(chunk);
         if (rule === undefined) {
             continue;
         }
@@ -80,8 +80,8 @@ export function makeRulesFromDiff(diff: string): Rule[] {
  * Generate rules from source code diff chunk
  * @param chunk Code chunk that has before and after changed code
  */
-export function makeRulesFromChunk(chunk: Chunk): Rule | undefined {
-    const change = strDiff2treeDiff(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source);
+export async function makeRulesFromChunk(chunk: Chunk): Promise<Rule | undefined> {
+    const change = await strDiff2treeDiff(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source);
     let rule = {
         before: chunk.deleted,
         after: chunk.added

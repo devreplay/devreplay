@@ -1,14 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import * as Parser from 'tree-sitter';
+import * as Parser from 'web-tree-sitter';
 import { diffChars } from 'diff';
-const c = require('tree-sitter-c');
-const cpp = require('tree-sitter-cpp');
-const java = require('tree-sitter-java');
-const javascript = require('tree-sitter-javascript');
-const python = require('tree-sitter-python');
-const typescript = require('tree-sitter-typescript/typescript');
 
 export type Change = {
     before: string;
@@ -21,13 +12,15 @@ export type Change = {
  * @param after Changed source code
  * @param langName Target programming language name
  */
-export function strDiff2treeDiff(before: string, after: string, langName: string): Change | undefined {
+export async function strDiff2treeDiff(before: string, after: string, langName: string): Promise<Change | undefined> {
+    await Parser.init();
     const parser = new Parser();
     const language = langName2Parser(langName);
     if (language === undefined) {
         return;
     }
-    parser.setLanguage(language);
+    const lang = await Parser.Language.load(`${__dirname}/../../wasms/tree-sitter-${language}.wasm`);
+    parser.setLanguage(lang);
 
     const beforeTree = parser.parse(before);
     const tree = editTree(before, after, beforeTree);
@@ -102,29 +95,29 @@ function langName2Parser(langName: string) {
     const lowerLang = langName.toLowerCase();
     switch (lowerLang) {
         case 'c':
-            return c;
+            return 'c';
         case 'source.c':
-            return c;
+            return 'c';
         case 'cpp':
-            return cpp;
+            return 'cpp';
         case 'source.cpp':
-            return cpp;
+            return 'cpp';
         case 'java':
-            return java;
+            return 'java';
         case 'source.java':
-            return java;
+            return 'java';
         case 'javascript':
-            return javascript;
+            return 'javascript';
         case 'source.js':
-            return javascript;
+            return 'javascript';
         case 'python':
-            return python;
+            return 'python';
         case 'source.python':
-            return python;
+            return 'python';
         case 'typescript':
-            return typescript;
+            return 'typescript';
         case 'source.ts':
-            return typescript;
+            return 'typescript';
         default:
             throw new Error(`Language "${langName}" is unavailable`);
     }

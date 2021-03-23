@@ -2,30 +2,6 @@
   "typescript",
   {
     "before": [
-      "await makeRulesFromDiff(log.diff)"
-    ],
-    "after": [
-      "makeRulesFromDiff(log.diff)"
-    ]
-  },
-  {
-    "before": [
-      "await makeRulesFromDiff(diff)"
-    ],
-    "after": [
-      "makeRulesFromDiff(diff)"
-    ]
-  },
-  {
-    "before": [
-      "await makeRulesFromChunk(chunk)"
-    ],
-    "after": [
-      "makeRulesFromChunk(chunk)"
-    ]
-  },
-  {
-    "before": [
       "program.parse(process.argv);"
     ],
     "after": []
