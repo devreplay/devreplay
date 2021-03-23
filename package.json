@@ -18,7 +18,7 @@
     "test:fix": "node ./bin/devreplay --fix test-fixtures/files/test.py test-fixtures/rules/.devreplay.json",
     "test:init": "node ./bin/devreplay --init",
     "lint": "eslint src --ext ts",
-    "lint:devreplay": "node ./bin/devreplay src/lib .devreplay.json",
+    "lint:devreplay": "bin/devreplay ./src/lib/rule-maker devreplay.json",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile"
   },
