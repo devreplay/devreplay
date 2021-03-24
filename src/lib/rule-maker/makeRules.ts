@@ -1,4 +1,4 @@
-import { tokenize, Token } from 'source-code-tokenizer';
+import { tokenize, Token } from './code-parser';
 
 import { Rule, isEmptyRule, ruleJoin } from './rule';
 import { Chunk, makeDiffObj } from './diffparser';
@@ -65,7 +65,7 @@ export async function makeRulesFromDiff(diff: string): Promise<Rule[]> {
     const chunks = makeDiffObj(diff);
     const rules: Rule[] = [];
     for (const chunk of chunks) {
-        const rule = await makeRulesFromChunk(chunk);
+        const rule = await makeRules(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source);
         if (rule === undefined) {
             continue;
         }
@@ -76,10 +76,10 @@ export async function makeRulesFromDiff(diff: string): Promise<Rule[]> {
     return rules;
 }
 
-/**
- * Generate rules from source code diff chunk
- * @param chunk Code chunk that has before and after changed code
- */
+// /**
+//  * Generate rules from source code diff chunk
+//  * @param chunk Code chunk that has before and after changed code
+//  */
 export async function makeRulesFromChunk(chunk: Chunk): Promise<Rule | undefined> {
     const change = await strDiff2treeDiff(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source);
     let rule = {
@@ -90,8 +90,8 @@ export async function makeRulesFromChunk(chunk: Chunk): Promise<Rule | undefined
         return;
     }
     rule = {
-        before: change.before.split('\n'),
-        after: change.after.split('\n')
+        before: change.before,
+        after: change.after
     };
     const { before, after } = formatRules(rule.before, rule.after);
 
@@ -108,169 +108,87 @@ export async function makeRulesFromChunk(chunk: Chunk): Promise<Rule | undefined
  * @param addedContents Added source code string
  * @param source Source code language
  */
-export async function makeRules(deletedContents?: string, addedContents?: string, source?: string): Promise<Rule|undefined> {
-    if (deletedContents === undefined || addedContents === undefined || source === undefined) {
-        return undefined;
+export async function makeRules(deletedContents: string, addedContents: string, source: string): Promise<Rule|undefined> {
+    const change = await strDiff2treeDiff(deletedContents, addedContents, source);
+    if (change === undefined) {
+        return;
     }
 
-    const beforeTokens = await tokenize(deletedContents, source);
-    const afterTokens = await tokenize(addedContents, source);
-
-    if (beforeTokens === undefined || afterTokens === undefined) {
-        return undefined;
+    const before = await tokenize(change.before.join('\n'), source);
+    const after = await tokenize(change.after.join('\n'), source);
+    const identifiers = makeCommonIdentifiers(before, after);
+    if (identifiers.length === 0) {
+        return {
+            before: change.before.length === 1 ? change.before[0] : change.before,
+            after: change.after.length === 1 ? change.after[0] : change.after
+        };
     }
+    return tokens2Rules(before, after, identifiers);
+}
 
-    // MEMO Remove comment token and lines
+function makeCommonIdentifiers(tokens: Token[], tokens2: Token[]): string[] {
+    const tokenTexts = tokens.filter(x => x.type === 'identifier').map(x => x.text);
+    const tokenTexts2 = tokens2.filter(x => x.type === 'identifier').map(x => x.text);
+    const originalSet = new Set(tokenTexts);
+    const diff = new Set([...tokenTexts2].filter(x => originalSet.has(x)));
+    return Array.from(diff);
+}
 
-    // 1 token changep rule
-    const identifiers: Identifier[] = collectCommonIdentifiers(beforeTokens.tokens, afterTokens.tokens);
+function tokens2Rules(before: Token[], after: Token[], commonIdentifiers: string[]): Rule {
 
-    if (identifiers.length > 0) {
-        const diffs = getSingleDiff(beforeTokens.tokens, afterTokens.tokens);
-        if (diffs.length === 1) {
-            if (isAbstractable(diffs[0].before)) {
-                return {
-                    before: [diffs[0].before.value],
-                    after: [diffs[0].after.value]
-                };
+    let beforeStr = '';
+    const usedIdentifiers: string[] = [];
+    let prevColumn = undefined;
+
+    for (const token of before) {
+        if (prevColumn === undefined) {
+            prevColumn = token.range.end.column;
+        }
+        const columnDiff = token.range.start.column - prevColumn;
+        if (columnDiff > 0) {
+            beforeStr += '\\s*';
+        }
+        prevColumn = token.range.end.column;
+
+        if (token.type === 'identifier' && commonIdentifiers.includes(token.text)) {
+            if (usedIdentifiers.includes(token.text)) {
+                beforeStr += `\\k<${token.text}>`;
+            } else {
+                beforeStr += `(?<${token.text}>\\S+)`;
+                usedIdentifiers.push(token.text);
             }
+        } else {
+            beforeStr += escapeRegExpCharacters(token.text);
         }
     }
 
-    // MEMO Minimum AST change rule
-    
-
-    // 1 line change rule
-    const deletedLines = deletedContents.split('\n');
-    const addedLines = addedContents.split('\n');
-    if (deletedLines.length !== 1 && addedLines.length !== 1){
-        const lineDiffs = getSingleLineDiff(deletedLines, addedLines);
-        if (lineDiffs.length === 1) {
-            return makeRules(lineDiffs[0].before, lineDiffs[0].after, source);
+    let afterStr = '';
+    prevColumn = undefined;
+    for (const token of after) {
+        if (prevColumn === undefined) {
+            prevColumn = token.range.end.column;
         }
+        const columnDiff = token.range.start.column - prevColumn;
+        if (columnDiff > 0) {
+            afterStr += ' '.repeat(columnDiff);
+        }
+        prevColumn = token.range.end.column;
+
+        if (token.type === 'identifier' && commonIdentifiers.includes(token.text)) {
+            const identIndex = commonIdentifiers.indexOf(token.text) + 1;
+            afterStr += `$${identIndex}`;
+        } else {
+            afterStr += token.text;
+        }
+
     }
 
-    // Multi line change rule
-    const beforeRules = makeAbstractedCode(beforeTokens.tokens, identifiers);
-    const afterRules = makeAbstractedCode(afterTokens.tokens, identifiers);
-
-    const { before, after } = formatRules(beforeRules, afterRules);
 
     return {
-        before: before,
-        after: after
+        before: beforeStr,
+        after: afterStr,
+        isRegex: true
     };
-}
-
-function collectCommonIdentifiers(beforeTokens: Token[], afterTokens: Token[]) {
-    const identifiers: Identifier[] = [];
-    for (const beforeToken of beforeTokens) {
-        if (!(checkInIdentifiers(identifiers, beforeToken) === undefined &&
-            isAbstractable(beforeToken))) {
-            continue;
-        }
-        const beforeScope = beforeToken.scopes[beforeToken.scopes.length - 1];
-        for (const afterToken of afterTokens) {
-            const afterScope = afterToken.scopes[afterToken.scopes.length - 1];
-            if (beforeToken.value === afterToken.value && beforeScope === afterScope){
-                identifiers.push({
-                    value: beforeToken.value,
-                    scope: beforeScope
-                });
-            }
-        }
-    }
-    return identifiers;
-}
-
-
-/**
- * Generate original string list from tokens.
- * @param tokens Original string tokens
- * @param identifiers Identifiers that are included in tokens
- */
-function makeAbstractedCode(tokens: Token[], identifiers: Identifier[]) {
-    const rules: string[] = [];
-    let previousPosition = 1;
-    let previousLine = 0;
-    let lineContents = '';
-    for (const token of tokens) {
-        if (previousLine === 0) {
-            previousLine = token.line;
-        }
-
-        if (token.line !== previousLine) {
-            rules.push(lineContents);
-            previousPosition = 1;
-            previousLine = token.line;
-            lineContents = '';
-        }
-
-        const spaceNum = token.columns.start - previousPosition;
-        previousPosition = token.columns.end;
-        const identIndex = checkInIdentifiers(identifiers, token);
-        if (identIndex !== undefined) {
-            const abstractedToken = token.scopes[token.scopes.length - 1].split('.')[0];
-            lineContents += ' '.repeat(spaceNum) + `\${${identIndex}:${abstractedToken}}`;
-        } else {
-            lineContents += ' '.repeat(spaceNum) + token.value;
-        }
-    }
-    rules.push(lineContents);
-    return rules;
-}
-
-
-function checkInIdentifiers(identifiers: Identifier[], token: Token) {
-    let identIndex = 1;
-    const scope = token.scopes[token.scopes.length - 1];
-    for (const identifier of identifiers) {
-        if (token.value === identifier.value &&
-            scope === identifier.scope) {
-                return identIndex;
-        }
-        identIndex++;
-    }
-    return undefined;
-}
-
-function isAbstractable(token: Token) {
-    const scope = token.scopes[token.scopes.length - 1];
-    const isAlphanumeric = /^([a-zA-Z][a-zA-Z0-9]*)|[0-9]+$/i.exec(token.value);
-    return isAlphanumeric && ['keyword', 'builtin', 'strage'].every(x => !scope.includes(x));
-}
-
-function getSingleDiff(beforeTokens: Token[], afterTokens: Token[]) {
-    const differentTokens: {before: Token, after: Token}[] = [];
-
-    for (let index = 0; index < Math.min(beforeTokens.length, afterTokens.length); index++) {
-        const beforeToken = beforeTokens[index];
-        const afterToken = afterTokens[index];
-        if (beforeToken.value !== afterToken.value) {
-            differentTokens.push({before: beforeToken, after: afterToken});
-        }
-    }
-
-    return differentTokens;
-}
-
-/**
- * Collecting different tokens from single line code tokens
- * @param beforeTokens Prechanged code tokens
- * @param afterTokens Changed code tokens
- */
-function getSingleLineDiff(beforeTokens: string[], afterTokens: string[]) {
-    const differentTokens: {before: string, after: string}[] = [];
-
-    for (let index = 0; index < Math.min(beforeTokens.length, afterTokens.length); index++) {
-        const beforeToken = beforeTokens[index];
-        const afterToken = afterTokens[index];
-        if (beforeToken !== afterToken) {
-            differentTokens.push({before: beforeToken, after: afterToken});
-        }
-    }
-
-    return differentTokens;
 }
 
 /**
@@ -337,4 +255,11 @@ function countSpace(ruleLines: string[]) {
         spaces.push(spaceNum);
     }
     return Math.min(...spaces);
+}
+
+/**
+ * Escapes regular expression characters in a given string
+ */
+ function escapeRegExpCharacters(value: string): string {
+	return value.replace(/[\\{}*+?|^$.[\]()]/g, '\\$&');
 }

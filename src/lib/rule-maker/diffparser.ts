@@ -1,5 +1,5 @@
 import * as parsediff from 'parse-diff';
-import { getFileSource } from 'source-code-tokenizer';
+import { getFileSource } from '../extensionmap';
 
 type ChunkState = 'added' | 'deleted' | 'changed' | 'nothing'
 

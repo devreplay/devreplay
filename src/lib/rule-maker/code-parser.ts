@@ -1,10 +1,73 @@
 import * as Parser from 'web-tree-sitter';
 import { diffChars } from 'diff';
 
-export type Change = {
-    before: string;
-    after: string; 
+export interface Position {
+    row: number;
+    column: number
 }
+export interface Token {
+    type: string;
+    text: string;
+    range: {
+        start: Position,
+        end: Position
+    };
+}
+
+export type Change = {
+    before: string[];
+    after: string[]; 
+}
+
+export type ChangeTokens = {
+    before: Token[],
+    after: Token[]
+}
+
+/**
+ * Tokenize source code to splitted string
+ * @param content source code content
+ * @param langName language names
+ * @returns Token text list
+ */
+export async function tokenize(content: string, langName: string): Promise<Token[]> {
+    await Parser.init();
+    const parser = new Parser();
+    const language = langName2Parser(langName);
+    if (language === undefined) {
+        return [];
+    }
+    const lang = await Parser.Language.load(`${__dirname}/../../wasms/tree-sitter-${language}.wasm`);
+    parser.setLanguage(lang);
+
+    const tree = parser.parse(content);
+    const cursor = tree.walk();
+
+    const tokens: Token[] = [];
+    while (cursor.gotoFirstChild()) { continue; }
+    for (;;) {
+        if (cursor.currentNode().childCount === 0) {
+            const token = {
+                type: cursor.nodeType,
+                text: cursor.nodeText,
+                range: {
+                    start: cursor.startPosition,
+                    end: cursor.endPosition
+                }
+            };
+            tokens.push(token);
+        }
+        if (cursor.gotoNextSibling()) {
+            while (cursor.gotoFirstChild()) { continue; }
+        } else if (cursor.gotoParent()) {
+            continue;
+        } else {
+            break;
+        }
+    }
+    return tokens;
+}
+
 
 /**
  * Make the code diff from two code contents
@@ -38,14 +101,18 @@ export async function strDiff2treeDiff(before: string, after: string, langName: 
         return before.slice(x.startIndex, x.endIndex);
     });
 
-    if (beforeRanges.length === afterRanges.length && beforeRanges.length === 1) {
+    if (beforeRanges.length !== 0 && afterRanges.length !== 0) {
         const change: Change = {
-            before: beforeRanges[0],
-            after: afterRanges[0]
+            before:  beforeRanges,
+            after: afterRanges
         };
         return change;
     }
-    return;
+
+    return {
+        before:  beforeRanges,
+        after: afterRanges
+    };
 }
 
 /**

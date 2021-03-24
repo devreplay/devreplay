@@ -1,7 +1,7 @@
 import { Rule } from './rule';
 import { existsSync, readFileSync } from 'fs';
 import { makeRules, filterSameRules } from './makeRules';
-import { getFileSource } from 'source-code-tokenizer';
+import { getFileSource } from '../extensionmap';
 
 export interface SStuB {
     bugType?: string;
@@ -35,6 +35,9 @@ export async function mineSStuBsRules(sstubs_path: string): Promise<Rule[]> {
         }
         
         const source = getFileSource(sstub.bugFilePath);
+        if (source === undefined) {
+            return [];
+        }
         const rule = await makeRules(sstub.sourceBeforeFix, sstub.sourceAfterFix, source);
         if (rule !== undefined){
             rule.author = sstub.projectName;
