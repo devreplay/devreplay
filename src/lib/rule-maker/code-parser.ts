@@ -1,3 +1,4 @@
+import * as Path from 'path';
 import * as Parser from 'web-tree-sitter';
 import { diffChars } from 'diff';
 
@@ -37,7 +38,8 @@ export async function tokenize(content: string, langName: string): Promise<Token
     if (language === undefined) {
         return [];
     }
-    const lang = await Parser.Language.load(`${__dirname}/../../wasms/tree-sitter-${language}.wasm`);
+    const wasmPath = Path.relative(process.cwd(), Path.join(__dirname, `/../../../wasms/tree-sitter-${language}.wasm`));
+    const lang = await Parser.Language.load(wasmPath);
     parser.setLanguage(lang);
 
     const tree = parser.parse(content);
@@ -82,7 +84,8 @@ export async function strDiff2treeDiff(before: string, after: string, langName: 
     if (language === undefined) {
         return;
     }
-    const lang = await Parser.Language.load(`${__dirname}/../../wasms/tree-sitter-${language}.wasm`);
+    const wasmPath = Path.relative(process.cwd(), Path.join(__dirname, `/../../../wasms/tree-sitter-${language}.wasm`));
+    const lang = await Parser.Language.load(wasmPath);
     parser.setLanguage(lang);
 
     const beforeTree = parser.parse(before);

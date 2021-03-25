@@ -1,9 +1,5 @@
 [
-  {
-    "extends": [
-      "python"
-    ]
-  },
+"python",
 {
   "before": [
       "for (.+) in range(.+):"

@@ -12,18 +12,21 @@
       "strictPropertyInitialization": true,
       "importHelpers": true,
       "declaration": true,
-      "sourceMap": false,
+      "sourceMap": true,
       "target": "es6",
-      "lib": ["es6"],
+      "lib": ["es2019"],
       "rootDir": "./src",
       "outDir": "lib",
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "composite": true,
+      "moduleResolution": "Node",
   },
   "include": [
     "**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "lib"
+    "lib",
+    "**/*.test.ts"
   ]
 }
