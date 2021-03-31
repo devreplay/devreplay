@@ -1,6 +1,39 @@
 // Frequently failed due to the illegal invocation
 // Link: https://github.com/tree-sitter/node-tree-sitter/issues/53
-import { strDiff2treeDiff, Change, tokenize } from '../lib/rule-maker/code-parser';
+import { strDiff2treeDiff, Change, tokenize, makeParser } from '../lib/rule-maker/code-parser';
+
+test('Test parser', async () => {
+    const parser = await makeParser('JavaScript');
+    if (parser === undefined) {
+        return;
+    }
+    const sourceCode = '\'hello\''; 
+    // const types: string[] = [];
+
+    const tree = parser.parse(sourceCode);
+    // const cursor = tree.walk();
+    // while (cursor.gotoFirstChild() || cursor.gotoNextSibling()) {
+    //     types.push(cursor.nodeType);
+    // }
+    // expect(tree.rootNode.toString()).toStrictEqual('(program (expression_statement (string)))');
+
+    // expect(types).toStrictEqual(['']);
+
+    expect(tree.rootNode.text).toStrictEqual(sourceCode);
+});
+
+test('Test parser2', async () => {
+    const parser = await makeParser('JavaScript');
+    if (parser === undefined) {
+        return;
+    }
+    const sourceCode = '0'; 
+
+    const tree = parser.parse(sourceCode);
+    expect(tree.rootNode.toString()).toStrictEqual('(program (expression_statement (number)))');
+
+    expect(tree.rootNode.text).toStrictEqual(sourceCode);
+});
 
 test('Test rule maker', () => {
     const before = 'for (let i = 0;i < arr.length;i++) foo(arr[i])';
@@ -11,13 +44,6 @@ test('Test rule maker', () => {
     expect(before).not.toStrictEqual(after);
     expect(afterRegex).not.toStrictEqual(beforeRegex);
 });
-
-// test('Test tokenizer', async () => {
-//     const sourceCode = 'foo(arr[i])';        
-//     const expectedTokens: string[] = sourceCode.split(' ');
-//     const tokens = await tokenize(sourceCode, 'JavaScript');
-//     expect(tokens.map(x => x.type)).toStrictEqual(['identifier']);
-// });
 
 
 test('Test tokenizer', async () => {
@@ -55,4 +81,27 @@ test('Test java plus statement', async () => {
     };
 
     expect(await strDiff2treeDiff(sourceCode, newSourceCode, 'Java')).toStrictEqual(expectedChange);
+});
+
+test('Test javascript tokens', async () => {
+    const sourceCode = 'print(\'hello\')'; 
+    const expectedTokens: string[] = ['print', '(', '\'hello\'', ')'];
+    const expectedTypes: string[] = ['identifier', '(', 'string', ')'];
+
+    const tokens = await tokenize(sourceCode, 'JavaScript');
+
+    expect(tokens.map(x => x.text)).toStrictEqual(expectedTokens);
+    expect(tokens.map(x => x.type)).toStrictEqual(expectedTypes);
+
+});
+
+test('Test javascript tokens', async () => {
+    const sourceCode = 'var a = abc+0+\'hello\'+0'; 
+    const expectedTokens: string[] = ['var', 'a', '=', 'abc', '+', '0', '+', '\'hello\'', '+', '0'];
+    const expectedTypes: string[] = ['var', 'identifier', '=', 'identifier', '+', 'number', '+', 'string', '+', 'number'];
+
+    const tokens = await tokenize(sourceCode, 'JavaScript');
+
+    expect(tokens.map(x => x.text)).toStrictEqual(expectedTokens);
+    expect(tokens.map(x => x.type)).toStrictEqual(expectedTypes); 
 });

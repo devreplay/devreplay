@@ -32,44 +32,59 @@ export type ChangeTokens = {
  * @returns Token text list
  */
 export async function tokenize(content: string, langName: string): Promise<Token[]> {
-    await Parser.init();
-    const parser = new Parser();
-    const language = langName2Parser(langName);
-    if (language === undefined) {
+    const parser = await makeParser(langName);
+    if (parser === undefined) {
         return [];
     }
-    const wasmPath = Path.relative(process.cwd(), Path.join(__dirname, `/../../../wasms/tree-sitter-${language}.wasm`));
-    const lang = await Parser.Language.load(wasmPath);
-    parser.setLanguage(lang);
 
     const tree = parser.parse(content);
     const cursor = tree.walk();
 
     const tokens: Token[] = [];
-    while (cursor.gotoFirstChild()) { continue; }
     for (;;) {
-        if (cursor.currentNode().childCount === 0) {
-            const token = {
-                type: cursor.nodeType,
-                text: cursor.nodeText,
-                range: {
-                    start: cursor.startPosition,
-                    end: cursor.endPosition
-                }
-            };
-            tokens.push(token);
+        if (cursor.gotoFirstChild()) {
+            while (cursor.nodeType !== 'string' && cursor.gotoFirstChild()) {
+                continue;
+            }
+            tokens.push(getToken(cursor));
         }
-        if (cursor.gotoNextSibling()) {
-            while (cursor.gotoFirstChild()) { continue; }
-        } else if (cursor.gotoParent()) {
-            continue;
-        } else {
-            break;
+        for (;;) {
+            if (cursor.gotoNextSibling()) {
+                if (cursor.nodeType === 'string' || cursor.currentNode().childCount === 0) {
+                    tokens.push(getToken(cursor));
+                } else {
+                    break;
+                }
+            } else if (cursor.gotoParent()){
+                while (!cursor.gotoNextSibling()) {
+                    if (!cursor.gotoParent()) {
+                        return tokens;
+                    }
+                }
+                
+                if (cursor.nodeType === 'string' || cursor.currentNode().childCount === 0) {
+                    tokens.push(getToken(cursor));
+                } else {
+                    break;
+                }
+                
+            } else {
+                return tokens;
+            }
         }
     }
-    return tokens;
 }
 
+function getToken(cursor: Parser.TreeCursor): Token {
+    return {
+        type: cursor.nodeType,
+        text: cursor.nodeText,
+        range: {
+            start: cursor.startPosition,
+            end: cursor.endPosition
+        }
+    };
+}
 
 /**
  * Make the code diff from two code contents
@@ -78,16 +93,10 @@ export async function tokenize(content: string, langName: string): Promise<Token
  * @param langName Target programming language name
  */
 export async function strDiff2treeDiff(before: string, after: string, langName: string): Promise<Change | undefined> {
-    await Parser.init();
-    const parser = new Parser();
-    const language = langName2Parser(langName);
-    if (language === undefined) {
+    const parser = await makeParser(langName);
+    if (parser === undefined) {
         return;
     }
-    const wasmPath = Path.relative(process.cwd(), Path.join(__dirname, `/../../../wasms/tree-sitter-${language}.wasm`));
-    const lang = await Parser.Language.load(wasmPath);
-    parser.setLanguage(lang);
-
     const beforeTree = parser.parse(before);
     const tree = editTree(before, after, beforeTree);
     const afterTree = parser.parse(after, tree);
@@ -116,6 +125,21 @@ export async function strDiff2treeDiff(before: string, after: string, langName: 
         before:  beforeRanges,
         after: afterRanges
     };
+}
+
+
+export async function makeParser(langName: string): Promise<Parser | undefined> {
+    await Parser.init();
+    const parser = new Parser();
+    const language = langName2Parser(langName);
+    if (language === undefined) {
+        return;
+    }
+    const wasmPath = Path.relative(process.cwd(), Path.join(__dirname, `/../../../wasms/tree-sitter-${language}.wasm`));
+    const lang = await Parser.Language.load(wasmPath);
+    parser.setLanguage(lang);
+
+    return parser;
 }
 
 /**

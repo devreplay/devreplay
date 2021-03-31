@@ -97,7 +97,8 @@ export async function makeRulesFromChunk(chunk: Chunk): Promise<Rule | undefined
 
     return {
         before: before,
-        after: after
+        after: after,
+        matchCase: true
     };
     // return makeRules(chunk.deleted.join('\n'), chunk.added.join('\n'), chunk.source); 
 }
@@ -120,7 +121,8 @@ export async function makeRules(deletedContents: string, addedContents: string, 
     if (identifiers.length === 0) {
         return {
             before: change.before.length === 1 ? change.before[0] : change.before,
-            after: change.after.length === 1 ? change.after[0] : change.after
+            after: change.after.length === 1 ? change.after[0] : change.after,
+            matchCase: true
         };
     }
     return tokens2Rules(before, after, identifiers);
@@ -142,7 +144,7 @@ function tokens2Rules(before: Token[], after: Token[], commonIdentifiers: string
 
     for (const token of before) {
         if (prevColumn === undefined) {
-            prevColumn = token.range.end.column;
+            prevColumn = token.range.start.column;
         }
         const columnDiff = token.range.start.column - prevColumn;
         if (columnDiff > 0) {
@@ -154,7 +156,7 @@ function tokens2Rules(before: Token[], after: Token[], commonIdentifiers: string
             if (usedIdentifiers.includes(token.text)) {
                 beforeStr += `\\k<${token.text}>`;
             } else {
-                beforeStr += `(?<${token.text}>\\S+)`;
+                beforeStr += `(?<${token.text}>\\w+)`;
                 usedIdentifiers.push(token.text);
             }
         } else {
@@ -166,7 +168,7 @@ function tokens2Rules(before: Token[], after: Token[], commonIdentifiers: string
     prevColumn = undefined;
     for (const token of after) {
         if (prevColumn === undefined) {
-            prevColumn = token.range.end.column;
+            prevColumn = token.range.start.column;
         }
         const columnDiff = token.range.start.column - prevColumn;
         if (columnDiff > 0) {
@@ -187,7 +189,8 @@ function tokens2Rules(before: Token[], after: Token[], commonIdentifiers: string
     return {
         before: beforeStr,
         after: afterStr,
-        isRegex: true
+        isRegex: true,
+        matchCase: true
     };
 }
 
