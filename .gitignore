@@ -30,3 +30,5 @@ docs/formatters/*/index.html
 
 # ide
 /.idea
+
+tsconfig.tsbuildinfo

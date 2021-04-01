@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.9.28",
+  "version": "1.9.29",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -14,7 +14,7 @@
     "copyFiles": "node_modules/copyfiles/copyfiles ./wasms/**.wasm lib",
     "publish:local": "sh ./scripts/npmPublish.sh",
     "test": "jest",
-    "test:lint": "node ./bin/devreplay test-fixtures/files/test.py test-fixtures/rules./devreplay.json",
+    "test:lint": "node ./bin/devreplay test-fixtures/files/test.py test-fixtures/rules/devreplay.json",
     "test:fix": "node ./bin/devreplay --fix test-fixtures/files/test.py test-fixtures/rules/devreplay.json",
     "test:init": "node ./bin/devreplay --init",
     "lint": "eslint src --ext ts",
