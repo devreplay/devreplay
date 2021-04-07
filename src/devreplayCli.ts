@@ -5,7 +5,7 @@ import * as path from 'path';
 import { lint, fix } from './lib/lint';
 import { outputLintOuts } from './lib/output';
 import { mineProjectRules } from './lib/rule-maker/mineProjectRules';
-import { writeRuleFile } from './lib/ruleManager';
+import { readCurrentRules } from './lib/ruleManager';
 
 interface Argv {
     fix?: boolean;
@@ -38,12 +38,14 @@ const cli = {
 
         // Init
         if (argv.init) {
-            let logLength = 10;
+            let logLength = 1;
             if (files.length > 1 && !isNaN(Number(files[1]))) {
                 logLength = Number(files[1]);
             }
             const rules = (await mineProjectRules(targetPath, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
-            writeRuleFile(rules, targetPath);
+            const outRules = readCurrentRules(targetPath).concat(rules);
+            const ruleStr = JSON.stringify(outRules, undefined, 2);
+            console.log(ruleStr);
 
             return 0;
         }

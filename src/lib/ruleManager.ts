@@ -54,7 +54,7 @@ export function readRuleFile(ruleFileName?: string): Rule[] {
  * @param dirPath The target directory that has .devreplay.json
  * @return Rule list that are defined in the rule file
  */
-function readCurrentRules(dirPath: string): Rule[] {
+export function readCurrentRules(dirPath: string): Rule[] {
     const rulePath = join(dirPath, '.devreplay.json');
     let fileContents = undefined;
     try{

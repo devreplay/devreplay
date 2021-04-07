@@ -65,3 +65,25 @@ test('Test rule maker4', async () => {
 
     expect(fixWithRules(before, [rule])).toStrictEqual(after);
 });
+
+test('Test Multiple tokens', async () => {
+    const before = [
+        'tmp = b',
+        'b = a',
+        'a = tmp'
+    ].join('\n');
+    const after = 'a, b = b, a';
+    const beforeRegex = [
+        'tmp\\s*=\\s*(?<b>\\w+)', 
+        '\\k<b>\\s*=\\s*(?<a>\\w+)',
+        '\\k<a>\\s*=\\s*tmp'];
+    const afterRegex = '$1, $2 = $2, $1';
+    const rule = await makeRules(before, after, 'javascript');
+    if (rule === undefined) {
+        throw new Error('Rule can not be generated');
+    }
+    expect(rule.after).toStrictEqual(afterRegex);
+    expect(rule.before).toStrictEqual(beforeRegex);
+
+    expect(fixWithRules(before, [rule])).toStrictEqual(after);
+});

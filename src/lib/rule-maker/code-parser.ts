@@ -1,6 +1,6 @@
 import * as Path from 'path';
 import * as Parser from 'web-tree-sitter';
-import { diffChars } from 'diff';
+import { diffChars, diffLines, Change as DiffChange } from 'diff';
 
 export interface Position {
     row: number;
@@ -149,7 +149,12 @@ export async function makeParser(langName: string): Promise<Parser | undefined> 
  * @param tree Target tree
  */
 function editTree(before: string, after: string, tree: Parser.Tree) {
-    const changes = diffChars(before, after);
+    let changes: DiffChange[] = [];
+    if (before.split('\n').length > 1 || before.split('\n').length) {
+        changes = diffChars(before, after);
+    } else {
+        changes = diffLines(before, after);
+    }
     let oldIndex = 0;
     for (const change of changes) {
         if (change.count === undefined){

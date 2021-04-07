@@ -105,3 +105,18 @@ test('Test javascript tokens', async () => {
     expect(tokens.map(x => x.text)).toStrictEqual(expectedTokens);
     expect(tokens.map(x => x.type)).toStrictEqual(expectedTypes); 
 });
+
+
+test('Test Multiple tokens', async () => {
+    const sourceCode = [
+        'tmp = b',
+        'b = a',
+        'a = tmp'
+    ].join('\n');
+    const expectedTokens = [
+        'tmp', '=', 'b',
+        'b', '=', 'a',
+        'a', '=', 'tmp'];
+    const tokens = await tokenize(sourceCode, 'JavaScript');
+    expect(tokens.map(x => x.text)).toStrictEqual(expectedTokens);
+});

@@ -1,9 +1,7 @@
-import { tokenize, Token } from './code-parser';
-
+import { tokenize, Token, strDiff2treeDiff } from './code-parser';
 import { Rule, isEmptyRule, ruleJoin } from './rule';
 import { Chunk, makeDiffObj } from './diffparser';
 import { DetailedDiff } from './gitMiner';
-import { strDiff2treeDiff } from './code-parser';
 
 /** Token identifier */
 export interface Identifier {

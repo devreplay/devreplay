@@ -20,7 +20,7 @@ $ npm install devreplay
 $ yarn global add 
 ```
 
-2. Put your own programming rule(`devreplay.json`) on the project like bellow
+2. Put your own programming rule(`.devreplay.json`) on the project like bellow
 
 ```json
 [
