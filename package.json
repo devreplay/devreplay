@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.9.31",
+  "version": "1.9.32",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -16,20 +16,19 @@
     "test": "jest",
     "test:lint": "node ./bin/devreplay test-fixtures/files/test.py test-fixtures/rules/.devreplay.json",
     "test:fix": "node ./bin/devreplay --fix test-fixtures/files/test.py test-fixtures/rules/.devreplay.json",
-    "test:init": "node ./bin/devreplay --init",
     "lint": "eslint src --ext ts",
     "lint:devreplay": "bin/devreplay ./src/lib/rule-maker .devreplay.json",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "verify": "npm-run-all clean compile"
   },
   "dependencies": {
-    "@babel/code-frame": "^7.12.13",
-    "@types/text-table": "^0.2.1",
-    "chalk": "4.1.1",
-    "commander": "^7.2.0",
+    "@babel/code-frame": "^7.14.5",
+    "@types/text-table": "^0.2.2",
+    "chalk": "4.1.2",
+    "commander": "^8.1.0",
     "diff": "5.0.0",
     "lodash": "^4.17.21",
-    "tslib": "^2.2.0",
+    "tslib": "^2.3.0",
     "v8-compile-cache": "^2.3.0"
   },
   "devDependencies": {
