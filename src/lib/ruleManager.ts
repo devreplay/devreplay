@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { extend as Extend } from './extend';
 import { tryReadFile } from './file';
-import { Rule } from './rule-maker/rule';
+import { Rule } from './rule';
 
 type ReadableRule = Rule | string
 

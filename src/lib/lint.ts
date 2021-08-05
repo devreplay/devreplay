@@ -1,5 +1,5 @@
 import { tryReadFile } from './file';
-import { Rule, ruleJoin } from './rule-maker/rule';
+import { Rule, ruleJoin } from './rule';
 import { readRuleFile } from './ruleManager';
 import { LintOut } from './output';
 import { Range } from './position';

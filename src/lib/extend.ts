@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Rule } from './rule-maker/rule';
+import { Rule } from './rule';
 
 import { rules as android } from './rules/android';
 import { rules as angular } from './rules/angular';

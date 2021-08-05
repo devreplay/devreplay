@@ -1,6 +1,6 @@
 import * as chalk from 'chalk';
 import * as table from 'text-table';
-import { Rule, ruleJoin } from './rule-maker/rule';
+import { Rule, ruleJoin } from './rule';
 import { Range } from './position';
 
 /** DevReplay linting result */

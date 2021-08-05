@@ -1,4 +1,4 @@
-import { Rule } from '../../lib/rule-maker/rule';
+import { Rule } from '../../lib/rule';
 import { fixWithRules } from '../../lib/lint';
 
 const rules: Rule[] = [{

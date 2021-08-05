@@ -1,4 +1,4 @@
-import { Rule } from '../rule-maker/rule';
+import { Rule } from '../rule';
 
 export const rules: Rule[] = [
     {

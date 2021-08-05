@@ -4,8 +4,7 @@ import * as path from 'path';
 
 import { lint, fix } from './lib/lint';
 import { outputLintOuts } from './lib/output';
-import { mineProjectRules } from './lib/rule-maker/mineProjectRules';
-import { readCurrentRules } from './lib/ruleManager';
+// import { readCurrentRules } from './lib/ruleManager';
 
 interface Argv {
     fix?: boolean;
@@ -13,7 +12,7 @@ interface Argv {
 }
 
 const cli = {
-    async execute() {
+    execute() {
         const program = new commander.Command();
         program
             .version('1.9.24')
@@ -37,18 +36,18 @@ const cli = {
         }
 
         // Init
-        if (argv.init) {
-            let logLength = 1;
-            if (files.length > 1 && !isNaN(Number(files[1]))) {
-                logLength = Number(files[1]);
-            }
-            const rules = (await mineProjectRules(targetPath, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
-            const outRules = readCurrentRules(targetPath).concat(rules);
-            const ruleStr = JSON.stringify(outRules, undefined, 2);
-            console.log(ruleStr);
+        // if (argv.init) {
+        //     let logLength = 1;
+        //     if (files.length > 1 && !isNaN(Number(files[1]))) {
+        //         logLength = Number(files[1]);
+        //     }
+        //     const rules = (await mineProjectRules(targetPath, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
+        //     const outRules = readCurrentRules(targetPath).concat(rules);
+        //     const ruleStr = JSON.stringify(outRules, undefined, 2);
+        //     console.log(ruleStr);
 
-            return 0;
-        }
+        //     return 0;
+        // }
 
         const lstat = fs.lstatSync(targetPath);
 
