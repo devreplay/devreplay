@@ -6,10 +6,6 @@ import { lint, fix } from './lib/lint';
 import { outputLintOuts } from './lib/output';
 // import { readCurrentRules } from './lib/ruleManager';
 
-interface Argv {
-    fix?: boolean;
-    init?: boolean;
-}
 
 const cli = {
     execute() {
@@ -23,7 +19,7 @@ const cli = {
             .parse(process.argv);
         
         const args = program.args;
-        const argv = program.opts() as Argv;
+        const argv = program.opts() ;
 
         let ruleFileName: string | undefined;
         const files = args;
