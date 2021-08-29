@@ -1,5 +1,5 @@
 import { tryReadFile } from './file';
-import { Rule, ruleJoin } from './rule';
+import { DevReplayRule, ruleJoin, RuleSeverity } from './rule';
 import { readRuleFile } from './ruleManager';
 import { LintOut } from './output';
 import { Range } from './position';
@@ -39,9 +39,10 @@ export function lint(fileNames: string[], ruleFileName?: string): LintOut[] {
  * @param contents Target file contents for linting
  * @param rules Target rules from rule files or implemented rules
  */
-export function lintWithRules(fileName: string, contents: string, rules: Rule[]): LintOut[] {
+export function lintWithRules(fileName: string, contents: string, rules: DevReplayRule[]): LintOut[] {
     const lintOut: LintOut[] = [];
-    for (const rule of rules) {
+    for (const rule of rules.filter(
+        rule => rule.severity !== RuleSeverity.off)) {
         const regExp = createRegExp(rule);
         let match: RegExpExecArray | null;
         while ((match = regExp.exec(contents)) !== null) {
@@ -78,7 +79,7 @@ export function fix(fileName: string, ruleFileName?: string): string {
  * @param content Prefixed content
  * @param rules Rules that has regular expression
  */
-export function fixWithRules(content: string, rules: Rule[]): string {
+export function fixWithRules(content: string, rules: DevReplayRule[]): string {
     for (const rule of rules) {
         const replace = ruleJoin(rule.after);
         const regExp = createRegExp(rule);
@@ -201,7 +202,7 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
  * Create search regex from rule
  * @param rule Target rule
  */
-function createRegExp(rule: Rule): RegExp {
+function createRegExp(rule: DevReplayRule): RegExp {
     let searchString = ruleJoin(rule.before);
 	if (!searchString) {
 		throw new Error('Cannot create regex from empty string');

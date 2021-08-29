@@ -1,7 +1,8 @@
-import { Rule } from '../../lib/rule';
+import { DevReplayRule } from '../../lib/rule';
 import { fixWithRules } from '../../lib/lint';
+import { BaseRule2DevReplayRule } from '../../lib/ruleManager';
 
-const rules: Rule[] = [{
+const rules: DevReplayRule[] = [{
     before: [
       '([a-z]+)-([a-z]+)'
     ],
@@ -21,7 +22,7 @@ const rules: Rule[] = [{
   ],
   isRegex: true,
   message: 'One line for should use paren'
-}];
+}].map(rule => BaseRule2DevReplayRule(rule, 0));
 
 test('Fix by regex', () => {
     expect(fixWithRules('print("hello-world")', rules)).toBe('print("hello world")');

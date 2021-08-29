@@ -1,7 +1,7 @@
 import { rules as c } from './c';
-import { Rule } from '../rule';
+import { BaseRule } from '../rule';
 
-const cppRules: Rule[] = [
+const cppRules: BaseRule[] = [
     {
         before: ['std::rand() % $1'],
         after: ['std::uniform_int_distribution<int> distribution(0, $1)'],

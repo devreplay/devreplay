@@ -1,6 +1,6 @@
-import { Rule } from '../rule';
+import { BaseRule } from '../rule';
 
-export const rules: Rule[] = [
+export const rules: BaseRule[] = [
   {
     before: ['if (${1:val1} = ${2:val2})'],
     after: ['if (${1:val1} == ${2:val2})'],

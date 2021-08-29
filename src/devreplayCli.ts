@@ -1,15 +1,14 @@
-import * as commander from 'commander';
-import * as fs from 'fs';
-import * as path from 'path';
+import { Command } from 'commander';
+import { lstatSync, readdirSync } from 'fs';
+import { join } from 'path';
 
 import { lint, fix } from './lib/lint';
 import { outputLintOuts } from './lib/output';
-// import { readCurrentRules } from './lib/ruleManager';
 
 
 const cli = {
     execute() {
-        const program = new commander.Command();
+        const program = new Command();
         program
             .version('1.9.24')
             .description('A linter that replay your coding style')
@@ -31,26 +30,12 @@ const cli = {
             ruleFileName = files[1];
         }
 
-        // Init
-        // if (argv.init) {
-        //     let logLength = 1;
-        //     if (files.length > 1 && !isNaN(Number(files[1]))) {
-        //         logLength = Number(files[1]);
-        //     }
-        //     const rules = (await mineProjectRules(targetPath, logLength)).filter(x => x.after.length < 3 && x.before.length < 3);
-        //     const outRules = readCurrentRules(targetPath).concat(rules);
-        //     const ruleStr = JSON.stringify(outRules, undefined, 2);
-        //     console.log(ruleStr);
-
-        //     return 0;
-        // }
-
-        const lstat = fs.lstatSync(targetPath);
+        const lstat = lstatSync(targetPath);
 
         // Fix
         if (argv.fix === true) {
             if (!lstat.isFile()) {
-                throw new Error(`${targetPath} should be directory path or file path`);
+                throw new Error(`${targetPath} should be file path`);
             }
             const fileName = targetPath;
             const results = fix(fileName, ruleFileName);
@@ -81,13 +66,13 @@ const cli = {
 };
 
 function getAllFiles(dirName: string) {
-    const dirents = fs.readdirSync(dirName, { withFileTypes: true });
+    const dirents = readdirSync(dirName, { withFileTypes: true });
     const filesNames: string[] = [];
     for (const files of dirents) {
         if (files.isDirectory()){
-            filesNames.push(...getAllFiles(path.join(dirName, files.name)));
+            filesNames.push(...getAllFiles(join(dirName, files.name)));
         } else {
-            filesNames.push(path.join(dirName, files.name));
+            filesNames.push(join(dirName, files.name));
         }
     }
     return filesNames;

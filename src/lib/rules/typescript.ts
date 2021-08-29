@@ -1,4 +1,4 @@
 import { rules as javascript } from './javascript';
-import { Rule } from '../rule';
+import { BaseRule } from '../rule';
 
-export const rules: Rule[] = javascript;
+export const rules: BaseRule[] = javascript;

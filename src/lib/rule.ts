@@ -2,20 +2,18 @@ export type severity =
 'E' |'Error' | 'error' |
 'W' | 'Warning' | 'warning'|
 'H' | 'Hint' | 'hint' |
-'I' | 'Information' | 'information';
+'I' | 'Information' | 'information' |
+'O' | 'Off' | 'off';
 
 /** DevReplay Rule format */
-export interface Rule {
+export interface BaseRule {
     /** Search target code */
     before: string[] | string;
     /** Replace target code */
     after: string[] | string;
-    ruleId?: string;
     author?: string;
     severity?: severity;
     message?: string;
-    helpUri?: string;
-    identifiers?: string[];
     /** Using regular expression for searching code */
     isRegex?: boolean;
     /** Search for the completely matched word (e.g. "keyword" will not match with "keywords") */
@@ -25,6 +23,34 @@ export interface Rule {
     /** Preserving lower or larger cases for replacing code*/
     preserveCase?: boolean;
 }
+
+export enum RuleSeverity {
+	error = 'E',
+    warning = 'W',
+	information = 'I',
+    hint = 'H',
+	off = 'O',
+}
+
+export interface DevReplayRule extends BaseRule {
+    /** Search target code */
+    before: string[] | string;
+    /** Replace target code */
+    after: string[] | string;
+    severity: RuleSeverity;
+    ruleId: number;
+    author?: string;
+    message?: string;
+    /** Using regular expression for searching code */
+    isRegex?: boolean;
+    /** Search for the completely matched word (e.g. "keyword" will not match with "keywords") */
+    wholeWord?: boolean;
+    /** Caring lower or larger cases for searching code*/
+    matchCase?: boolean;
+    /** Preserving lower or larger cases for replacing code*/
+    preserveCase?: boolean;
+}
+
 
 /**
  * Check is rule string empty string or not

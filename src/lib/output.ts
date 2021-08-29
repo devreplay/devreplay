@@ -1,11 +1,12 @@
-import * as chalk from 'chalk';
 import * as table from 'text-table';
-import { Rule, ruleJoin } from './rule';
+import { red, yellow, blue, gray } from 'chalk';
+
+import { DevReplayRule, ruleJoin } from './rule';
 import { Range } from './position';
 
 /** DevReplay linting result */
 export interface LintOut {
-    rule: Rule;
+    rule: DevReplayRule;
     snippet: string;
     fileName: string;
     position: Range;
@@ -46,11 +47,11 @@ export function outputLintOuts(lintouts: LintOut[]): string {
                          `${informationCount} infos, `,
                          `${hintCount} hints`,].join('');
         if (errorCount > 0) {
-            summary = chalk.red(summary);
+            summary = red(summary);
         } else if (warningCount > 0) {
-            summary = chalk.yellow(summary);
+            summary = yellow(summary);
         } else if (informationCount > 0) {
-            summary = chalk.blue(summary);
+            summary = blue(summary);
         }
         output += summary;
     }
@@ -63,7 +64,7 @@ export function outputLintOuts(lintouts: LintOut[]): string {
  */
 export function formatLintOut(matched: LintOut): string[] {
     const severity = makeFullSeverity(matched.rule.severity);
-    const range = chalk.gray(`:${matched.position.start.line}:${matched.position.start.character}`);
+    const range = gray(`:${matched.position.start.line}:${matched.position.start.character}`);
     const position = `${matched.fileName}${range}`;
     const message = `${code2String(matched.rule)}`;
     return [position, severity, message];
@@ -100,22 +101,22 @@ export function makeSeverity(severity?: string): 'W' | 'E' | 'I' | 'H' {
 export function makeFullSeverity(severity?: string): string {
     const fixed_severity = makeSeverity(severity);
     if (fixed_severity === 'E') {
-        return chalk.red('error');
+        return red('error');
     } if (fixed_severity === 'W') {
-        return chalk.yellow('warning');
+        return yellow('warning');
     } if (fixed_severity === 'I') {
-        return chalk.blue('information');
+        return blue('information');
     } if (fixed_severity === 'H') {
-        return chalk.gray('hint');
+        return gray('hint');
     }
-    return chalk.gray('warning');
+    return gray('warning');
 }
 
 /**
  * Generate lint message from a rule
  * @param rule warned rule
  */
-export function code2String(rule: Rule): string {
+export function code2String(rule: DevReplayRule): string {
     if (rule.message !== undefined) {
         if (rule.author !== undefined) {
             return `${rule.message} by ${rule.author}`;

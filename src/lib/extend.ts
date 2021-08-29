@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Rule } from './rule';
+import { BaseRule, DevReplayRule } from './rule';
+import { BaseRule2DevReplayRule } from './ruleManager';
 
 import { rules as android } from './rules/android';
 import { rules as angular } from './rules/angular';
@@ -21,7 +22,7 @@ import { rules as vscode } from './rules/vscode';
 import { rules as vue } from './rules/vue';
 
 interface Extends {
-    [key: string]: Rule[];
+    [key: string]: BaseRule[];
 }
 
 /**
@@ -70,10 +71,10 @@ export const sources: Source = {
  * Imitate matched rules from file extension
  * @param fileName Validate target file
  */
-export function getInitRules(fileName: string): Rule[] {
+export function getInitRules(fileName: string): DevReplayRule[] {
     for (const key of Object.keys(sources)) {
         if (sources[key].some((x) => fileName.endsWith(x))) {
-            return extend[key];
+            return extend[key].map((x) => { return BaseRule2DevReplayRule(x, 0); });
         }
     }
 

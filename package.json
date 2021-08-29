@@ -10,8 +10,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "create": "npm run build && npm run test",
-    "compile": "npm run clean && tsc -p ./ && npm run copyFiles",
-    "copyFiles": "node_modules/copyfiles/copyfiles ./wasms/**.wasm lib",
+    "compile": "npm run clean && tsc -p ./",
     "publish:local": "sh ./scripts/npmPublish.sh",
     "test": "jest",
     "test:lint": "node ./bin/devreplay test-fixtures/files/test.py test-fixtures/rules/.devreplay.json",

@@ -1,6 +1,6 @@
-import { Rule } from '../rule';
+import { BaseRule } from '../rule';
 
-export const rules: Rule[] = [
+export const rules: BaseRule[] = [
     {
       before: [
         'show(${1:column}, ${2:preservalFocus})'
