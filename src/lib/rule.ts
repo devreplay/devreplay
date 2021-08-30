@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 export type severity = 
 'E' |'Error' | 'error' |
 'W' | 'Warning' | 'warning'|
@@ -12,6 +13,7 @@ export interface BaseRule {
     /** Replace target code */
     after: string[] | string;
     author?: string;
+    /** Rule severity */
     severity?: severity;
     message?: string;
     /** Using regular expression for searching code */
@@ -22,21 +24,28 @@ export interface BaseRule {
     matchCase?: boolean;
     /** Preserving lower or larger cases for replacing code*/
     preserveCase?: boolean;
+    /** Unused or unnecessary code. */
+    unnecessary?: boolean;
+    /** Deprecated or obsolete code. */
+    deprecated?: boolean;
 }
 
-export enum RuleSeverity {
-	error = 'E',
-    warning = 'W',
-	information = 'I',
-    hint = 'H',
-	off = 'O',
+export namespace RuleSeverity {
+	export const error = 'E';
+    export const warning = 'W';
+	export const information = 'I';
+    export const hint = 'H';
+	export const off = 'O';
 }
+
+export type RuleSeverity = 'E' | 'W' | 'I' | 'H' | 'O';
 
 export interface DevReplayRule extends BaseRule {
     /** Search target code */
     before: string[] | string;
     /** Replace target code */
     after: string[] | string;
+    /** Rule severity */
     severity: RuleSeverity;
     ruleId: number;
     author?: string;
@@ -49,6 +58,10 @@ export interface DevReplayRule extends BaseRule {
     matchCase?: boolean;
     /** Preserving lower or larger cases for replacing code*/
     preserveCase?: boolean;
+    /** Unused or unnecessary code. */
+    unnecessary?: boolean;
+    /** Deprecated or obsolete code. */
+    deprecated?: boolean;
 }
 
 

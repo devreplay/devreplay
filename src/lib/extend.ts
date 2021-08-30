@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { BaseRule, DevReplayRule } from './rule';
 import { BaseRule2DevReplayRule } from './ruleManager';
 
