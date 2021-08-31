@@ -7,8 +7,22 @@ import { BaseRule, DevReplayRule, RuleSeverity, severity } from './rule';
 
 type ReadableRule = BaseRule | string
 
-export function writeRuleFile(rules: DevReplayRule[], dirPath: string): void {
-    const outRules = readCurrentRules(dirPath).concat(rules);
+/**
+ * Write the rules on dir.
+ * @param rules rules to write
+ * @param dirPath The path to the file to write.
+ * @param overwrite Whether to overwrite the file if it already exists.
+ * @returns The rules read from the file.
+ */
+export function writeRuleFile(rules: DevReplayRule[], dirPath: string, keepOld?: boolean): void {
+    let targetRules: DevReplayRule[] = [];
+    if (keepOld) {
+        targetRules = readCurrentRules(dirPath).concat(rules);
+    } else {
+        targetRules = rules;
+    }
+    const outRules = targetRules.filter(rule => rule.severity !== RuleSeverity.off)
+                                .map(x => { return DevReplayRule2BaseRule(x); });
     const ruleStr = JSON.stringify(outRules, undefined, 2);
     const filePath = getDevReplayPath(dirPath);
     writeFileSync(filePath, ruleStr);
@@ -81,6 +95,20 @@ export function BaseRule2DevReplayRule(rule:BaseRule, index: number): DevReplayR
         after: rule.after,
         severity: fixSeveriy2RuleSeverity(rule.severity),
         ruleId: index,
+        author: rule.author,
+        message: rule.message,
+        isRegex: rule.isRegex,
+        wholeWord: rule.wholeWord,
+        matchCase: rule.matchCase,
+        preserveCase: rule.preserveCase
+    };
+}
+
+export function DevReplayRule2BaseRule(rule:DevReplayRule): BaseRule {
+    return {
+        before: rule.before,
+        after: rule.after,
+        severity: fixSeveriy2RuleSeverity(rule.severity),
         author: rule.author,
         message: rule.message,
         isRegex: rule.isRegex,
