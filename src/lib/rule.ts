@@ -31,14 +31,14 @@ export interface BaseRule {
 }
 
 export namespace RuleSeverity {
-	export const error = 'E';
-    export const warning = 'W';
-	export const information = 'I';
-    export const hint = 'H';
-	export const off = 'O';
+	export const error = 'error';
+    export const warning = 'warning';
+	export const information = 'information';
+    export const hint = 'hint';
+	export const off = 'off';
 }
 
-export type RuleSeverity = 'E' | 'W' | 'I' | 'H' | 'O';
+export type RuleSeverity = 'error' | 'warning' | 'information' | 'hint' | 'off';
 
 export interface DevReplayRule extends BaseRule {
     /** Search target code */

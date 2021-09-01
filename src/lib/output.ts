@@ -1,7 +1,7 @@
 import * as table from 'text-table';
 import { red, yellow, blue, gray } from 'chalk';
 
-import { DevReplayRule, ruleJoin } from './rule';
+import { DevReplayRule, ruleJoin, RuleSeverity } from './rule';
 import { Range } from './position';
 
 /** DevReplay linting result */
@@ -27,13 +27,13 @@ export function outputLintOuts(lintouts: LintOut[]): string {
     for (const lintout of lintouts) {
         const severity = makeSeverity(lintout.rule.severity);
         lintoutputs.push(formatLintOut(lintout));
-        if (severity === 'E') {
+        if (severity === RuleSeverity.error) {
             errorCount += 1;
-        } else if (severity === 'W') {
+        } else if (severity === RuleSeverity.warning) {
             warningCount += 1;
-        } else if (severity === 'I') {
+        } else if (severity === RuleSeverity.information) {
             informationCount += 1;
-        } else if (severity === 'H') {
+        } else if (severity === RuleSeverity.hint) {
             hintCount += 1;
         }
     }
@@ -79,19 +79,19 @@ export function formatLintOut(matched: LintOut): string[] {
  * * `H`int
  * @param severity code severity message
  */
-export function makeSeverity(severity?: string): 'W' | 'E' | 'I' | 'H' {
+export function makeSeverity(severity?: string): RuleSeverity {
     if (severity === undefined) {
-        return 'W';
+        return RuleSeverity.warning;
     } if (severity.toUpperCase().startsWith('E')) {
-        return 'E';
+        return RuleSeverity.error;
     } if (severity.toUpperCase().startsWith('W')) {
-        return 'W';
+        return RuleSeverity.warning;
     } if (severity.toUpperCase().startsWith('I')) {
-        return 'I';
+        return RuleSeverity.information;
     } if (severity.toUpperCase().startsWith('H')) {
-        return 'H';
+        return RuleSeverity.hint;
     } 
-    return 'W';
+    return RuleSeverity.warning;
 }
 
 /**
@@ -100,13 +100,13 @@ export function makeSeverity(severity?: string): 'W' | 'E' | 'I' | 'H' {
  */
 export function makeFullSeverity(severity?: string): string {
     const fixed_severity = makeSeverity(severity);
-    if (fixed_severity === 'E') {
+    if (fixed_severity === RuleSeverity.error) {
         return red('error');
-    } if (fixed_severity === 'W') {
+    } if (fixed_severity === RuleSeverity.warning) {
         return yellow('warning');
-    } if (fixed_severity === 'I') {
+    } if (fixed_severity === RuleSeverity.information) {
         return blue('information');
-    } if (fixed_severity === 'H') {
+    } if (fixed_severity === RuleSeverity.hint) {
         return gray('hint');
     }
     return gray('warning');

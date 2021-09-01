@@ -14,15 +14,20 @@ type ReadableRule = BaseRule | string
  * @param overwrite Whether to overwrite the file if it already exists.
  * @returns The rules read from the file.
  */
-export function writeRuleFile(rules: DevReplayRule[], dirPath: string, keepOld?: boolean): void {
+export function writeRuleFile(rules: DevReplayRule[], dirPath: string, keepOld?: boolean, removeOff?: boolean): void {
     let targetRules: DevReplayRule[] = [];
     if (keepOld) {
         targetRules = readCurrentRules(dirPath).concat(rules);
     } else {
         targetRules = rules;
     }
-    const outRules = targetRules.filter(rule => rule.severity !== RuleSeverity.off)
-                                .map(x => { return DevReplayRule2BaseRule(x); });
+    let outRules: BaseRule[] = [];
+    if (removeOff) {
+        outRules = targetRules.filter(rule => rule.severity !== RuleSeverity.off)
+                              .map(x => { return DevReplayRule2BaseRule(x); });
+    } else {
+        outRules = targetRules.map(x => { return DevReplayRule2BaseRule(x); });
+    }
     const ruleStr = JSON.stringify(outRules, undefined, 2);
     const filePath = getDevReplayPath(dirPath);
     writeFileSync(filePath, ruleStr);

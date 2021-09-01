@@ -126,7 +126,8 @@ export const rules: BaseRule[] = [
       'org.xml.sax.Attributes'
     ],
     message: 'org.xml.sax.AttributeList is deprecated',
-    severity: 'E'
+    severity: 'E',
+    deprecated: true
   },
   {
     before: [

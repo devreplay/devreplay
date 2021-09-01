@@ -96,6 +96,7 @@ export const rules: BaseRule[] = [
       ],
       author: 'Google Python Style Guide',
       message: 'Deprecated language feature',
+      deprecated: true,
     },
     {
       before: [
@@ -106,6 +107,7 @@ export const rules: BaseRule[] = [
       ],
       author: 'Google Python Style Guide',
       message: 'Deprecated language feature',
+      deprecated: true,
     },
     {
       before: [
