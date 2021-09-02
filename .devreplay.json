@@ -1,10 +1,6 @@
 [
   "typescript",
   {
-    "before": "toUpperCase",
-    "after": "toLowerCase"
-  },
-  {
     "before": [
       "program.parse(process.argv);"
     ],
