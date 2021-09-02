@@ -92,8 +92,8 @@ export function formatLintOut(matched: LintOut): string[] {
  */
 export function makeSeverity(severity?: string): RuleSeverity {
     if (severity === undefined) {
-        return RuleSeverity.warning;;
-    } if (severity.toUpperCase().startsWith("E")) {
+        return RuleSeverity.warning;
+    } if (severity.toUpperCase().startsWith('E')) {
         return RuleSeverity.error;
     } if (severity.toUpperCase().startsWith('W')) {
         return RuleSeverity.warning;
