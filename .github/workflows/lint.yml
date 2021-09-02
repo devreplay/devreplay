@@ -21,4 +21,8 @@ jobs:
       - run: npm install
       - run: npm run compile
       - name: Run devreplay
-        run: bin/devreplay ./src/core devreplay.json
+        runs:
+          using: bin/devreplay
+          args:
+            - ./src/core
+            - .devreplay.json
