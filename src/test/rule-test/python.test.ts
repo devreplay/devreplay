@@ -1,6 +1,6 @@
-import { BaseRule } from '../../lib/rule';
-import { fixWithRules } from '../../lib/lint';
-import { readExtends, BaseRule2DevReplayRule } from '../../lib/ruleManager';
+import { BaseRule } from '../../core/rule';
+import { fixWithRules } from '../../core/lint';
+import { readExtends, BaseRule2DevReplayRule } from '../../core/ruleManager';
 
 const rules: BaseRule[] = readExtends('python');
 

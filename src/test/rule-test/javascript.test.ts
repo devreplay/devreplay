@@ -1,6 +1,6 @@
-import { DevReplayRule } from '../../lib/rule';
-import { fixWithRules } from '../../lib/lint';
-import { BaseRule2DevReplayRule } from '../../lib/ruleManager';
+import { DevReplayRule } from '../../core/rule';
+import { fixWithRules } from '../../core/lint';
+import { BaseRule2DevReplayRule } from '../../core/ruleManager';
 
 const rules: DevReplayRule[] = [{
     before: [

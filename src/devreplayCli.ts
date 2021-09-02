@@ -2,8 +2,8 @@ import { Command } from 'commander';
 import { lstatSync, readdirSync } from 'fs';
 import { join } from 'path';
 
-import { lint, fix } from './lib/lint';
-import { outputLintOuts } from './lib/output';
+import { lint, fix } from './core/lint';
+import { outputLintOuts } from './core/output';
 
 
 const cli = {

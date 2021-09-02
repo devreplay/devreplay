@@ -1,4 +1,4 @@
-import { BaseRule } from '../lib/rule';
+import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [
     {

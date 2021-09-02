@@ -1,5 +1,5 @@
 import { rules as c } from './c';
-import { BaseRule } from '../lib/rule';
+import { BaseRule } from '../core/rule';
 
 const cppRules: BaseRule[] = [
     {

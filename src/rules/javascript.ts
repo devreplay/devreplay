@@ -1,4 +1,4 @@
-import { BaseRule } from '../lib/rule';
+import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [  
   {
@@ -69,37 +69,13 @@ export const rules: BaseRule[] = [
     message: 'One line for should use paren'
   },
   {
-    before:'const $1 = new Array()',
+    before:'const \\(.*\\) = new Array()',
     after: 'const $1 = []',
     matchCase: true
   },
   {
     before:'$1.hasOwnProperty(\'$2\')',
     after: '$1.$2 != null',
-    matchCase: true
-  },
-  {
-    before:'new Boolean($1)',
-    after: '$1',
-    severity: 'Information',
-    matchCase: true
-  },
-  {
-    before:'new Number($1)',
-    after: '$1',
-    severity: 'Information',
-    matchCase: true
-  },
-  {
-    before:'new String($1)',
-    after: '$1',
-    severity: 'Information',
-    matchCase: true
-  },
-  {
-    before:'new Symbol($1)',
-    after: '$1',
-    severity: 'Information',
     matchCase: true
   },
   {
