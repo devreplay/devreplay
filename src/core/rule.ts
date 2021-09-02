@@ -2,8 +2,8 @@
 export type severity = 
 'E' |'Error' | 'error' |
 'W' | 'Warning' | 'warning'|
+'I' | 'Info' | 'info' |
 'H' | 'Hint' | 'hint' |
-'I' | 'Information' | 'information' |
 'O' | 'Off' | 'off';
 
 /** DevReplay Rule format */
@@ -33,12 +33,12 @@ export interface BaseRule {
 export namespace RuleSeverity {
 	export const error = 'error';
     export const warning = 'warning';
-	export const information = 'information';
+	export const information = 'info';
     export const hint = 'hint';
 	export const off = 'off';
 }
 
-export type RuleSeverity = 'error' | 'warning' | 'information' | 'hint' | 'off';
+export type RuleSeverity = 'error' | 'warning' | 'info' | 'hint' | 'off';
 
 export interface DevReplayRule extends BaseRule {
     /** Search target code */

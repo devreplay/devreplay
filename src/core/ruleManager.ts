@@ -133,8 +133,8 @@ function fixSeveriy2RuleSeverity(severity?: severity): RuleSeverity {
         case 'warning':
         case 'W':
             return RuleSeverity.warning;
-        case 'Information':
-        case 'information':
+        case 'Info':
+        case 'info':
         case 'I':
             return RuleSeverity.information;
         case 'Hint':

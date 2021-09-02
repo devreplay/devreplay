@@ -19,13 +19,24 @@ export interface LintOut {
  * @param lintouts results of linting by devreplay
  */
 export function outputLintOuts(lintouts: LintOut[]): string {
-    const lintoutputs: string[][] = [];
+    let lintoutputs: string[][] = [];
+    let fileName = '';
     let errorCount = 0;
     let warningCount = 0;
     let informationCount = 0;
     let hintCount = 0;
+    let output = '';
     for (const lintout of lintouts) {
         const severity = makeSeverity(lintout.rule.severity);
+        if (fileName === '') {
+            fileName = lintout.fileName;
+            output += `${fileName}\n`;
+        } else if (lintout.fileName !== fileName) {
+            fileName = lintout.fileName;
+            output += table(lintoutputs, {hsep: '  '});
+            output += `\n${fileName}\n`;
+            lintoutputs = [];
+        }
         lintoutputs.push(formatLintOut(lintout));
         if (severity === RuleSeverity.error) {
             errorCount += 1;
@@ -37,7 +48,7 @@ export function outputLintOuts(lintouts: LintOut[]): string {
             hintCount += 1;
         }
     }
-    let output = table(lintoutputs);
+    output += table(lintoutputs);
     const total = errorCount + warningCount + informationCount + hintCount;
 
     if (total > 0) {
@@ -64,10 +75,10 @@ export function outputLintOuts(lintouts: LintOut[]): string {
  */
 export function formatLintOut(matched: LintOut): string[] {
     const severity = makeFullSeverity(matched.rule.severity);
-    const range = gray(`:${matched.position.start.line}:${matched.position.start.character}`);
-    const position = `${matched.fileName}${range}`;
-    const message = `${code2String(matched.rule)}`;
-    return [position, severity, message];
+    const range = gray(`  ${matched.position.start.line}:${matched.position.start.character}`);
+    const id = gray(`${matched.rule.ruleId}`);
+    const message = `${code2String(matched.rule)}  ${id}`;
+    return [range, severity, message];
 }
 
 /**
@@ -105,7 +116,7 @@ export function makeFullSeverity(severity?: string): string {
     } if (fixed_severity === RuleSeverity.warning) {
         return yellow('warning');
     } if (fixed_severity === RuleSeverity.information) {
-        return blue('information');
+        return blue('info');
     } if (fixed_severity === RuleSeverity.hint) {
         return gray('hint');
     }
