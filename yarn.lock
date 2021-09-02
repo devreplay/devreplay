@@ -683,10 +683,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.4.13.tgz#7dfd9c14661edc65cccd43a29eb454174642370d"
   integrity sha512-bLL69sKtd25w7p1nvg9pigE4gtKVpGTPojBFLMkGHXuUgap2sLqQt2qUnqmVCDfzGUL0DRNZP+1prIZJbMeAXg==
 
-"@types/node@^16.7.8":
-  version "16.7.8"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.7.8.tgz#2448be5f24fe6b77114632b6350fcd219334651e"
-  integrity sha512-8upnoQU0OPzbIkm+ZMM0zCeFCkw2s3mS0IWdx0+AAaWqm4fkBb0UJp8Edl7FVKRamYbpJC/aVsHpKWBIbiC7Zg==
+"@types/node@^16.7.10":
+  version "16.7.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.7.10.tgz#7aa732cc47341c12a16b7d562f519c2383b6d4fc"
+  integrity sha512-S63Dlv4zIPb8x6MMTgDq5WWRJQe56iBEY0O3SOFA9JrRienkOVDXSXBjjJw6HTNQYSE2JI6GMCR6LVbIMHJVvA==
 
 "@types/prettier@^2.1.5":
   version "2.3.2"
@@ -1359,10 +1359,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-devreplay@1.10.2:
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/devreplay/-/devreplay-1.10.2.tgz#ad853c2b8a2a9487c11e331e4f79238a3ded53ae"
-  integrity sha512-Io0U0iQues1MWTefDJgPthCpIUubi9Pa1hECqZAQuLPDrzc8dYFDw5VsQiVry5FG4daWLqGlcKiNgUnyvPUS3g==
+devreplay@1.10.5:
+  version "1.10.5"
+  resolved "https://registry.yarnpkg.com/devreplay/-/devreplay-1.10.5.tgz#cd9b604352532b377f475eb4a949bcced8c858e6"
+  integrity sha512-Hrbu+ErgaIGk5h3SE2fDTkIa1zjWX4mJfoOYH/PEDS3vcpyMmNSq7uMPnRn2VNsPP1k7bfD/7qSGp+Etbvskog==
   dependencies:
     "@babel/code-frame" "^7.14.5"
     "@types/text-table" "^0.2.2"
