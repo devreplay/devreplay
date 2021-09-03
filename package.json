@@ -1,6 +1,6 @@
 {
   "name": "devreplay",
-  "version": "1.10.7",
+  "version": "1.10.8",
   "description": "A linter that replay your developing style",
   "bin": {
     "devreplay": "./bin/devreplay"
@@ -40,7 +40,7 @@
     "@typescript-eslint/parser": "^4.30.0",
     "copyfiles": "2.4.1",
     "ts-jest": "^27.0.5",
-    "devreplay": "1.10.5",
+    "devreplay": "1.10.7",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jest": "24.4.0",

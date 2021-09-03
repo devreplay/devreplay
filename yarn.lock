@@ -1359,17 +1359,17 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-devreplay@1.10.5:
-  version "1.10.5"
-  resolved "https://registry.yarnpkg.com/devreplay/-/devreplay-1.10.5.tgz#cd9b604352532b377f475eb4a949bcced8c858e6"
-  integrity sha512-Hrbu+ErgaIGk5h3SE2fDTkIa1zjWX4mJfoOYH/PEDS3vcpyMmNSq7uMPnRn2VNsPP1k7bfD/7qSGp+Etbvskog==
+devreplay@1.10.7:
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/devreplay/-/devreplay-1.10.7.tgz#b5e1439d33b246c3175f9d345eca500954787101"
+  integrity sha512-Y+BKZSOA4S4nwaC3Ao3PGIq+DGCtiM4U7Cp1BVTDOpAEjRTBJhLN1JVsnlQJpPQTWr5D0WTMSidJU3/x0FT4fw==
   dependencies:
     "@babel/code-frame" "^7.14.5"
-    "@types/text-table" "^0.2.2"
     chalk "4.1.2"
     commander "^8.1.0"
     diff "5.0.0"
     lodash "^4.17.21"
+    text-table "^0.2.0"
     tslib "^2.3.1"
     v8-compile-cache "^2.3.0"
 
