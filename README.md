@@ -1,14 +1,12 @@
+# Devreplay
+
 ![CI](https://github.com/devreplay/devreplay/workflows/CI/badge.svg)
 ![Lint](https://github.com/devreplay/devreplay/workflows/Lint/badge.svg)
-
-# Devreplay
 
 Devreplay is static analysis tool based on your own programming rule.
 
 * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
 * [Other Editor Support (Language Server)](https://www.npmjs.com/package/devreplay-server)
-* [GitHub Application](https://github.com/marketplace/dev-replay)
-* [Pattern generator](https://github.com/devreplay/devreplay-pattern-generator)
 
 ## How to use
 
@@ -17,7 +15,7 @@ Devreplay is static analysis tool based on your own programming rule.
 ```sh
 $ npm install devreplay
 # or
-$ yarn global add 
+$ yarn global add devreplay
 ```
 
 2. Put your own programming rule(`.devreplay.json`) on the project like bellow
@@ -26,13 +24,14 @@ $ yarn global add
 [
   {
     "before": [
-      "tmp = $1",
-      "$1 = $2",
-      "$2 = tmp"
+      "(?<tmp>.+)\\s*=\\s*(?<a>.+)",
+      "\\k<a>\\s*=\\s*(?<b>.+)",
+      "\\k<b>\\s*=\\s*\\k<tmp>"
     ],
     "after": [
-      "$1, $2 = $2, $1"
-    ]
+      "$2, $3 = $3, $2"
+    ],
+    "isRegex": true
   }
 ]
 ```
@@ -40,15 +39,17 @@ $ yarn global add
 3. Run the devreplay
 
 ```sh
-$ devreplay yourfile.py
-W:yourfile.py:15:$3 = $1$1 = $2$2 = $3 should be $2, $1 = $1, $2
+devreplay yourfile.py
 ```
+
 or get fixed code
+
 ```sh
-$ devreplay --fix yourfile.py
+devreplay --fix yourfile.py > yourfile.py
 ```
 
 The target source code file will be
+
 ```diff
 - tmp = a
 - a = b
@@ -62,13 +63,14 @@ The target source code file will be
 [
   {
     "before": [
-      "$3 = $1",
-      "$1 = $2",
-      "$2 = $3"
+      "(?<tmp>.+)\\s*=\\s*(?<a>.+)",
+      "\\k<a>\\s*=\\s*(?<b>.+)",
+      "\\k<b>\\s*=\\s*\\k<tmp>"
     ],
     "after": [
-      "$1, $2 = $2, $1"
+      "$2, $3 = $3, $2"
     ],
+    "isRegex": true,
     "author": "Yuki Ueda",
     "message": "Value exchanging can be one line",
     "severity": "Information"
@@ -76,26 +78,22 @@ The target source code file will be
 ]
 ```
 
-* **Recommend**: Also you can generate rule file automatically by following command on your git repository
-
-```sh
-devreplay --init
-```
-
 * `severity` means how this rule is important
-    * `E`: **E**rror
-    * `W`: **W**arning
-    * `I`: **I**nformation
-    * `H`: **H**int
+  * `E`: **E**rror
+  * `W`: **W**arning
+  * `I`: **I**nformation
+  * `H`: **H**int
 
 * Run devreplay again
+
 ```sh
 $ devreplay yourfile.py
-I:yourfile.py:15:Value exchanging can be one line by Yuki Ueda
+./yourfile.py
+  15:1  warning  Value exchanging can be one line  0
 ```
 
-
 Also, you can use default rules by extends some rules such as
+
 ```json
 [
   {
@@ -104,7 +102,7 @@ Also, you can use default rules by extends some rules such as
 ]
 ```
 
-## Make rules by using Regular Expression
+### Make rules by using Regular Expression
 
 ```json
 {
@@ -125,39 +123,45 @@ That will fix
 + print("hello world")
 ```
 
-## Default rule languages
+### Support Languages and Frameworks
 
-* c
-* cpp
-* dart
-* cobol
-* java
-* javaScript
-* typeScript
-* python
-* ruby
-* go
-* php
+| Languages  | Frameworks      |
+|------------|-----------------|
+| C          | Android         |
+| CPP        | Angular         |
+| Cobol      | chainer2pytouch |
+| Dart       | Rails           |
+| Java       | React           |
+| JavaScript | TensorFlow      |
+| PHP        |                 |
+| Python     |                 |
+| Ruby       |                 |
+| TypeScript |                 |
+| VS Code    |                 |
+| Vue        |                 |
 
-## Defaulr rule frameworks
+### GitHub Actions
 
-* Angular
-* chainer2pytouch
-* tensorflow
-* rails
-* vue
+Please copy following `.github/workflows/devreplay.yml` file to your repository.
 
-### [Contribution Link](https://github.com/devreplay/devreplay/blob/master/CONTRIBUTING.md)
+```yml
+name: Devreplay
+on: [push, pull_request]
+jobs:
+  devreplay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - run: npm install -g devreplay
+      - name: Run devreplay
+        run: devreplay ./ .devreplay.json
+```
 
-## Thanks
-
-This package is made based on
-* [tslint](https://palantir.github.io/tslint/)
-* [vscode-python](https://github.com/Microsoft/vscode-python/blob/master/src/client/language/tokenizer.ts)
-* [vscode-textmate](https://github.com/microsoft/vscode-textmate)
-
-DevReplay is supported by 2019 Exploratory IT Human Resources Project [The MITOU Program](https://www.ipa.go.jp/jinzai/mitou/portal_index.html), JSPS KAKENHI Grant Numbers JP17H00731, JP15H02683, JP18H03221, and JP18KT0013.
+## [Contribution Link](https://github.com/devreplay/devreplay/blob/master/CONTRIBUTING.md)
 
 ## License
 
-[MIT](LICENSE) © 2019 Yuki Ueda <ueda.yuki.un7@is.naist.jp> (ikuyadeu.github.io)
+[MIT](LICENSE) © 2019 Yuki Ueda <ikuyadeu0513@gmail.com> (ikuyadeu.github.io)
