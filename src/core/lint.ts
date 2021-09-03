@@ -46,9 +46,12 @@ export function lintWithRules(fileName: string, contents: string, rules: DevRepl
         const regExp = createRegExp(rule);
         let match: RegExpExecArray | null;
         while ((match = regExp.exec(contents)) !== null) {
+            const snippet = match[0];
+            const fixed = fixWithRule(snippet, rule);
             lintOut.push({
                 rule: rule,
-                snippet: match[0],
+                snippet,
+                fixed,
                 fileName,
                 position: makeMatchedRange(match)
             });
@@ -81,12 +84,21 @@ export function fix(fileName: string, ruleFileName?: string): string {
  */
 export function fixWithRules(content: string, rules: DevReplayRule[]): string {
     for (const rule of rules) {
-        const replace = ruleJoin(rule.after);
-        const regExp = createRegExp(rule);
-        if (regExp.exec(content)) {
-            content = replaceWithCaseOperations(content, regExp, replace);
-            continue;
-        }
+        content = fixWithRule(content, rule);
+    }
+    return content;
+}
+
+/**
+ * Generate fixed string by using rule regular expression
+ * @param content Prefixed content
+ * @param rule Rule that has regular expression
+ */
+export function fixWithRule(content: string, rule: DevReplayRule): string {
+    const replace = ruleJoin(rule.after);
+    const regExp = createRegExp(rule);
+    if (regExp.exec(content)) {
+        content = replaceWithCaseOperations(content, regExp, replace);
     }
     return content;
 }

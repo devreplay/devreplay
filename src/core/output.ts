@@ -8,6 +8,7 @@ import { Range } from './position';
 export interface LintOut {
     rule: DevReplayRule;
     snippet: string;
+    fixed: string;
     fileName: string;
     position: Range;
 }
@@ -77,7 +78,7 @@ export function formatLintOut(matched: LintOut): string[] {
     const severity = makeFullSeverity(matched.rule.severity);
     const range = gray(`  ${matched.position.start.line}:${matched.position.start.character}`);
     const id = gray(`${matched.rule.ruleId}`);
-    const message = `${code2String(matched.rule)}  ${id}`;
+    const message = `${code2String2(matched)}  ${id}`;
     return [range, severity, message];
 }
 
@@ -135,10 +136,52 @@ export function code2String(rule: DevReplayRule): string {
 
         return rule.message;
     }
-    const message = `${ruleJoin(rule.before)} should be ${ruleJoin(rule.after)}`;
+    let message = `${ruleJoin(rule.before)} should be ${ruleJoin(rule.after)}`;
+    if (rule.deprecated === true) {
+        message = `${ruleJoin(rule.before)} is deprecated`;
+    } else if (rule.unnecessary === true) {
+        message = `${ruleJoin(rule.before)} is unnecessary`;
+    }
 
     if (rule.author !== undefined) {
         return `${message} by ${rule.author}`;
+    }
+
+    return message;
+}
+
+/**
+ * Generate lint message from a rule
+ * @param out warned lint result
+ */
+ export function code2String2(out: LintOut): string {
+    if (out.rule.message !== undefined) {
+        if (out.rule.author !== undefined) {
+            return `${out.rule.message} by ${out.rule.author}`;
+        }
+        return out.rule.message;
+    }
+
+    const matchedContents = out.snippet.split('\n');
+    const fixedContents = out.fixed.split('\n');
+    let before = matchedContents[0];
+    if (matchedContents.length > 1) {
+        before += '...';
+    }
+    let after = fixedContents[0];
+    if (fixedContents.length > 1) {
+        after += '...';
+    }
+
+    let message = `${before} should be ${after}`;
+    if (out.rule.deprecated === true) {
+        message = `${before} is deprecated`;
+    } else if (out.rule.unnecessary === true) {
+        message = `${before} is unnecessary`;
+    }
+
+    if (out.rule.author !== undefined) {
+        return `${message} by ${out.rule.author}`;
     }
 
     return message;
