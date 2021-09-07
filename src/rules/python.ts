@@ -15,85 +15,100 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'if len(${1:list}) == 0:',
+        'if len\\((.+)\\) == 0:',
       ],
       after: [
-        'if not ${1:list}:',
+        'if not $1:',
       ],
+      message: 'if len() == 0: can be if not',
+      isRegex: true,
       author: 'Google Python Style Guide',
     },
     {
       before: [
-        'if len(${1:list}) != 0:',
+        'if len\\((.+)\\) != 0:',
+      ],
+      after: [
+        'if $1:',
+      ],
+      message: 'if len() != 0: can be if',
+      isRegex: true,
+      author: 'Google Python Style Guide',
+    },
+    {
+      before: [
+        'if len\\((.+)\\) > 0:',
+      ],
+      after: [
+        'if $1:',
+      ],
+      message: 'if len() > 0: can be if',
+      isRegex: true,
+      author: 'Google Python Style Guide',
+    },
+    {
+      before: [
+        'if not len\\((.+)\\):',
+      ],
+      after: [
+        'if not $1:',
+      ],
+      message: 'if not len(): can be if not',
+      isRegex: true,
+      author: 'Google Python Style Guide',
+    },
+    {
+      before: [
+        'if len\\((.+)\\):',
       ],
       after: [
         'if ${1:list}:',
       ],
+      message: 'if len(): can be if list',
+      isRegex: true,
       author: 'Google Python Style Guide',
     },
     {
       before: [
-        'if len(${1:list}) > 0:',
+        'if (?<val>.+) is not None and not \\k<val>:',
       ],
       after: [
-        'if ${1:list}:',
+        'if $1 == 0:',
       ],
+      isRegex: true,
+      message: 'if not None and not: can be if == 0',
       author: 'Google Python Style Guide',
     },
     {
       before: [
-        'if not len(${1:list}):',
+        'if (.+) % (.+):',
       ],
       after: [
-        'if not ${1:list}:',
+        'if $1 % $2 != 0:',
       ],
-      author: 'Google Python Style Guide',
-    },
-    {
-      before: [
-        'if len(${1:list}):',
-      ],
-      after: [
-        'if ${1:list}:',
-      ],
-      author: 'Google Python Style Guide',
-    },
-    {
-      before: [
-        'if ${1:val} is not None and not ${1:val}:',
-      ],
-      after: [
-        'if ${1:val} == 0:',
-      ],
-      author: 'Google Python Style Guide',
-    },
-    {
-      before: [
-        'if ${1:value} % ${2:value}:',
-      ],
-      after: [
-        'if ${1:value} % ${2:value} != 0:',
-      ],
+      isRegex: true,
       message: 'When handling integers, implicit false may involve more risk than benefit',
       author: 'Google Python Style Guide',
     },
     {
       before: [
-        'if not ${1:value} % ${2:value}:',
+        'if not (.+) % (.+):',
       ],
       after: [
-        'if ${1:value} % ${2:value} == 0:',
+        'if $1 % $2 == 0:',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'When handling integers, implicit false may involve more risk than benefit'
     },
     {
       before: [
-        'string.split(${1:value}, ${2:string})',
+        'string.split\\((.+), (.+)\\)',
       ],
       after: [
-        '${1:value}.split(${2:string})',
+        '$1.split($2)',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'Deprecated language feature',
       deprecated: true,
@@ -105,158 +120,134 @@ export const rules: BaseRule[] = [
       after: [
         '${1:fn}(*${2:args}, **${3:kwargs})',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'Deprecated language feature',
       deprecated: true,
     },
     {
       before: [
-        'if ${1:value} == None:',
+        'if (.+) == None:',
       ],
       after: [
-        'if ${1:value} is None:',
+        'if $1 is None:',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
     },
     {
       before: [
-        'if ${1:value} != None:',
+        'if (.+) != None:',
       ],
       after: [
-        'if ${1:value} is not None:',
+        'if $1 is not None:',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
     },
     {
       before: [
-        'if not ${1:value} == None:',
+        'if not (.+) == None:',
       ],
       after: [
-        'if ${1:value} is not None:',
+        'if $1 is not None:',
       ],
+      isRegex: true
     },
     {
       before: [
-        'if not ${1:value} is None:',
+        'if not (.+) is None:',
       ],
       after: [
-        'if ${1:value} is not None:',
+        'if $1 is not None:',
       ],
+      isRegex: true,
     },
     {
       before: [
         '',
-        'import ${1:lib1}, ${2:lib2}',
+        'import (.+), (.+)',
       ],
       after: [
         '',
-        'import ${1:lib1}',
-        'import ${2:lib2}',
+        'import $1',
+        'import $2',
       ],
+      isRegex: true
     },
     {
       before: [
-        '${1:value} * ${2:value2} -',
+        '(.+) * (.+) [-\\+]',
       ],
       after: [
-        '${1:value}*${2:value2} -',
+        '$1*$2 -',
       ],
+      isRegex: true,
     },
     {
       before: [
-        '${1:value} * ${2:value2} +',
+        '(.+) = lambda (.+): (.+)',
       ],
       after: [
-        '${1:value}*${2:value2} +',
+        'def $1($2): return $3',
       ],
     },
     {
       before: [
-        '${1:func} = lambda ${2:value}: ${3:code}',
+        'if (.+) (==|is) True:',
       ],
       after: [
-        'def ${1:func}(${2:value}): return ${3:code}',
+        'if $1:',
       ],
+      isRegex: true,
     },
     {
       before: [
-        'if ${1:exp} == True:',
+        'if (.+) (==|is) False:',
       ],
       after: [
-        'if ${1:exp}:',
+        'if not $1:',
       ],
+      isRegex: true,
     },
     {
       before: [
-        'if ${1:exp} is True:',
-      ],
-      after: [
-        'if ${1:exp}:',
-      ],
-    },
-    {
-      before: [
-        'if ${1:exp} == False:',
-      ],
-      after: [
-        'if not ${1:exp}:',
-      ],
-    },
-    {
-      before: [
-        'if ${1:exp} is False:',
-      ],
-      after: [
-        'if not ${1:exp}:',
-      ],
-    },
-    {
-      before: [
-        '$1 ()',
+        '(.+) ()',
       ],
       after: [
         '$1()',
       ],
+      isRegex: true,
     },
     {
       before: [
-        '$1[:$3] == \'$2\':',
+        '(.+)[:(.+)] == (.+):',
       ],
       after: [
-        '$1.startswith(\'$2\'):',
+        '$1.startswith($3):',
       ],
+      isRegex: true,
+      message: 'startswith() can be used instead of ==',
     },
     {
       before: [
-        '$1[:$3] == "$2":',
+        '(.+)[(.+):] == (.+):',
       ],
       after: [
-        '$1.startswith("$2"):',
+        '$1.endswith($3):',
       ],
+      isRegex: true,
+      message: 'endswith() can be used instead of ==',
     },
     {
       before: [
-        '$1[$3:] == \'$2\':',
+        'type((.+)) is type((.+)):',
       ],
       after: [
-        '$1.endswith(\'$2\'):',
+        'isinstance($1, $2):',
       ],
-    },
-    {
-      before: [
-        '$1[$3:] == "$2":',
-      ],
-      after: [
-        '$1.endswith("$2"):',
-      ],
-    },
-    {
-      before: [
-        'type(${1:obj})) is type(${2:type}):',
-      ],
-      after: [
-        'isinstance(${1:obj}, ${2:type}):',
-      ],
+      isRegex: true,
+      message: 'isinstance() can be used instead of type()',
     },
     {
       before: [
@@ -269,42 +260,46 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        '[print($1) for $1 in $2]',
+        '[print((.+)) for (.+) in (.+)]',
       ],
       after: [
-        'for $1 in $2:',
+        'for $2 in $3:',
         '    print($1)',
       ],
+      isRegex: true,
       message: 'Never use a list comprehension just for its side effects',
     },
     {
       before: [
-        '$1 = open(\'$2\')',
+        '(.+) = open((.+))',
       ],
       after: [
-        'with open(\'$2\') as $1:',
+        'with open($2) as $1:',
       ],
+      isRegex: true
     },
     {
       before: [
-        'assert $1 >= $2',
+        'assert (.+) >= (.+)',
         ''
       ],
       after: [
         'if minimum < $2:',
         '   raise ValueError()',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'Make use of built-in exception classes when it makes sense'
     },
     {
       before: [
-        'assert $1 >= $2, $3',
+        'assert (.+) >= (.+), (.+)',
       ],
       after: [
         'if minimum < $2:',
         '   raise ValueError($3)',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'Make use of built-in exception classes when it makes sense'
     },
@@ -320,41 +315,45 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'for $1 in $2.keys():',
+        'for (.+) in (.+).keys():',
       ],
       after: [
         'for $1 in $2:',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'Never use Python 2 specific iteration method'
     },
     {
       before: [
-        'if not $1.has_key($2):',
+        'if not (.+).has_key((.+)):',
       ],
       after: [
         'if $2 not in $1',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'Never use Python 2 specific iteration method'
     },
     {
       before: [
-        'for $1 in $2.readlines():',
+        'for (.+) in (.+).readlines():',
       ],
       after: [
         'for $1 in $2',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'Never use Python 2 specific iteration method'
     },
     {
       before: [
-        'for $1, $2 in $3.iteritems():',
+        'for (.+), (.+) in (.+).iteritems():',
       ],
       after: [
         'for $1, $2 in $3.items():',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'Never use Python 2 specific iteration method'
     },
@@ -370,21 +369,23 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        '\'%s%s\' % ($1, $2)',
+        '\'%s%s\' % ((.+), (.+))',
       ],
       after: [
         '$1 + $2',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'use + in this case'
     },
     {
       before: [
-        '\'{}{}\'.format($1, $2)',
+        '\'{}{}\'.format((.+), (.+))',
       ],
       after: [
         '$1 + $2',
       ],
+      isRegex: true,
       author: 'Google Python Style Guide',
       message: 'use + in this case'
     },

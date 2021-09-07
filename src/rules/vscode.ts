@@ -3,11 +3,12 @@ import { BaseRule } from '../core/rule';
 export const rules: BaseRule[] = [
     {
       before: [
-        'show(${1:column}, ${2:preservalFocus})'
+        'show\\((.+),\\s*(.+)\\)'
       ],
       after: [
-        'show(${2:preservalFocus})'
-      ]
+        'show($2)'
+      ],
+      isRegex: true,
     },
     {
       before: [
@@ -19,11 +20,12 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'editor.show(${1:column})'
+        'editor.show\\((.+)\\)'
       ],
       after: [
         'window.showTextDocument()'
-      ]
+      ],
+      isRegex: true,
     },
     {
       before: [

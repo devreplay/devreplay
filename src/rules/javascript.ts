@@ -86,13 +86,17 @@ export const rules: BaseRule[] = [
   },
   {
     before:'@code',
-    after:   '',
-    matchCase: true
+    after:   '@example',
+    matchCase: true,
+    deprecated: true,
+    message: '@code is deprecated. Use @example instead.'
   },
   {
     before:'@expose',
     after: '@export',
-    matchCase: true
+    matchCase: true,
+    deprecated: true,
+    message: '@expose is deprecated. Use @export instead.'
   },
   {
     before:'@inheritDoc',
