@@ -212,7 +212,7 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        '(.+) ()',
+        '(.+) \\(\\)',
       ],
       after: [
         '$1()',
@@ -260,7 +260,7 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        '[print((.+)) for (.+) in (.+)]',
+        '\\[print((.+)) for (.+) in (.+)\\]',
       ],
       after: [
         'for $2 in $3:',
