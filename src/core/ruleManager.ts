@@ -74,8 +74,11 @@ export function readCurrentRules(dirPath: string): DevReplayRule[] {
         return [];
     }
 
-    const ruleJson = JSON.parse(fileContents) as ReadableRule[];
-    return readableRule2DevReplayRule(ruleJson);
+    const ruleJson = JSON.parse(fileContents) as ReadableRule[] | ReadableRule;
+    if (Array.isArray(ruleJson)) {
+        return readableRule2DevReplayRule(ruleJson);
+    }
+    return readableRule2DevReplayRule([ruleJson]);
 }
 
 function readableRule2DevReplayRule(rules:ReadableRule[]) {

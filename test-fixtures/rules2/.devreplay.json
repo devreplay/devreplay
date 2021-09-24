@@ -1,0 +1,12 @@
+{
+    "before": [
+        "for (.+) in range(.+):"
+    ],
+    "after": [
+        "import six",
+        "for ($2) in six.moves.range($2):"
+    ],
+    "isRegex": true,
+    "message": "Python2互換のためsixを使用してください",
+    "severity": "Warning"
+  }

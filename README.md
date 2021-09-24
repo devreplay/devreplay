@@ -21,19 +21,17 @@ $ yarn global add devreplay
 2. Put your own programming rule(`.devreplay.json`) on the project like bellow
 
 ```json
-[
-  {
-    "before": [
-      "(?<tmp>.+)\\s*=\\s*(?<a>.+)",
-      "\\k<a>\\s*=\\s*(?<b>.+)",
-      "\\k<b>\\s*=\\s*\\k<tmp>"
-    ],
-    "after": [
-      "$2, $3 = $3, $2"
-    ],
-    "isRegex": true
-  }
-]
+{
+  "before": [
+    "(?<tmp>.+)\\s*=\\s*(?<a>.+)",
+    "\\k<a>\\s*=\\s*(?<b>.+)",
+    "\\k<b>\\s*=\\s*\\k<tmp>"
+  ],
+  "after": [
+    "$2, $3 = $3, $2"
+  ],
+  "isRegex": true
+}
 ```
 
 3. Run the devreplay
@@ -60,22 +58,20 @@ The target source code file will be
 * **Step up**: Make the rule message and severity. Also `after` can be more abstract
 
 ```json
-[
-  {
-    "before": [
-      "(?<tmp>.+)\\s*=\\s*(?<a>.+)",
-      "\\k<a>\\s*=\\s*(?<b>.+)",
-      "\\k<b>\\s*=\\s*\\k<tmp>"
-    ],
-    "after": [
-      "$2, $3 = $3, $2"
-    ],
-    "isRegex": true,
-    "author": "Yuki Ueda",
-    "message": "Value exchanging can be one line",
-    "severity": "Information"
-  }
-]
+{
+  "before": [
+    "(?<tmp>.+)\\s*=\\s*(?<a>.+)",
+    "\\k<a>\\s*=\\s*(?<b>.+)",
+    "\\k<b>\\s*=\\s*\\k<tmp>"
+  ],
+  "after": [
+    "$2, $3 = $3, $2"
+  ],
+  "isRegex": true,
+  "author": "Yuki Ueda",
+  "message": "Value exchanging can be one line",
+  "severity": "Information"
+}
 ```
 
 * `severity` means how this rule is important
@@ -96,9 +92,8 @@ Also, you can use default rules by extends some rules such as
 
 ```json
 [
-  {
-    "extends": ["typescript", "react", "vscode"]
-  }
+  "typescript",
+  "react",
 ]
 ```
 
