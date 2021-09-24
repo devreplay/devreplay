@@ -13,7 +13,7 @@ Devreplay is static analysis tool based on your own programming rule.
 1. Install on local
 
 ```sh
-$ npm install devreplay
+$ npm install -g devreplay
 # or
 $ yarn global add devreplay
 ```
@@ -139,6 +139,50 @@ That will fix
 | TypeScript |                 |
 | VS Code    |                 |
 | Vue        |                 |
+
+### API Usage
+
+You can use `devreplay` as a TypeScript API.
+
+```ts
+import {DevReplayRule, BaseRule2DevReplayRule, fixWithRules} from 'devreplay';
+
+const rules: DevReplayRule[] = [{
+    before: [
+      '([a-z]+)-([a-z]+)'
+    ],
+    after: [
+        '$1 $2'
+    ],
+    isRegex: true
+},
+{
+  before: [
+    'for \\(let (?<i>.+) = 0;\\k<i> < (?<arr>.+).length;\\k<i>\\+\\+\\) (.*)\\(\\k<arr>\\[\\k<i>\\]\\)'
+  ],
+  after: [
+    'for (let $1 = 0;$1 < $2.length;i++) {',
+    '    $3($2[$1])',
+    '}'
+  ],
+  isRegex: true,
+  message: 'One line for should use paren'
+}].map(rule => BaseRule2DevReplayRule(rule, 0));
+
+const fixed = fixWithRules('print("hello-world")', rules)
+/*
+'print("hello world")'
+*/
+console.log(fixed)
+
+const fixed2 = fixWithRules('for (let i = 0;i < arr.length;i++) foo(arr[i])', rules)
+/*
+for (let i = 0;i < arr.length;i++) {
+  foo(arr[i])
+}
+*/
+console.log(fixed2)
+```
 
 ### GitHub Actions
 
