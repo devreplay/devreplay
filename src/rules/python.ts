@@ -59,7 +59,7 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'if len\\((.+)\\):',
+        'if len\\((\\S+)\\):',
       ],
       after: [
         'if ${1:list}:',
@@ -81,7 +81,7 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'if (.+) % (.+):',
+        'if (\\S+) % (\\S+):',
       ],
       after: [
         'if $1 % $2 != 0:',
@@ -92,7 +92,7 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'if not (.+) % (.+):',
+        'if not (\\S+) % (\\S+):',
       ],
       after: [
         'if $1 % $2 == 0:',
@@ -127,7 +127,7 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'if (.+) == None:',
+        'if (\\S+) == None:',
       ],
       after: [
         'if $1 is None:',
@@ -137,7 +137,7 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'if (.+) != None:',
+        'if (\\S+) != None:',
       ],
       after: [
         'if $1 is not None:',
@@ -147,7 +147,7 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'if not (.+) == None:',
+        'if not (\\S+) == None:',
       ],
       after: [
         'if $1 is not None:',
