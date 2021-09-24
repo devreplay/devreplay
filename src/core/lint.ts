@@ -47,7 +47,10 @@ export function lintWithRules(fileName: string, contents: string, rules: DevRepl
         let match: RegExpExecArray | null;
         while ((match = regExp.exec(contents)) !== null) {
             const snippet = match[0];
-            const fixed = fixWithRule(snippet, rule);
+            let fixed: string | undefined = undefined;
+            if (rule.after !== undefined) {
+                fixed = fixWithRule(snippet, rule);
+            }
             lintOut.push({
                 rule: rule,
                 snippet,
