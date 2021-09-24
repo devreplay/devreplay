@@ -11,10 +11,11 @@ export interface BaseRule {
     /** Search target code */
     before: string[] | string;
     /** Replace target code */
-    after: string[] | string;
+    after?: string[] | string;
     author?: string;
     /** Rule severity */
     severity?: severity;
+    /** Warning message that is shown on CLI and editor */
     message?: string;
     /** Using regular expression for searching code */
     isRegex?: boolean;
@@ -44,7 +45,7 @@ export interface DevReplayRule extends BaseRule {
     /** Search target code */
     before: string[] | string;
     /** Replace target code */
-    after: string[] | string;
+    after?: string[] | string;
     /** Rule severity */
     severity: RuleSeverity;
     ruleId: number;
@@ -69,11 +70,11 @@ export interface DevReplayRule extends BaseRule {
  * Check is rule string empty string or not
  * @param rule Target rule string
  */
-export function isEmptyRule(rule: string[] | string): boolean {
-    if (typeof rule === 'string') {
-        return rule === '';
+export function isEmptyRule(param: string[] | string): boolean {
+    if (typeof param === 'string') {
+        return param === '';
     }
-    return rule.length === 0 || (rule.length === 1 && rule[0] === '');
+    return param.length === 0 || (param.length === 1 && param[0] === '');
 }
 
 /**

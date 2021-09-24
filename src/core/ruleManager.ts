@@ -80,15 +80,17 @@ export function readCurrentRules(dirPath: string): DevReplayRule[] {
 
 function readableRule2DevReplayRule(rules:ReadableRule[]) {
     const outRules: DevReplayRule[] = [];
-    for (let index = 0; index < rules.length; index++) {
-        const rule = rules[index];
+    let ruleIndex = 1;
+    for (const rule of rules) {
         if (typeof rule === 'string') {
             const extendRules = readExtends(rule);
-            for (let i = 0; i < extendRules.length; i++) {
-                outRules.push(BaseRule2DevReplayRule(extendRules[i], index));
+            for (const extendRule of extendRules) {
+                outRules.push(BaseRule2DevReplayRule(extendRule, ruleIndex));
+                ruleIndex++;
             }
         } else {
-            outRules.push(BaseRule2DevReplayRule(rule, index));
+            outRules.push(BaseRule2DevReplayRule(rule, ruleIndex));
+            ruleIndex++;
         }
     }
     return outRules;

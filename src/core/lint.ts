@@ -83,7 +83,7 @@ export function fix(fileName: string, ruleFileName?: string): string {
  * @param rules Rules that has regular expression
  */
 export function fixWithRules(content: string, rules: DevReplayRule[]): string {
-    for (const rule of rules) {
+    for (const rule of rules.filter(x => x.after !== undefined)) {
         content = fixWithRule(content, rule);
     }
     return content;
@@ -95,6 +95,9 @@ export function fixWithRules(content: string, rules: DevReplayRule[]): string {
  * @param rule Rule that has regular expression
  */
 export function fixWithRule(content: string, rule: DevReplayRule): string {
+    if (rule.after === undefined) {
+        return content;
+    }
     const replace = ruleJoin(rule.after);
     const regExp = createRegExp(rule);
     if (regExp.exec(content)) {

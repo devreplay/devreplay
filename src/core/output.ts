@@ -136,7 +136,10 @@ export function code2String(rule: DevReplayRule): string {
 
         return rule.message;
     }
-    let message = `${ruleJoin(rule.before)} should be ${ruleJoin(rule.after)}`;
+    let message = `${ruleJoin(rule.before)} should be fixed`;
+    if (rule.after !== undefined) {
+        message = `${ruleJoin(rule.before)} should be ${ruleJoin(rule.after)}`;
+    }
     if (rule.deprecated === true) {
         message = `${ruleJoin(rule.before)} is deprecated`;
     } else if (rule.unnecessary === true) {
