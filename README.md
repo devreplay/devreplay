@@ -201,6 +201,12 @@ jobs:
 
 ## [Contribution Link](https://github.com/devreplay/devreplay/blob/master/CONTRIBUTING.md)
 
+## TODO
+
+* Support rule ignoring comments
+* Support `.devreplayignore` file
+* Make rule generating GUI
+
 ## License
 
 [MIT](LICENSE) © 2019 Yuki Ueda <ikuyadeu0513@gmail.com> (ikuyadeu.github.io)

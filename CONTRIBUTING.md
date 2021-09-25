@@ -1,6 +1,6 @@
 # Contribution
 
-## Prerequisites:
+## Prerequisites
 
 * [node](https://nodejs.org/) LTS v14+
 * [yarn](https://yarnpkg.com/lang/en/docs/install) v1.0+
