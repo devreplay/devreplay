@@ -2,42 +2,18 @@ import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [
     {
-      before: [
-        'fail '
-      ],
-      after: [
-        'raise '
-      ],
+      before: 'fail ',
+      after: 'raise ',
       message: 'Prefer raise over fail for exceptions. https://github.com/rubocop-hq/ruby-style-guide#prefer-raise-over-fail',
-      severity: 'W'
     },
     {
-      before: [
-        'raise RuntimeError,${1:message}'
-      ],
-      after: [
-        'raise ${1:message}'
-      ]
+      before: 'raise RuntimeError,(\\S+)',
+      after: 'raise $1',
+      isRegex: true
     },
     {
-      before: [
-        'def ${1:some_method}',
-        '    ${2:do_something}',
-        'end'
-      ],
-      after: [
-        'def ${1:some_method}',
-        '  ${2:do_something}',
-        'end'
-      ]
-    },
-    {
-      before: [
-        ';'
-      ],
-      after: [
-        ''
-      ],
+      before: ';',
+      after: '',
       message: 'Don’t use ; to terminate statements and expressions.'
     },
     {
@@ -68,11 +44,12 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        '${1:some}( ${2:arg} )'
+        '(\\S+)\\( (\\S+) \\)'
       ],
       after: [
-        '${1:some}(${2:arg})'
-      ]
+        '$1($2)'
+      ],
+      isRegex: true,
     },
     {
       before: [
@@ -94,19 +71,23 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'def ${1:some_method}()'
+        'def (\\S+)\\(\\)'
       ],
       after: [
-        'def ${1:some_method}'
-      ]
+        'def $1'
+      ],
+      isRegex: true,
+
     },
     {
       before: [
-        'for ${1:elem} in ${2:arr} do'
+        'for (\\S+) in (\\S+) do'
       ],
       after: [
-        '${2:arr}.each { |${1:elem}|'
-      ]
+        '$2.each { |$1|'
+      ],
+      isRegex: true,
+      message: 'Use block form for iterating'
     },
     {
       before: [
@@ -152,27 +133,31 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'if !$1'
+        'if !(\\S+)'
       ],
       after: [
         'unless $1'
-      ]
+      ],
+      isRegex: true,
+      message: 'Use unless instead of if !'
     },
     {
       before: [
-        'raise RuntimeError, \'$1\''
+        'raise RuntimeError, \'(\\S+)\''
       ],
       after: [
         'raise \'$1\''
-      ]
+      ],
+      isRegex: true,
     },
     {
       before: [
-        'raise ${1:SomeException}.new(\'$2\')'
+        'raise (\\S+).new(\'(\\S+)\')'
       ],
       after: [
-        'raise ${1:SomeException}, \'$2\''
-      ]
+        'raise $1, \'$2\''
+      ],
+      isRegex: true,
     },
     {
       before: [
@@ -193,11 +178,12 @@ export const rules: BaseRule[] = [
     },
     {
       before: [
-        'super $1'
+        'super (\\S+)'
       ],
       after: [
         'super($1)'
-      ]
+      ],
+      isRegex: true,
     },
     {
       before: [
