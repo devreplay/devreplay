@@ -1,15 +1,20 @@
 import * as table from 'text-table';
 import { red, yellow, blue, gray } from 'chalk';
 
-import { DevReplayRule, ruleJoin, RuleSeverity } from './rule';
+import { DevReplayRule, joinRuleParam, RuleSeverity } from './rule';
 import { Range } from './position';
 
 /** DevReplay linting result */
 export interface LintOut {
+    /** Linting result rule */
     rule: DevReplayRule;
+    /** Matched code snippet */
     snippet: string;
+    /** Fixed code snippet */
     fixed?: string;
+    /** Linting result file */
     fileName: string;
+    /** Linting result position range */
     position: Range;
 }
 
@@ -94,15 +99,15 @@ export function formatLintOut(matched: LintOut): string[] {
 export function makeSeverity(severity?: string): RuleSeverity {
     if (severity === undefined) {
         return RuleSeverity.warning;
-    } if (severity.toUpperCase().startsWith('E')) {
+    } if (severity.toLowerCase().startsWith('e')) {
         return RuleSeverity.error;
-    } if (severity.toUpperCase().startsWith('W')) {
+    } if (severity.toLowerCase().startsWith('w')) {
         return RuleSeverity.warning;
-    } if (severity.toUpperCase().startsWith('I')) {
+    } if (severity.toLowerCase().startsWith('i')) {
         return RuleSeverity.information;
-    } if (severity.toUpperCase().startsWith('H')) {
+    } if (severity.toLowerCase().startsWith('h')) {
         return RuleSeverity.hint;
-    } 
+    }
     return RuleSeverity.warning;
 }
 
@@ -136,14 +141,14 @@ export function code2String(rule: DevReplayRule): string {
 
         return rule.message;
     }
-    let message = `${ruleJoin(rule.before)} should be fixed`;
+    let message = `${joinRuleParam(rule.before)} should be fixed`;
     if (rule.after !== undefined) {
-        message = `${ruleJoin(rule.before)} should be ${ruleJoin(rule.after)}`;
+        message = `${joinRuleParam(rule.before)} should be ${joinRuleParam(rule.after)}`;
     }
     if (rule.deprecated === true) {
-        message = `${ruleJoin(rule.before)} is deprecated`;
+        message = `${joinRuleParam(rule.before)} is deprecated`;
     } else if (rule.unnecessary === true) {
-        message = `${ruleJoin(rule.before)} is unnecessary`;
+        message = `${joinRuleParam(rule.before)} is unnecessary`;
     }
 
     if (rule.author !== undefined) {

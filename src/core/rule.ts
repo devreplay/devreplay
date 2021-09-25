@@ -65,25 +65,13 @@ export interface DevReplayRule extends BaseRule {
     deprecated?: boolean;
 }
 
-
-/**
- * Check is rule string empty string or not
- * @param rule Target rule string
- */
-export function isEmptyRule(param: string[] | string): boolean {
-    if (typeof param === 'string') {
-        return param === '';
-    }
-    return param.length === 0 || (param.length === 1 && param[0] === '');
-}
-
 /**
  * Make the connected code from rule
- * @param rule Target rule string
+ * @param ruleParam Target rule string
  */
-export function ruleJoin(rule: string[] | string): string {
-    if (typeof rule === 'string') {
-        return rule;
+export function joinRuleParam(ruleParam: string[] | string): string {
+    if (typeof ruleParam === 'string') {
+        return ruleParam;
     }
-    return rule.join('\n');
+    return ruleParam.join('\n');
 }

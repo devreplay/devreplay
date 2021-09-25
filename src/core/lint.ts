@@ -1,5 +1,5 @@
 import { tryReadFile } from './file';
-import { DevReplayRule, ruleJoin, RuleSeverity } from './rule';
+import { DevReplayRule, joinRuleParam, RuleSeverity } from './rule';
 import { readRuleFile } from './ruleManager';
 import { LintOut } from './output';
 import { Range } from './position';
@@ -101,7 +101,7 @@ export function fixWithRule(content: string, rule: DevReplayRule): string {
     if (rule.after === undefined) {
         return content;
     }
-    const replace = ruleJoin(rule.after);
+    const replace = joinRuleParam(rule.after);
     const regExp = createRegExp(rule);
     if (regExp.exec(content)) {
         content = replaceWithCaseOperations(content, regExp, replace);
@@ -221,7 +221,7 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
  * @param rule Target rule
  */
 function createRegExp(rule: DevReplayRule): RegExp {
-    let searchString = ruleJoin(rule.before);
+    let searchString = joinRuleParam(rule.before);
 	if (!searchString) {
 		throw new Error('Cannot create regex from empty string');
 	}
