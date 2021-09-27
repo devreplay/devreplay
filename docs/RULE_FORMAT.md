@@ -18,14 +18,14 @@ That will fix
 ```
 
 * `before`: Target of search source code
-* `after`: Replacement source code
+* (Option) `after`: Replacement source code
 
 * Output options;
-    * `message`: Customized message
-    * `severity`: Rule severity info / warnings (default) / error
+  * `message`: Customized message
+  * `severity`: Rule severity error / warning (default) / info / hint / off
 
 * Search/Replacement options:
-    * `matchCase`: Use CaseSensitive search
-    * `wholeWord`: Match whole word
-    * `isRegex`: Use regular expression for search
-    * `preserveCase`: Use preserve case for replacement
+  * `matchCase`: Use CaseSensitive search
+  * `wholeWord`: Match whole word
+  * `isRegex`: Use regular expression for search
+  * `preserveCase`: Use preserve case for replacement

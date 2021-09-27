@@ -5,6 +5,7 @@ Please put the summary of this changes.
 Please put the link if you have a related issue.
 
 Please choose the option for the pull request.
+
 * [ ] Fix the default rules
 * [ ] Fix the main function
 * [ ] Fix the documentation
@@ -12,12 +13,12 @@ Please choose the option for the pull request.
 
 ## (If you have)Screenshot
 
-
 ## (If you do not have screenshot) How can I check this pull request?**
 
 1. (e.g.) Executing the command
+
 ```sh
-devreplay fix
+devreplay --fix target.py .devreplay.json
 ```
 
-2. 
+2.
