@@ -88,15 +88,6 @@ $ devreplay yourfile.py
   15:1  warning  Value exchanging can be one line  0
 ```
 
-Also, you can use default rules by extends some rules such as
-
-```json
-[
-  "typescript",
-  "react",
-]
-```
-
 ### Make rules by using Regular Expression
 
 ```json
@@ -120,6 +111,15 @@ That will fix
 
 ### Support Languages and Frameworks
 
+Also, you can use default rules by extends some rules such as
+
+```json
+[
+  "TypeScript",
+  "Python",
+]
+```
+
 | Languages  | Frameworks      |
 |------------|-----------------|
 | C          | Android         |
@@ -128,12 +128,10 @@ That will fix
 | Dart       | Rails           |
 | Java       | React           |
 | JavaScript | TensorFlow      |
-| PHP        |                 |
-| Python     |                 |
+| PHP        |  VS Code        |
+| Python     |  Vue            |
 | Ruby       |                 |
 | TypeScript |                 |
-| VS Code    |                 |
-| Vue        |                 |
 
 ### API Usage
 
