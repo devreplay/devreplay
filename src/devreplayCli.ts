@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { lstatSync, readdirSync } from 'fs';
+import { lstatSync, readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 import { lint, fix } from './core/lint';
@@ -13,7 +13,7 @@ const cli = {
             .version('1.9.24')
             .description('A linter that replay your coding style')
             .option('--fix', 'Fix the file')
-            .option('--init', 'Make rules from recent git changes')
+            // .option('--init', 'Make rules from recent git changes')
             .helpOption(true)
             .parse(process.argv);
         
@@ -39,7 +39,7 @@ const cli = {
             }
             const fileName = targetPath;
             const results = fix(fileName, ruleFileName);
-            console.log(results);
+            writeFileSync(fileName, results);
             return 0;
         }
 

@@ -43,7 +43,7 @@ devreplay yourfile.py
 or get fixed code
 
 ```sh
-devreplay --fix yourfile.py > yourfile.py
+devreplay --fix yourfile.py
 ```
 
 The target source code file will be
