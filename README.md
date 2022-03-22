@@ -109,6 +109,20 @@ That will fix
 + print("hello world")
 ```
 
+### More rule options
+
+| Option       | Type    | Detail                                                                                                                                                                                                                                    |
+|--------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| isRegex      | Boolean | Use Regular Expression: Use JavaScript's regular expressions as specified   in ECMAScript 5 to find the code. Auto generated coding rules have enabled   this option.                                                                     |
+| wholeWord    | Boolean | Match Whole Word: Search for a completely matched word (e.g. *editor* will not match with *editor**s***).                                                                                                                                   |
+| matchCase    | Boolean | Match Case: Match lower or larger cases to searching code (e.g. *editor*   will not match with ***E**ditor*).                                                                                                                             |
+| preserveCase | Boolean | Preserve Case: Preserving lower or larger cases for replacing code.                                                                                                                                                                       |
+| message      | String  | Message: Warning message on the VS Code panel and CLI output. Default   message is **before should be after**.                                                                                                                            |
+| severity     | String  | Severity: Rule severity. Changing severity means extending or reducing   the rules' functions.                                                                                                                                            |
+| unnecessary  | String  |  Unused or unnecessary code: The   editor and CLI change the default message to *before is unused*'. Also, this   property changes the behavior of the    editor's representation from drawing a wavy line to graying the   snippet text. |
+| deprecated   | String  | Deprecated or obsolete code: The editor and CLI change the default   message to *before is deprecated*'. Also, this property changes the editor's   representation from wavy to strikethrough.                                            |
+
+
 ### Support Languages and Frameworks
 
 Also, you can use default rules by extends some rules such as
