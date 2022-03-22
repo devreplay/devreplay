@@ -1,3 +1,9 @@
+/**
+ * Generate lint result strings.
+ * 
+ * @module
+ */
+
 import * as table from 'text-table';
 import { red, yellow, blue, gray } from 'chalk';
 

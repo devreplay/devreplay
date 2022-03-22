@@ -1,3 +1,8 @@
+/**
+ * Command Line Interface for DevReplay.
+ * 
+ * @module
+ */
 import { Command } from 'commander';
 import { lstatSync, readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';

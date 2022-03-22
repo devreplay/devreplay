@@ -1,3 +1,9 @@
+/**
+ * DevReplay rule interfaces and namespace.
+ * 
+ * @module rule
+ */
+
 /* eslint-disable @typescript-eslint/no-namespace */
 export type severity = 
 'E' |'Error' | 'error' |

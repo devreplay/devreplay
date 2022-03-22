@@ -1,4 +1,10 @@
 /**
+ * Lint result position and range interface.
+ * 
+ * @module
+ */
+
+/**
  * Lint result position
  */
  export interface Position {

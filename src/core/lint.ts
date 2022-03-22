@@ -1,3 +1,9 @@
+/**
+ * DevReplay linting and fixing functions.
+ * 
+ * @module
+ */
+
 import { tryReadFile } from './file';
 import { DevReplayRule, joinRuleParam, RuleSeverity } from './rule';
 import { readRuleFile } from './ruleManager';

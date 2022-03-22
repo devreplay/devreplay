@@ -1,3 +1,9 @@
+/**
+ * Index for built-in rules.
+ * 
+ * @module
+ */
+
 import { BaseRule, DevReplayRule } from './rule';
 import { BaseRule2DevReplayRule } from './ruleManager';
 

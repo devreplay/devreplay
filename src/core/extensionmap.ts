@@ -1,3 +1,9 @@
+/**
+ * Index for file extension map.
+ * 
+ * @module
+ */
+
 interface GrammarPath {
     [key: string]: string[];
 }

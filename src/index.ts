@@ -1,3 +1,8 @@
+/**
+ * Export APIs for other platforms.
+ * 
+ * @module
+ */
 export { extend } from './core/extend';
 export { fix, fixWithRule, fixWithRules, lint, lintWithRules } from './core/lint';
 export { LintOut, code2String, code2String2, makeSeverity, makeFullSeverity } from './core/output';

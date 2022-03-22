@@ -1,3 +1,8 @@
+/**
+ * Utils for file operations.
+ * 
+ * @module
+ */
 import { existsSync, openSync, closeSync, readFileSync, readSync } from 'fs';
 
 /**
