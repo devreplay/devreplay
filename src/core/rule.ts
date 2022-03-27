@@ -18,6 +18,7 @@ export interface BaseRule {
     before: string[] | string;
     /** Replace target code */
     after?: string[] | string;
+    /** Rule author that will be shown on result */
     author?: string;
     /** Rule severity */
     severity?: severity;
@@ -37,6 +38,9 @@ export interface BaseRule {
     deprecated?: boolean;
 }
 
+/**
+ * DevReplay Rule severity format
+ */
 export namespace RuleSeverity {
 	export const error = 'error';
     export const warning = 'warning';
@@ -44,9 +48,11 @@ export namespace RuleSeverity {
     export const hint = 'hint';
 	export const off = 'off';
 }
-
 export type RuleSeverity = 'error' | 'warning' | 'info' | 'hint' | 'off';
 
+/**
+ * DevReplay Rule format
+ */
 export interface DevReplayRule extends BaseRule {
     /** Search target code */
     before: string[] | string;
@@ -54,8 +60,11 @@ export interface DevReplayRule extends BaseRule {
     after?: string[] | string;
     /** Rule severity */
     severity: RuleSeverity;
+    /** Rule id for identify */
     ruleId: number;
+    /** Rule author that will be shown on result */
     author?: string;
+    /** Warning message that is shown on CLI and editor */
     message?: string;
     /** Using regular expression for searching code */
     isRegex?: boolean;

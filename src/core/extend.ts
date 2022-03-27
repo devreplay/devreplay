@@ -26,6 +26,9 @@ import { rules as tensorflow } from '../rules/tensorflow';
 import { rules as vscode } from '../rules/vscode';
 import { rules as vue } from '../rules/vue';
 
+/**
+ * Index for built-in rules.
+ */
 interface Extends {
     [key: string]: BaseRule[];
 }
@@ -54,6 +57,9 @@ export const extend: Extends = {
     vue,
 };
 
+/**
+ * List of rule extends
+ */
 interface Source {
     [key: string]: string[];
 }

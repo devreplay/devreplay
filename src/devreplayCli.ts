@@ -10,7 +10,9 @@ import { join } from 'path';
 import { lint, fix } from './core/lint';
 import { outputLintOuts } from './core/output';
 
-
+/**
+ * CLI description for DevReplay.
+ */
 const cli = {
     execute() {
         const program = new Command();
@@ -70,6 +72,11 @@ const cli = {
     }
 };
 
+/**
+ * Get all file pathes in the target directory.
+ * @param dirName Target directory path
+ * @returns File pathes
+ */
 function getAllFiles(dirName: string) {
     const dirents = readdirSync(dirName, { withFileTypes: true });
     const filesNames: string[] = [];

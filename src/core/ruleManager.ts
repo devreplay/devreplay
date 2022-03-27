@@ -11,6 +11,9 @@ import { extend as Extend } from './extend';
 import { tryReadFile } from './file';
 import { BaseRule, DevReplayRule, RuleSeverity, severity } from './rule';
 
+/**
+ * Readable the devreplay.json file type
+ */
 type ReadableRule = BaseRule | string
 
 /**
@@ -87,6 +90,11 @@ export function readCurrentRules(dirPath: string): DevReplayRule[] {
     return readableRule2DevReplayRule([ruleJson]);
 }
 
+/**
+ * Convert read rules to devreplay rules
+ * @param rules target rules
+ * @returns Executable rules
+ */
 function readableRule2DevReplayRule(rules:ReadableRule[]) {
     const outRules: DevReplayRule[] = [];
     let ruleIndex = 1;
@@ -105,6 +113,12 @@ function readableRule2DevReplayRule(rules:ReadableRule[]) {
     return outRules;
 }
 
+/**
+ * Convert readable rule to devreplay rule with add the rule index and fix severity
+ * @param rule target rule
+ * @param index rule index
+ * @returns Executable rules
+ */
 export function BaseRule2DevReplayRule(rule:BaseRule, index: number): DevReplayRule {
     return {
         before: rule.before,
@@ -120,6 +134,11 @@ export function BaseRule2DevReplayRule(rule:BaseRule, index: number): DevReplayR
     };
 }
 
+/**
+ * Convert executable rule to readable rule
+ * @param rule devreplay rule
+ * @returns readable rules
+ */
 export function DevReplayRule2BaseRule(rule:DevReplayRule): BaseRule {
     return {
         before: rule.before,
@@ -134,6 +153,11 @@ export function DevReplayRule2BaseRule(rule:DevReplayRule): BaseRule {
     };
 }
 
+/**
+ * Convert readable severity to executable severity
+ * @param severity String severity
+ * @returns Executable severity
+ */
 function fixSeveriy2RuleSeverity(severity?: severity): RuleSeverity {
     switch (severity) {
         case 'Error':
@@ -161,6 +185,11 @@ function fixSeveriy2RuleSeverity(severity?: severity): RuleSeverity {
     }
 }
 
+/**
+ * Identify the path of the rule file
+ * @param rootPath Executable root path
+ * @returns Path of the rule file
+ */
 function getDevReplayPath(rootPath: string) {
 	return join(rootPath, '.devreplay.json');
 }

@@ -8,6 +8,9 @@ interface GrammarPath {
     [key: string]: string[];
 }
 
+/**
+ * List of grammar path with the extension
+ */
 export const grammarPaths: GrammarPath = {
     'source.c': ['.c'],
     'source.cpp': ['.cpp'],
@@ -28,6 +31,11 @@ export const grammarPaths: GrammarPath = {
     'source.ts': ['.ts']
 };
 
+/**
+ * Get grammar path by extension
+ * @param path source file path
+ * @returns grammar `source.xxx`
+ */
 export function getFileSource(path: string): string | undefined {
     for (const grammarPath in grammarPaths) {
         for (const extension of grammarPaths[grammarPath]) {
