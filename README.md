@@ -13,9 +13,9 @@ Devreplay is static analysis tool based on your own programming rule.
 1. Install on local
 
 ```sh
-$ npm install -g devreplay
+npm install -g devreplay
 # or
-$ yarn global add devreplay
+yarn global add devreplay
 ```
 
 2. Put your own programming rule(`.devreplay.json`) on the project like bellow
