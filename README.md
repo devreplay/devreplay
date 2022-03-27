@@ -4,9 +4,12 @@
 ![Lint](https://github.com/devreplay/devreplay/workflows/Lint/badge.svg)
 
 Devreplay is static analysis tool based on your own programming rule.
+This README.md introduced DevReplay rules informations and CLI environment.
+Please check the following link for other platform informations.
 
-* [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
+* [Visual Studio Code (VS Code)](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
 * [Other Editor Support (Language Server)](https://www.npmjs.com/package/devreplay-server)
+* [GitHub Actions](https://github.com/devreplay/devreplay/edit/master/README.md#github-actions)
 
 ## How to use
 
