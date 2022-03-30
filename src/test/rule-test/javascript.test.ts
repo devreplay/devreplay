@@ -24,10 +24,12 @@ const rules: DevReplayRule[] = [{
   message: 'One line for should use paren'
 }].map(rule => BaseRule2DevReplayRule(rule, 0));
 
+// Test hyphen code will be fixed to white space code
 test('Fix by regex', () => {
     expect(fixWithRules('print("hello-world")', rules)).toBe('print("hello world")');
 });
 
+// Test original rules to sample loop code
 test('Fix by regex', () => {
     expect(fixWithRules('for (let i = 0;i < arr.length;i++) foo(arr[i])', rules)).toBe(
         [
