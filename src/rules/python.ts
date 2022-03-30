@@ -1,3 +1,7 @@
+/**
+ * Python rules from Google Python Style Guide
+ */
+
 import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [

@@ -1,3 +1,7 @@
+/**
+ * Ruby on Rails API rules
+ */
+
 import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [

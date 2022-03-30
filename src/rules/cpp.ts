@@ -1,3 +1,7 @@
+/**
+ * C++ rules
+ */
+
 import { rules as c } from './c';
 import { BaseRule } from '../core/rule';
 

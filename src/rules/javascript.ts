@@ -1,3 +1,7 @@
+/**
+ * JavaScript deprecation rules
+ */
+
 import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [  

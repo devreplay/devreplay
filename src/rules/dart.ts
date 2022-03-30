@@ -1,3 +1,7 @@
+/**
+ * Dart small tips
+ */
+
 import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [

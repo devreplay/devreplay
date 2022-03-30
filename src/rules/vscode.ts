@@ -1,3 +1,7 @@
+
+/**
+ * Visual Studio Code API rules
+ */
 import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [

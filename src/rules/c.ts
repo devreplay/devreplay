@@ -1,3 +1,7 @@
+/**
+ * C rules for sequrity
+ */
+
 import { BaseRule } from '../core/rule';
 
 export const rules: BaseRule[] = [
