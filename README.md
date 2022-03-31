@@ -105,6 +105,8 @@ If the property is not specified, DevReplay just shows a warning message.
 A value of the properties is either a single string or a string array.
 Using the array format, DevReplay finds and replaces the consecutive lines of code.
 
+#### Rule examples
+
 ```json
 {
   "before": [
