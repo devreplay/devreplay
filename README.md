@@ -93,6 +93,18 @@ $ devreplay yourfile.py
 
 ### Make rules by using Regular Expression
 
+A rule is represented by a JSON object.
+The rule file `.devreplay.json` consists of a single rule or an array of rules.
+
+Each rule comprises a pair of the `before` and `after` properties.
+
+* `before` property is the only DevReplay required property to find code fragments and show warnings for them.
+* `after` property is necessary for automatic fix.
+
+If the property is not specified, DevReplay just shows a warning message.
+A value of the properties is either a single string or a string array.
+Using the array format, DevReplay finds and replaces the consecutive lines of code.
+
 ```json
 {
   "before": [
