@@ -91,7 +91,7 @@ $ devreplay yourfile.py
   15:1  warning  Value exchanging can be one line  0
 ```
 
-### Make rules by using Regular Expression
+### Make rules
 
 A rule is represented by a JSON object.
 The rule file `.devreplay.json` consists of a single rule or an array of rules.
@@ -105,7 +105,14 @@ If the property is not specified, DevReplay just shows a warning message.
 A value of the properties is either a single string or a string array.
 Using the array format, DevReplay finds and replaces the consecutive lines of code.
 
-#### Rule examples
+### How to use Regular Expression
+
+`isRegex` option regards the pattern specified in the `before` property as a regular expressiopn.
+DevReplay uses the standard regular expression specified in [ECMAScript 5](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions).
+For example, the `before` property in following example uses two `([a-z]+)` representing any one or more characters.
+
+In the `after` property, `$1` and `$2`corresponds to the value enclosed in parentheses in the `before` property.
+Automatically generated coding rules enabled this option by default.
 
 ```json
 {
