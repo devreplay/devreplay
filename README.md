@@ -3,9 +3,9 @@
 ![CI](https://github.com/devreplay/devreplay/workflows/CI/badge.svg)
 ![Lint](https://github.com/devreplay/devreplay/workflows/Lint/badge.svg)
 
-Devreplay is static analysis tool based on your own programming rule.
-This README.md introduced DevReplay rules informations and CLI environment.
-Please check the following link for other platform informations.
+Devreplay is a static analysis tool based on your own programming rule.
+This README.md introduced DevReplay rules information and CLI environment.
+Please check the following link for other platform information.
 
 * [Visual Studio Code (VS Code)](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.devreplay)
 * [Other Editor Support (Language Server)](https://www.npmjs.com/package/devreplay-server)
@@ -93,23 +93,23 @@ $ devreplay yourfile.py
 
 ### Make rules
 
-A rule is represented by a JSON object.
+A JSON object represents a rule.
 The rule file `.devreplay.json` consists of a single rule or an array of rules.
 
 Each rule comprises a pair of the `before` and `after` properties.
 
 * `before` property is the only DevReplay required property to find code fragments and show warnings for them.
-* `after` property is necessary for automatic fix.
+* `after` property is necessary for an automatic fix.
 
-If the property is not specified, DevReplay just shows a warning message.
+If the property is not specified, DevReplay shows a warning message.
 A value of the properties is either a single string or a string array.
 Using the array format, DevReplay finds and replaces the consecutive lines of code.
 
 ### How to use Regular Expression
 
-`isRegex` option regards the pattern specified in the `before` property as a regular expressiopn.
+`isRegex` option regards the pattern specified in the `before` property as a regular expression.
 DevReplay uses the standard regular expression specified in [ECMAScript 5](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions).
-For example, the `before` property in following example uses two `([a-z]+)` representing any one or more characters.
+For example, the `before` property in the following example uses two `([a-z]+)` representing any one or more characters.
 
 In the `after` property, `$1` and `$2`corresponds to the value enclosed in parentheses in the `before` property.
 Automatically generated coding rules enabled this option by default.
@@ -143,12 +143,12 @@ That will fix
 | preserveCase | Boolean | Preserve Case: Preserving lower or larger cases for replacing code.                                                                                                                                                                       |
 | message      | String  | Message: Warning message on the VS Code panel and CLI output. Default   message is **before should be after**.                                                                                                                            |
 | severity     | String  | Severity: Rule severity. Changing severity means extending or reducing   the rules' functions.                                                                                                                                            |
-| unnecessary  | String  |  Unused or unnecessary code: The   editor and CLI change the default message to *before is unused*'. Also, this   property changes the behavior of the    editor's representation from drawing a wavy line to graying the   snippet text. |
-| deprecated   | String  | Deprecated or obsolete code: The editor and CLI change the default   message to *before is deprecated*'. Also, this property changes the editor's   representation from wavy to strikethrough.                                            |
+| unnecessary  | String  |  Unused or unnecessary code: The editor and CLI change the default message to *before is unused*'. Also, this   property changes the behavior of the editor's representation from drawing a wavy line to graying the   snippet text. |
+| deprecated   | String  | Deprecated or obsolete code: The editor and CLI change the default message to *before is deprecated*'. Also, this property changes the editor's representation from wavy to strikethrough.                                            |
 
 ### Supported Languages and Frameworks
 
-You can enable built-in rules by directly writing a language or framework name in a rule file.  For example, the following rule file enables TypeScript and Python rules.  The built-in rules are defined in `src/rules/[language-or-framework-name].ts` files.
+You can enable built-in rules by writing a language or framework name directly in a rule file.  For example, the following rule file enables TypeScript and Python rules.  The built-in rules are defined in `src/rules/[language-or-framework-name].ts` files.
 
 ```json
 [
@@ -216,7 +216,7 @@ console.log(fixed2)
 
 ### GitHub Actions
 
-Please copy following `.github/workflows/devreplay.yml` file to your repository.
+Please copy the following `.github/workflows/devreplay.yml` file to your repository.
 
 ```yml
 name: Devreplay
