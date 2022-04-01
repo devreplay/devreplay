@@ -146,10 +146,9 @@ That will fix
 | unnecessary  | String  |  Unused or unnecessary code: The   editor and CLI change the default message to *before is unused*'. Also, this   property changes the behavior of the    editor's representation from drawing a wavy line to graying the   snippet text. |
 | deprecated   | String  | Deprecated or obsolete code: The editor and CLI change the default   message to *before is deprecated*'. Also, this property changes the editor's   representation from wavy to strikethrough.                                            |
 
+### Supported Languages and Frameworks
 
-### Support Languages and Frameworks
-
-Also, you can use default rules by extends some rules such as
+You can enable built-in rules by directly writing a language or framework name in a rule file.  For example, the following rule file enables TypeScript and Python rules.  The built-in rules are defined in `src/rules/[language-or-framework-name].ts` files.
 
 ```json
 [
