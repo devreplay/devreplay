@@ -16,7 +16,8 @@ tmp = a
 a = b
 b = tmp
 
-tmp = a
-a = b
-b = tmp
+for i in range(10):
+    tmp = a
+    a = b
+    b = tmp
 
