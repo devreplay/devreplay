@@ -167,7 +167,7 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
     let newReplaceString = '';
     let lastIndex = 0;
     let lastMatch = '';
-    const caseOpsRegExp = new RegExp(/([^\\]*?)((?:\\[uUlL])+?|)(\$[0-9]+)(.*?)/g);
+    const caseOpsRegExp = new RegExp(/([\s\S]*?)((?:\\[uUlL])+?|)(\$[0-9]+)([\s\S]*?)/g);
     // For each annotated $N, perform text processing on the parameters and perform the substitution.
     while ((patMatch = caseOpsRegExp.exec(replaceString)) !== null) {
         lastIndex = patMatch.index;
@@ -227,7 +227,7 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
  * @param rule Target rule
  */
 function createRegExp(rule: DevReplayRule): RegExp {
-    let searchString = joinRuleParam(rule.before);
+    let searchString = joinRuleParam(rule.before, true);
 	if (!searchString) {
 		throw new Error('Cannot create regex from empty string');
 	}

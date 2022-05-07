@@ -84,9 +84,12 @@ export interface DevReplayRule extends BaseRule {
  * Make the connected code from rule
  * @param ruleParam Target rule string
  */
-export function joinRuleParam(ruleParam: string[] | string): string {
+export function joinRuleParam(ruleParam: string[] | string, forBefore?: boolean): string {
     if (typeof ruleParam === 'string') {
         return ruleParam;
+    }
+    if (forBefore) {
+        return ruleParam.join('\r?\n\\s*');
     }
     return ruleParam.join('\n');
 }

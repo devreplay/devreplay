@@ -12,3 +12,11 @@ test('Fix one three lines replacing', () => {
         'b = c',
         'c = h'].join('\n'), rules.map(rule => BaseRule2DevReplayRule(rule, 0)))).toBe('b, c = c, b');
 });
+
+
+test('Fix one three lines replacing', () => {
+    expect(fixWithRules([
+        '   tmp = a',
+        '   a = b',
+        '   b = tmp'].join('\n'), rules.map(rule => BaseRule2DevReplayRule(rule, 0)))).toBe('  a, b = b, a');
+});
