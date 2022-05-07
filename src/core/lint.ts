@@ -229,9 +229,6 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
 function createRegExp(rule: DevReplayRule): RegExp {
     let searchString = '';
     if (typeof rule.before === 'string') {
-        if (!searchString) {
-            throw new Error('Cannot create regex from empty string');
-        }
         if (!rule.isRegex) {
             searchString = escapeRegExpCharacters(rule.before);
         }
