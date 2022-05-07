@@ -227,13 +227,25 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
  * @param rule Target rule
  */
 function createRegExp(rule: DevReplayRule): RegExp {
-    let searchString = joinRuleParam(rule.before, true);
-	if (!searchString) {
-		throw new Error('Cannot create regex from empty string');
-	}
-	if (!rule.isRegex) {
-		searchString = escapeRegExpCharacters(searchString);
-	}
+    let searchString = '';
+    if (typeof rule.before === 'string') {
+        if (!searchString) {
+            throw new Error('Cannot create regex from empty string');
+        }
+        if (!rule.isRegex) {
+            searchString = escapeRegExpCharacters(rule.before);
+        }
+    } else {
+        searchString = joinRuleParam(rule.before, true);
+        
+        if (!rule.isRegex) {
+            searchString = rule.before.map(x => { return escapeRegExpCharacters(x); }).join('\r?\n\\s*');
+        } else {
+            searchString = rule.before.join('\r?\n\\s*');
+        }
+    }
+    
+	
 	if (rule.wholeWord) {
 		if (!/\B/.test(searchString.charAt(0))) {
 			searchString = '\\b' + searchString;

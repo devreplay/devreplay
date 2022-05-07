@@ -14,9 +14,25 @@ test('Fix one three lines replacing', () => {
 });
 
 
+const rules2: BaseRule[] = [{
+    before: [
+        'tmp=a',
+        'a=b',
+        'b=tmp'
+      ],
+    after: 'a,b=b,a'
+}];
+
 test('Fix one three lines replacing', () => {
     expect(fixWithRules([
-        '   tmp = a',
-        '   a = b',
-        '   b = tmp'].join('\n'), rules.map(rule => BaseRule2DevReplayRule(rule, 0)))).toBe('  a, b = b, a');
+        'tmp=a',
+        'a=b',
+        'b=tmp'].join('\n'), rules2.map(rule => BaseRule2DevReplayRule(rule, 0)))).toBe('a,b=b,a');
+});
+
+test('Fix one three lines replacing', () => {
+    expect(fixWithRules([
+        '   tmp=a',
+        '   a=b',
+        '   b=tmp'].join('\n'), rules2.map(rule => BaseRule2DevReplayRule(rule, 0)))).toBe('   a,b=b,a');
 });
