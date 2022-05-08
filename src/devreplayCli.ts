@@ -7,7 +7,7 @@ import { Command } from 'commander';
 import { lstatSync, readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
-import { lint, fix, lintWithOutput } from './core/lint';
+import { fix, lintWithOutput } from './core/lint';
 
 /**
  * CLI description for DevReplay.
