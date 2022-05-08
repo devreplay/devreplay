@@ -7,8 +7,7 @@ import { Command } from 'commander';
 import { lstatSync, readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
-import { lint, fix } from './core/lint';
-import { outputLintOuts } from './core/output';
+import { lint, fix, lintWithOutput } from './core/lint';
 
 /**
  * CLI description for DevReplay.
@@ -59,13 +58,10 @@ const cli = {
         } else {
             throw new Error(`${targetPath} should be directory path or file path`);
         }
-        let results_length = 0;
-        const allResults = lint(fileNames, ruleFileName);
-        results_length += allResults.length;
+        const results_length = lintWithOutput(fileNames, ruleFileName);
         if (results_length === 0) {
             return 0;
         } else{
-            console.log(outputLintOuts(allResults));
             return 1;
         }
 

@@ -10,6 +10,7 @@ import { readRuleFile } from './ruleManager';
 import { LintOut } from './output';
 import { Range } from './position';
 import { getInitRules } from './extend';
+import { outputLintOuts } from './output';
 
 /**
  * Linting files by the rule and output warnings
@@ -37,6 +38,34 @@ export function lint(fileNames: string[], ruleFileName?: string): LintOut[] {
     }
 
     return out;
+}
+
+/**
+ * Linting files by the rule and output warnings
+ * @param fileNames Validate target file pathes
+ * @param ruleFileName DevReplay rule file path
+ */
+ export function lintWithOutput(fileNames: string[], ruleFileName?: string): number {
+    let rules = readRuleFile(ruleFileName);
+    if (rules === []) {
+        if (fileNames.length > 0) {
+            rules = getInitRules(fileNames[0]);
+        } else{
+            return 0;
+        }
+    }
+
+    let results_length = 0;
+    for (const fileName of fileNames) {
+        const fileContents = tryReadFile(fileName);
+        if (fileContents === undefined) {
+            continue;
+        }
+        const lintResult = lintWithRules(fileName, fileContents, rules);
+        console.log(outputLintOuts(lintResult));
+        results_length += lintResult.length;
+    }
+    return results_length;
 }
 
 /**
