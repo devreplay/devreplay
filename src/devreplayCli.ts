@@ -15,14 +15,16 @@ import { fix, lintWithOutput } from './core/lint';
 const cli = {
     execute() {
         const program = new Command();
+        const {version} = require('.././package.json');
+
         program
-            .version('1.9.24')
+            .version(version)
             .description('A linter that replay your coding style')
             .option('--fix', 'Fix the file')
             // .option('--init', 'Make rules from recent git changes')
             .helpOption(true)
             .parse(process.argv);
-        
+
         const args = program.args;
         const argv = program.opts() ;
 
