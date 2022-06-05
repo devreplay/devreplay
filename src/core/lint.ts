@@ -150,12 +150,12 @@ export function fixWithRule(content: string, rule: DevReplayRule): string {
  */
 function makeMatchedRange(result: RegExpExecArray): Range {
     const startIndex = result.index;
-    const headSlice = result.input.slice(undefined, startIndex).split(/\r\n|\r|\n/);
+    const headSlice = result.input.slice(undefined, startIndex).split(/\r?\n/);
     const startLine = headSlice.length;
     const startChar = startLine === 1 ?
                       startIndex + 1 - headSlice.slice(undefined, -1).join('\n').length:
                       startIndex - headSlice.slice(undefined, -1).join('\n').length;
-    const matchedSlice = result[0].split(/\r\n|\r|\n/);
+    const matchedSlice = result[0].split(/\r?\n/);
     const endLine = startLine + matchedSlice.length - 1;
     const endChar = startLine === endLine ?
                     startChar + matchedSlice[matchedSlice.length - 1].length :
