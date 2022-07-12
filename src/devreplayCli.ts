@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /**
  * Command Line Interface for DevReplay.
  * 
@@ -15,10 +19,10 @@ import { fix, lintWithOutput } from './core/lint';
 const cli = {
     execute() {
         const program = new Command();
-        const {version} = require('.././package.json');
+        const pkg = require('../package.json');
 
         program
-            .version(version)
+            .version(pkg.version)
             .description('A linter that replay your coding style')
             .option('--fix', 'Fix the file')
             // .option('--init', 'Make rules from recent git changes')

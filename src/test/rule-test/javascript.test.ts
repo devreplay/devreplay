@@ -1,5 +1,5 @@
 import { DevReplayRule } from '../../core/rule';
-import { fixWithRules } from '../../core/lint';
+import { createRegExp, fixWithRules, lintWithRules } from '../../core/lint';
 import { BaseRule2DevReplayRule } from '../../core/ruleManager';
 
 const rules: DevReplayRule[] = [{
@@ -24,13 +24,19 @@ const rules: DevReplayRule[] = [{
   message: 'One line for should use paren'
 }].map(rule => BaseRule2DevReplayRule(rule, 0));
 
+const regexRules: DevReplayRule[] = [{
+    before: 'new (\\w+);',
+    after: 'new $1();',
+    isRegex: true
+}].map(rule => BaseRule2DevReplayRule(rule, 0));
+
 // Test hyphen code will be fixed to white space code
 test('Fix by regex', () => {
     expect(fixWithRules('print("hello-world")', rules)).toBe('print("hello world")');
 });
 
 // Test original rules to sample loop code
-test('Fix by regex', () => {
+test('Fix by multiple line regex', () => {
     expect(fixWithRules('for (let i = 0;i < arr.length;i++) foo(arr[i])', rules)).toBe(
         [
             'for (let i = 0;i < arr.length;i++) {',
@@ -38,3 +44,7 @@ test('Fix by regex', () => {
             '}'].join('\n')
         );
 });
+
+ test('Fix by complecated regex', () => {
+   expect(fixWithRules('new A;', regexRules)).toBe('new A();');
+ });

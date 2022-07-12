@@ -62,28 +62,29 @@ export const rules: BaseRule[] = [
     after: 'export',
     matchCase: true
   },
+  // {
+  //   before: 'for \\(let (?<i>.+) = 0;\\k<i> < (?<arr>.+).length;\\k<i>\\+\\+\\) (.*)\\(\\k<arr>\\[\\k<i>\\]\\)',
+  //   after: [
+  //     'for (let $1 = 0;$1 < $2.length;i++) {',
+  //     '    $3($2[$1])',
+  //     '}'
+  //   ],
+  //   isRegex: true,
+  //   message: 'One line for should use paren'
+  // },
+  // {
+  //  before:'const \\(.*\\) = new Array()',
+  //  after: 'const $1 = []',
+  //  matchCase: true,
+  //  isRegex: true
+  // },
+  // {
+  //   before:'$1.hasOwnProperty(\'$2\')',
+  //   after: '$1.$2 != null',
+  //   matchCase: true,
+  // },
   {
-    before: 'for \\(let (?<i>.+) = 0;\\k<i> < (?<arr>.+).length;\\k<i>\\+\\+\\) (.*)\\(\\k<arr>\\[\\k<i>\\]\\)',
-    after: [
-      'for (let $1 = 0;$1 < $2.length;i++) {',
-      '    $3($2[$1])',
-      '}'
-    ],
-    isRegex: true,
-    message: 'One line for should use paren'
-  },
-  {
-    before:'const \\(.*\\) = new Array()',
-    after: 'const $1 = []',
-    matchCase: true
-  },
-  {
-    before:'$1.hasOwnProperty(\'$2\')',
-    after: '$1.$2 != null',
-    matchCase: true
-  },
-  {
-    before: 'new \\(.*\\);',
+    before: 'new (\\w+);',
     after: 'new $1();',
     isRegex: true,
     message: 'Never invoke a constructor in a new statement without using parentheses'

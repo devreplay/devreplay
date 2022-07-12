@@ -89,7 +89,7 @@ export function joinRuleParam(ruleParam: string[] | string, forBefore?: boolean)
         return ruleParam;
     }
     if (forBefore) {
-        return ruleParam.join('\r?\n\\s*');
+        return ruleParam.join('\n');
     }
     return ruleParam.join('\n');
 }

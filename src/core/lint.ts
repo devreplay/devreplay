@@ -62,7 +62,10 @@ export function lint(fileNames: string[], ruleFileName?: string): LintOut[] {
             continue;
         }
         const lintResult = lintWithRules(fileName, fileContents, rules);
-        console.log(outputLintOuts(lintResult));
+        const output = outputLintOuts(lintResult);
+        if (output.length > 1) {
+            console.log(output);
+        }
         results_length += lintResult.length;
     }
     return results_length;
@@ -79,20 +82,24 @@ export function lintWithRules(fileName: string, contents: string, rules: DevRepl
     for (const rule of rules.filter(
         rule => rule.severity !== RuleSeverity.off)) {
         const regExp = createRegExp(rule);
-        let match: RegExpExecArray | null;
-        while ((match = regExp.exec(contents)) !== null) {
+        const matchAll = contents.matchAll(regExp);
+        for (const match of matchAll) {
             const snippet = match[0];
             let fixed: string | undefined = undefined;
             if (rule.after !== undefined) {
                 fixed = fixWithRule(snippet, rule);
             }
-            lintOut.push({
-                rule: rule,
-                snippet,
-                fixed,
-                fileName,
-                position: makeMatchedRange(match)
-            });
+            try {
+                lintOut.push({
+                    rule: rule,
+                    snippet,
+                    fixed,
+                    fileName,
+                    position: makeMatchedRange(match)
+                });  
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 
@@ -148,10 +155,25 @@ export function fixWithRule(content: string, rule: DevReplayRule): string {
  * Make the matched range from Regular expression result
  * @param result 
  */
-function makeMatchedRange(result: RegExpExecArray): Range {
+function makeMatchedRange(result: RegExpMatchArray): Range {
     const startIndex = result.index;
-    const headSlice = result.input.slice(undefined, startIndex).split(/\r?\n/);
-    const startLine = headSlice.length;
+    if (result.length === 0) {
+        return {
+            start: { line: 0, character: 0 },
+            end: { line: 0, character: 0 }
+        };
+    } else if (startIndex === undefined) {
+        throw new Error('Regular expression result is invalid');
+    }
+    const headSlice = result.input?.slice(undefined, startIndex).split(/\r?\n/);
+    if (headSlice === undefined) {
+        throw new Error('Failed to make matched range');
+    }
+    const startLine = headSlice?.length;
+    if (startLine === undefined) {
+        throw new Error('Failed to get start line');
+    }
+
     const startChar = startLine === 1 ?
                       startIndex + 1 - headSlice.slice(undefined, -1).join('\n').length:
                       startIndex - headSlice.slice(undefined, -1).join('\n').length;
@@ -255,12 +277,16 @@ function replaceWithCaseOperations(text: string, regex: RegExp, replaceString: s
  * Create search regex from rule
  * @param rule Target rule
  */
-function createRegExp(rule: DevReplayRule): RegExp {
+export function createRegExp(rule: DevReplayRule): RegExp {
     let searchString = '';
+    if (!rule.before) {
+        throw new Error('Cannot create regex from empty string');
+    }
     if (typeof rule.before === 'string') {
         if (!rule.isRegex) {
             searchString = escapeRegExpCharacters(rule.before);
         }
+        searchString = rule.before;
     } else {
         searchString = joinRuleParam(rule.before, true);
         
@@ -269,8 +295,7 @@ function createRegExp(rule: DevReplayRule): RegExp {
         } else {
             searchString = rule.before.join('\r?\n\\s*');
         }
-    }
-    
+    }    
 	
 	if (rule.wholeWord) {
 		if (!/\B/.test(searchString.charAt(0))) {
@@ -284,7 +309,7 @@ function createRegExp(rule: DevReplayRule): RegExp {
 	if (!rule.matchCase) {
 		modifiers += 'i';
 	}
-	if (rule.before.length > 1) {
+	if (typeof rule.before !== 'string' && rule.before.length > 1) {
 		modifiers += 'm';
 	}
 
