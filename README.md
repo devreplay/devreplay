@@ -54,7 +54,7 @@ The target source code file will be
 ```diff
 - tmp = a
 - a = b
-- b = a
+- b = tmp
 + a, b = b, a
 ```
 
